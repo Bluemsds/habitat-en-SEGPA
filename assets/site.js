@@ -4,7 +4,7 @@
      t     titre                      d    description courte
      th    thème (Sécurité, Métiers, Projets)        lv   niveau (5e, 4e, 3e)
      m     clé du métier dans M (facultatif)
-     url   page de l'activité (facultatif si la ressource n'a que des documents)
+     url   page de l'activité, ou lien externe https (vidéo YouTube : ouvre un nouvel onglet) ; facultatif si la ressource n'a que des documents
            Sans url ni docs, la ressource est rangée dans « En préparation ».
      go    texte du bouton violet
      incl  ce qui est déjà inclus dans l'activité (texte simple, rien à télécharger)
@@ -12,6 +12,7 @@
      prevu formats prévus, pour une ressource en préparation */
 const R=[
  {t:"Qui construit la maison ?",d:"Séance Parcours Avenir : la maison en coupe, gros œuvre et second œuvre, tri des métiers, « Qui suis-je ? ».",th:"Métiers",lv:"5e",m:"parcours",url:"activites/qui-construit-la-maison.html",go:"Ouvrir le diaporama",type:"Diaporama TNI",incl:"Notes prof et trace écrite incluses dans le diaporama."},
+ {t:"Tour du monde des bâtisseurs · Étape 1 : Lisbonne, le carreleur",d:"Un jour, un métier : on part au Portugal découvrir les azulejos et le carreleur. Billet d'embarquement, questions sur la vidéo, lecture, calculs, symétrie et passeport à lettre mystère.",th:"Métiers",lv:"5e",m:"parcours",type:"Un jour, un métier",url:"https://youtu.be/IYl1Tr91nZA",go:"Voir la vidéo (1 min)",docs:[["Fiche élève","Word","fiches/parcours/ujum-01-carreleur-portugal-fiche-eleve.docx"],["Corrigé et déroulé","Word","parcours/ujum-01-carreleur-portugal-corrige-prof.docx","prof"]]},
  {t:"La fiche métier du carreleur",d:"Le métier expliqué aux élèves : étapes du travail, lieux, qualités, EPI, formation après la 3e. Avec un questionnaire et le corrigé.",th:"Métiers",lv:"4e",m:"carreleur",type:"Fiche métier",docs:[["Fiche métier élève","Word","fiches/carreleur/carreleur-fiche-metier.docx"],["Fiche métier avec corrigé","Word","carreleur/carreleur-fiche-metier-corrige.docx","prof"]]},
  {t:"Les outils du carreleur",d:"Découvrir 12 outils, leur usage et leur famille. Jeu « Quel outil pour… ? » au TNI.",th:"Métiers",lv:"4e",m:"carreleur",url:"activites/outils-carreleur.html",go:"Ouvrir l'activité",type:"Activité TNI",docs:[["Fiche élève","Word","fiches/carreleur/carreleur-outils-fiche-eleve.docx"],["Fiche prof et corrigé","Word","carreleur/carreleur-outils-fiche-prof.docx","prof"]]},
  {t:"Quel EPI pour quelle tâche ?",d:"Associer les équipements de protection à 5 situations d'atelier, avec correction immédiate.",th:"Sécurité",lv:"4e",url:"activites/epi.html",go:"Ouvrir l'activité",type:"Activité TNI",incl:"Correction intégrée à l'activité."},
@@ -61,7 +62,7 @@ function carte(r,base="",num){
   return `<article class="card live">
     <div class="meta">${num?`<span class="num">Séance ${num}</span>`:""}<span class="tg lv">${r.lv}</span><span class="tg">${esc(r.th)}</span><span class="tg">${esc(r.type)}</span></div>
     <h3>${esc(r.t)}</h3><p>${esc(r.d)}</p>
-    ${r.url?`<a class="go" href="${base+r.url}">${ICO_PLAY}${esc(r.go)}</a>`:""}
+    ${r.url?(/^https?:/.test(r.url)?`<a class="go" href="${r.url}" target="_blank" rel="noopener">${ICO_PLAY}${esc(r.go)}</a>`:`<a class="go" href="${base+r.url}">${ICO_PLAY}${esc(r.go)}</a>`):""}
     ${r.incl?`<p class="incl">${esc(r.incl)}</p>`:""}
     ${docs?`<div class="docs"><div class="docs-t">À télécharger</div><ul>${docs}</ul></div>`:""}
   </article>`;
