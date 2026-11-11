@@ -2,8 +2,8 @@
    Réglages : à remplir une fois les comptes Supabase et GoatCounter créés (voir supabase/LISEZMOI.md).
    La clé « anon » est publique par nature : la sécurité vient des règles de la base (supabase/installation.sql). */
 const CONFIG={
-  supabaseUrl:"",      // ex. https://abcdefgh.supabase.co
-  supabaseCle:"",      // clé « anon public »
+  supabaseUrl:"https://bsopqwdeozzxmwduolys.supabase.co",      // ex. https://abcdefgh.supabase.co
+  supabaseCle:"sb_publishable_nWAL5lmLKKF-9K2gMg3Rfw_BFapbmik", // clé publique (publishable)
   goatcounter:""       // ex. habitat-segpa
 };
 
@@ -23,7 +23,7 @@ const Compte=(()=>{
     if(pret) return pret;
     pret=new Promise((ok,ko)=>{
       const s=document.createElement("script");
-      s.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js";
+      s.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.min.js";
       s.onload=()=>{client=window.supabase.createClient(CONFIG.supabaseUrl,CONFIG.supabaseCle);ok(client)};
       s.onerror=()=>ko(new Error("Le service de comptes ne répond pas. Réessayez dans un instant."));
       document.head.appendChild(s);
