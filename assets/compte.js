@@ -23,7 +23,7 @@ const Compte=(()=>{
     if(pret) return pret;
     pret=new Promise((ok,ko)=>{
       const s=document.createElement("script");
-      s.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.min.js";
+      s.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js";
       s.onload=()=>{client=window.supabase.createClient(CONFIG.supabaseUrl,CONFIG.supabaseCle);ok(client)};
       s.onerror=()=>ko(new Error("Le service de comptes ne répond pas. Réessayez dans un instant."));
       document.head.appendChild(s);
