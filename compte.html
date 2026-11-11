@@ -106,7 +106,6 @@
 <script>
 (async()=>{
 const $=s=>document.getElementById(s), msg=(t,k="ok")=>{const m=$("msg");m.className="msg on "+k;m.textContent=t};
-const ACAD=/@ac-[a-z0-9-]+\.fr$/i;
 const retour=new URLSearchParams(location.search).get("retour");
 const page=location.href.split(/[?#]/)[0];
 if(!Compte.actif){$("hors-ligne").classList.add("on");return}
@@ -138,7 +137,7 @@ $("connexion").onsubmit=async e=>{e.preventDefault();const f=e.target;
   const {error}=await c.auth.signInWithPassword({email:f.email.value.trim(),password:f.mdp.value});
   error?msg(ERR(error),"ko"):afficher()};
 $("inscription").onsubmit=async e=>{e.preventDefault();const f=e.target,email=f.email.value.trim();
-  if(!ACAD.test(email)){msg("Seules les adresses académiques (@ac-….fr) sont acceptées.","ko");return}
+  /* Le filtre @ac-….fr est fait par la base (avec l'exception des adresses admin) : la page ne bloque rien elle-même */
   const {error}=await c.auth.signUp({email,password:f.mdp.value,options:{data:{recontact:f.recontact.checked},emailRedirectTo:page}});
   error?msg(ERR(error),"ko"):msg("Presque fini : ouvrez le mail envoyé à "+email+" et cliquez sur le lien pour confirmer votre adresse. Pensez à regarder dans les indésirables.")};
 $("oubli").onsubmit=async e=>{e.preventDefault();
