@@ -9,4 +9,4 @@ Site conçu et réalisé par M. Dos Santos, PLP Habitat.
 - `fiches/` : fiches élève et prof (Word, modifiables)
 - `suivi.html` : suivi des compétences et progression (données gardées dans le navigateur, aucun envoi)
 
-Site statique, publié avec GitHub Pages.
+Site statique, publié avec GitHub Pages sur https://habitat-en-segpa.fr (fichier `CNAME`). L'ancienne adresse bluemsds.github.io/habitat-en-SEGPA redirige automatiquement vers le domaine.

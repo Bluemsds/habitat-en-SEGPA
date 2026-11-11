@@ -10,8 +10,8 @@ Ces étapes ne se font qu'une fois. Les étapes 1 et 2 sont faites par David. Po
    - Remplacer `ADRESSE_ADMIN` par l'adresse de David.
    - Cliquer sur Run.
 4. **Régler les connexions.** Dans Authentication, ouvrir URL Configuration et remplir :
-   - Site URL : l'adresse du site, par exemple `https://bluemsds.github.io/habitat-en-SEGPA/`.
-   - Redirect URLs : ajouter `https://bluemsds.github.io/habitat-en-SEGPA/compte.html`, puis la même adresse avec le futur nom de domaine.
+   - Site URL : `https://habitat-en-segpa.fr/`.
+   - Redirect URLs : `https://habitat-en-segpa.fr/compte.html` et `https://www.habitat-en-segpa.fr/compte.html`. Garder aussi `https://bluemsds.github.io/habitat-en-SEGPA/compte.html` tant que le domaine n'est pas en HTTPS.
 5. **Déposer les documents prof.**
    - Dans Storage, ouvrir l'espace `prof`.
    - Y déposer les dossiers `carreleur/` et `macon/` avec leur contenu (PDF et Word).
