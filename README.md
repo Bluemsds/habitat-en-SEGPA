@@ -2,7 +2,7 @@
 
 Ressources pour les PLP Habitat en SEGPA : activités interactives pour le TNI, fiches élève et prof, suivi des compétences et progression annuelle.
 
-Site conçu et réalisé par M. Dos Santos, PLP Habitat.
+Site conçu et réalisé par M. Dos Santos, PLP Génie civil (organisation et réalisation d'ouvrages), affecté en SEGPA.
 
 - `index.html` : accueil et catalogue des ressources
 - `activites/` : activités et diaporamas pour le TNI
