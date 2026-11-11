@@ -20,6 +20,9 @@ const R=[
  {t:"Le bruit et les décibels",d:"Placer machines et sons sur l'échelle des décibels. Seuil de danger à 80 dB.",th:"Sécurité",lv:"3e",prevu:"Activité TNI, évaluation"},
  {t:"Carreleur : poser un panneau 40 × 40",d:"Préparer, tracer, encoller, poser avec croisillons, faire les joints, contrôler.",th:"Métiers",lv:"4e",m:"carreleur",prevu:"Fiche procédure, grille d'évaluation"},
  {t:"Peintre : préparer un support",d:"Rebouchage, ponçage, impression : ordre des opérations et outils.",th:"Métiers",lv:"4e",m:"peintre",prevu:"Fiche élève, fiche prof"},
+ {t:"Monter un mur droit en parpaings",d:"Projet complet en 8 étapes : lire le plan, gâcher, poser au cordeau, croiser les joints, contrôler. Première étape du parcours maçonnerie.",th:"Projets",lv:"3e",m:"macon",url:"projet.html?p=mur-droit",go:"Voir le projet",type:"Projet",incl:"Étapes, ressources, compétences, grille d'évaluation et fiche pédagogique sur la page."},
+ {t:"Monter un mur en angle avec un poteau",d:"Suite du mur droit : deux murs à 90° et un poteau.",th:"Projets",lv:"3e",m:"macon",prevu:"Fiche projet, dossier élève, grille"},
+ {t:"Enduire et couvrir le mur",d:"Enduit dressé à la règle, puis chaperon pour protéger le dessus du mur.",th:"Projets",lv:"3e",m:"macon",prevu:"Fiche projet, dossier élève, grille"},
  {t:"Projet nichoir",d:"Du plan coté à la réalisation : débit, assemblage, finition, auto-évaluation.",th:"Projets",lv:"4e",m:"menuisier",prevu:"Dossier élève, fiche prof, grille"},
  {t:"Projet cloison en plaques de plâtre",d:"Un module de cloison avec ossature métallique et bandes.",th:"Projets",lv:"3e",m:"plaquiste",prevu:"Dossier élève, fiche prof, grille"},
  {t:"Projet maquette de maison",d:"Relier chaque partie de la maison au métier qui la construit.",th:"Projets",lv:"5e",m:"parcours",prevu:"Dossier élève, diaporama TNI"}
