@@ -33,7 +33,7 @@ function mur(){
   return `<svg viewBox="-30 -26 ${W+60} ${H+64}" role="img" aria-label="Vue de face du mur : 4 rangs de parpaings, joints croisés">
    ${r}
    <g class="cote"><path d="M0 ${H+18}H${W}M0 ${H+10}v16M${W} ${H+10}v16"/><text x="${W/2}" y="${H+36}">1,52 m</text></g>
-   <g class="cote"><path d="M${W+16} 0V${H}M${W+8} 0h16M${W+8} ${H}h16"/><text x="${W+22}" y="${H/2}" transform="rotate(90 ${W+22} ${H/2})">0,83 m</text></g>
+   <g class="cote"><path d="M${W+16} 0V${H}M${W+8} 0h16M${W+8} ${H}h16"/><text x="${W+22}" y="${H/2}" transform="rotate(90 ${W+22} ${H/2})">0,84 m</text></g>
    <text class="lg" x="0" y="-10">Vue de face · 4 rangs · joints de 1 cm</text></svg>`;
 }
 
@@ -104,7 +104,8 @@ ${parcoursHTML(p)}
 
 <section id="documents" style="padding-top:20px"><div class="wrap">
   <div class="sec-head"><div class="kicker">Documents</div><h2 class="h2s">À télécharger</h2></div>
-  <ul class="soon-list">${p.docs.map(([n,f])=>`<li><span class="tg">${esc(f)}</span><b>${esc(n)}</b><small>en préparation</small></li>`).join("")}</ul>
+  <p class="mute">Le PDF s'imprime tel quel. Le Word se modifie pour l'adapter à votre atelier.</p>
+  <ul class="dl-p">${p.docs.map(([n,f,pdfSeul])=>`<li><b>${esc(n)}</b><span><a href="${f}.pdf" download>${ICO_DL}PDF</a>${pdfSeul?"":`<a href="${f}.docx" download>${ICO_DL}Word</a>`}</span></li>`).join("")}</ul>
 </div></section>`;
 
 function parcoursHTML(p){

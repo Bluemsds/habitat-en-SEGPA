@@ -8,7 +8,7 @@
            Sans url ni docs, la ressource est rangée dans « En préparation ».
      go    texte du bouton violet
      incl  ce qui est déjà inclus dans l'activité (texte simple, rien à télécharger)
-     docs  fichiers à télécharger : [nom, format, chemin]
+     docs  fichiers à télécharger : [nom, format, chemin] ; un « Word » doit avoir son PDF au même nom (bouton PDF ajouté)
      prevu formats prévus, pour une ressource en préparation */
 const R=[
  {t:"Qui construit la maison ?",d:"Séance Parcours Avenir : la maison en coupe, gros œuvre et second œuvre, tri des métiers, « Qui suis-je ? ».",th:"Métiers",lv:"5e",m:"parcours",url:"activites/qui-construit-la-maison.html",go:"Ouvrir le diaporama",type:"Diaporama TNI",incl:"Notes prof et trace écrite incluses dans le diaporama."},
@@ -20,7 +20,7 @@ const R=[
  {t:"Le bruit et les décibels",d:"Placer machines et sons sur l'échelle des décibels. Seuil de danger à 80 dB.",th:"Sécurité",lv:"3e",prevu:"Activité TNI, évaluation"},
  {t:"Carreleur : poser un panneau 40 × 40",d:"Préparer, tracer, encoller, poser avec croisillons, faire les joints, contrôler.",th:"Métiers",lv:"4e",m:"carreleur",prevu:"Fiche procédure, grille d'évaluation"},
  {t:"Peintre : préparer un support",d:"Rebouchage, ponçage, impression : ordre des opérations et outils.",th:"Métiers",lv:"4e",m:"peintre",prevu:"Fiche élève, fiche prof"},
- {t:"Monter un mur droit en parpaings",d:"Projet complet en 8 étapes : lire le plan, gâcher, poser au cordeau, croiser les joints, contrôler. Première étape du parcours maçonnerie.",th:"Projets",lv:"3e",m:"macon",url:"projet.html?p=mur-droit",go:"Voir le projet",type:"Projet",incl:"Étapes, ressources, compétences, grille d'évaluation et fiche pédagogique sur la page."},
+ {t:"Monter un mur droit en parpaings",d:"Projet complet en 8 étapes : lire le plan, gâcher, poser au cordeau, croiser les joints, contrôler. Première étape du parcours maçonnerie.",th:"Projets",lv:"3e",m:"macon",url:"projet.html?p=mur-droit",go:"Voir le projet",type:"Projet",incl:"Étapes, ressources, compétences et fiche pédagogique sur la page.",docs:[["Dossier élève","Word","fiches/macon/mur-droit-dossier-eleve.docx"],["Fiche pédagogique et corrigé","Word","fiches/macon/mur-droit-fiche-peda.docx"],["Grille d'évaluation","Word","fiches/macon/mur-droit-grille.docx"],["Plan coté du mur","PDF","fiches/macon/mur-droit-plan.pdf"]]},
  {t:"Monter un mur en angle avec un poteau",d:"Suite du mur droit : deux murs à 90° et un poteau.",th:"Projets",lv:"3e",m:"macon",prevu:"Fiche projet, dossier élève, grille"},
  {t:"Enduire et couvrir le mur",d:"Enduit dressé à la règle, puis chaperon pour protéger le dessus du mur.",th:"Projets",lv:"3e",m:"macon",prevu:"Fiche projet, dossier élève, grille"},
  {t:"Projet nichoir",d:"Du plan coté à la réalisation : débit, assemblage, finition, auto-évaluation.",th:"Projets",lv:"4e",m:"menuisier",prevu:"Dossier élève, fiche prof, grille"},
@@ -53,7 +53,10 @@ const ICO_PLAY='<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="tru
 /* Carte d'une ressource disponible. Règle d'affichage : tout ce qui ressemble à un bouton ou à un lien se clique.
    base = préfixe des chemins ; num = numéro de séance (page métier). */
 function carte(r,base="",num){
-  const docs=(r.docs||[]).map(([n,f,h])=>`<li><a href="${base+h}" download>${ICO_DL}<span>${esc(n)}</span><small>${esc(f)}</small></a></li>`).join("");
+  /* Un document Word est toujours accompagné de son PDF (même nom, extension .pdf) : imprimer tel quel ou modifier */
+  const docs=(r.docs||[]).map(([n,f,h])=>f==="Word"
+    ?`<li class="two"><span>${esc(n)}</span><a href="${base+h.replace(/\.docx$/,".pdf")}" download>${ICO_DL}PDF</a><a href="${base+h}" download>${ICO_DL}Word</a></li>`
+    :`<li class="two"><span>${esc(n)}</span><a href="${base+h}" download>${ICO_DL}${esc(f)}</a></li>`).join("");
   return `<article class="card live">
     <div class="meta">${num?`<span class="num">Séance ${num}</span>`:""}<span class="tg lv">${r.lv}</span><span class="tg">${esc(r.th)}</span><span class="tg">${esc(r.type)}</span></div>
     <h3>${esc(r.t)}</h3><p>${esc(r.d)}</p>
