@@ -4,13 +4,15 @@
      t     titre                      d    description courte
      th    thème (Sécurité, Métiers, Projets)        lv   niveau (5e, 4e, 3e)
      m     clé du métier dans M (facultatif)
-     url   page de l'activité. Sans url, la ressource est rangée dans « En préparation ».
+     url   page de l'activité (facultatif si la ressource n'a que des documents)
+           Sans url ni docs, la ressource est rangée dans « En préparation ».
      go    texte du bouton violet
      incl  ce qui est déjà inclus dans l'activité (texte simple, rien à télécharger)
      docs  fichiers à télécharger : [nom, format, chemin]
      prevu formats prévus, pour une ressource en préparation */
 const R=[
  {t:"Qui construit la maison ?",d:"Séance Parcours Avenir : la maison en coupe, gros œuvre et second œuvre, tri des métiers, « Qui suis-je ? ».",th:"Métiers",lv:"5e",m:"parcours",url:"activites/qui-construit-la-maison.html",go:"Ouvrir le diaporama",type:"Diaporama TNI",incl:"Notes prof et trace écrite incluses dans le diaporama."},
+ {t:"La fiche métier du carreleur",d:"Le métier expliqué aux élèves : étapes du travail, lieux, qualités, EPI, formation après la 3e. Avec un questionnaire et le corrigé.",th:"Métiers",lv:"4e",m:"carreleur",type:"Fiche métier",docs:[["Fiche métier élève et corrigé","Word","fiches/carreleur/carreleur-fiche-metier.docx"]]},
  {t:"Les outils du carreleur",d:"Découvrir 12 outils, leur usage et leur famille. Jeu « Quel outil pour… ? » au TNI.",th:"Métiers",lv:"4e",m:"carreleur",url:"activites/outils-carreleur.html",go:"Ouvrir l'activité",type:"Activité TNI",docs:[["Fiche élève","Word","fiches/carreleur/carreleur-outils-fiche-eleve.docx"],["Fiche prof et corrigé","Word","fiches/carreleur/carreleur-outils-fiche-prof.docx"]]},
  {t:"Quel EPI pour quelle tâche ?",d:"Associer les équipements de protection à 5 situations d'atelier, avec correction immédiate.",th:"Sécurité",lv:"4e",url:"activites/epi.html",go:"Ouvrir l'activité",type:"Activité TNI",incl:"Correction intégrée à l'activité."},
  {t:"Le règlement de l'atelier",d:"Les règles en images et le contrat d'atelier à signer en début d'année.",th:"Sécurité",lv:"5e",prevu:"Diaporama TNI, fiche élève, contrat"},
@@ -39,6 +41,8 @@ const M=[
  ["parcours","Parcours Avenir","Découvrir les métiers de l'habitat et commencer à réfléchir à son orientation."]
 ];
 
+/* Une ressource est disponible si elle a une activité à ouvrir ou des documents à télécharger */
+const dispo=r=>!!(r.url||r.docs);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const ICO_DL='<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 2v9m0 0L5.5 7.5M9 11l3.5-3.5M3 14.5h12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const ICO_PLAY='<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9-5.5z" fill="currentColor"/></svg>';
@@ -50,7 +54,7 @@ function carte(r,base="",num){
   return `<article class="card live">
     <div class="meta">${num?`<span class="num">Séance ${num}</span>`:""}<span class="tg lv">${r.lv}</span><span class="tg">${esc(r.th)}</span><span class="tg">${esc(r.type)}</span></div>
     <h3>${esc(r.t)}</h3><p>${esc(r.d)}</p>
-    <a class="go" href="${base+r.url}">${ICO_PLAY}${esc(r.go)}</a>
+    ${r.url?`<a class="go" href="${base+r.url}">${ICO_PLAY}${esc(r.go)}</a>`:""}
     ${r.incl?`<p class="incl">${esc(r.incl)}</p>`:""}
     ${docs?`<div class="docs"><div class="docs-t">À télécharger</div><ul>${docs}</ul></div>`:""}
   </article>`;
@@ -62,7 +66,7 @@ function aVenir(L){
 /* Cartes métier : cliquables dès qu'il y a au moins une ressource, disponible ou en préparation */
 function cartesMetiers(courant){
   return M.map(([k,n])=>{
-    const L=R.filter(r=>r.m===k), ok=L.filter(r=>r.url).length, av=L.length-ok;
+    const L=R.filter(r=>r.m===k), ok=L.filter(dispo).length, av=L.length-ok;
     if(!L.length) return `<div class="metier">${esc(n)}<small>à venir</small></div>`;
     const txt=[ok?`${ok} disponible${ok>1?"s":""}`:"",av?`${av} en préparation`:""].filter(Boolean).join(" · ");
     return `<a class="metier${ok?" on":""}" href="metier.html?m=${k}"${k===courant?' aria-current="page"':""}><span>${esc(n)}</span><small>${txt}</small></a>`;

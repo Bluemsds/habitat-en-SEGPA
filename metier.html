@@ -59,7 +59,7 @@
 const k=new URLSearchParams(location.search).get('m'), met=M.find(x=>x[0]===k);
 document.getElementById('mlist').innerHTML=cartesMetiers(k);
 if(met){
-  const L=R.filter(r=>r.m===k), ok=L.filter(r=>r.url), av=L.filter(r=>!r.url);
+  const L=R.filter(r=>r.m===k), ok=L.filter(dispo), av=L.filter(r=>!dispo(r));
   document.title=met[1]+" · L'habitat en SEGPA";
   document.getElementById('nom').textContent=met[1];
   document.getElementById('intro').textContent=met[2];
