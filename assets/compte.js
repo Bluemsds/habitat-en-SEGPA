@@ -53,6 +53,9 @@ const Compte=(()=>{
     const f=document.querySelector("footer .wrap");
     if(f&&!f.querySelector(".lien-donnees")){const a=document.createElement("a");a.className="lien-donnees";a.href=racine+"donnees.html";a.textContent="Données personnelles et mentions légales";f.appendChild(a)}
   });
+  /* Adresse de contact écrite en morceaux dans la page (moins lisible par les robots à spam), recomposée ici */
+  document.addEventListener("DOMContentLoaded",()=>document.querySelectorAll(".contact[data-u]").forEach(el=>{
+    const m=el.dataset.u+"@"+el.dataset.d, a=document.createElement("a");a.href="mailto:"+m;a.textContent=el.dataset.t||m;el.replaceWith(a)}));
   document.addEventListener("click",e=>{const a=e.target.closest("a[data-prof]");if(!a)return;e.preventDefault();telecharger(a.dataset.prof)});
 
   return {actif,charger,utilisateur,telecharger};
