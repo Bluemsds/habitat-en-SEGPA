@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Atelier Habitat SEGPA</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout : bandeau "plan de chantier" en tête, puis grille de fiches ressources filtrables ; vue activité plein écran pour TNI */
+:root{
+  --bg:#f3f5f8; --surface:#ffffff; --ink:#14223a; --muted:#56637a; --line:#d6dce6;
+  --plan:#123a6b; --plan-ink:#eaf1fb; --accent:#e8711a; --accent-ink:#ffffff;
+  --ok:#1f8a4c; --ok-bg:#e3f4ea; --ko:#b8322a; --ko-bg:#fbe7e5; --chip:#e7ecf3;
+  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Atkinson Hyperlegible",Verdana,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1522; --surface:#172234; --ink:#e7edf6; --muted:#9aa8bd; --line:#2a3850;
+  --plan:#0b2747; --plan-ink:#dce8f8; --accent:#f08a3a; --accent-ink:#1a0f05;
+  --ok:#5fd193; --ok-bg:#12321f; --ko:#ff8a80; --ko-bg:#3a1714; --chip:#22314a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1522; --surface:#172234; --ink:#e7edf6; --muted:#9aa8bd; --line:#2a3850;
+  --plan:#0b2747; --plan-ink:#dce8f8; --accent:#f08a3a; --accent-ink:#1a0f05;
+  --ok:#5fd193; --ok-bg:#12321f; --ko:#ff8a80; --ko-bg:#3a1714; --chip:#22314a; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.05;margin:0}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* En-tête */
+.top{background:var(--plan);color:var(--plan-ink);
+  background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);
+  background-size:28px 28px}
+.top .wrap{padding-block:18px 34px}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:800;font-size:26px;letter-spacing:.02em;text-decoration:none}
+.brand svg{flex:none}
+.nav ul{display:flex;gap:6px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+.nav ul a{display:block;padding:6px 12px;border-radius:6px;text-decoration:none;font-weight:700}
+.nav ul a:hover{background:rgba(255,255,255,.12)}
+.hero{display:grid;grid-template-columns:1.3fr 1fr;gap:32px;align-items:end;margin-top:34px}
+.hero h1{font-size:clamp(38px,6vw,64px);font-weight:800;text-transform:uppercase;letter-spacing:.01em}
+.hero h1 span{color:var(--accent)}
+.hero p{max-width:56ch;margin:14px 0 0;font-size:18px;opacity:.92}
+.cartouche{border:2px solid rgba(255,255,255,.55);font-size:14px;font-variant-numeric:tabular-nums}
+.cartouche div{display:grid;grid-template-columns:110px 1fr;border-bottom:1px solid rgba(255,255,255,.35)}
+.cartouche div:last-child{border-bottom:0}
+.cartouche b,.cartouche span{padding:6px 10px}
+.cartouche b{border-right:1px solid rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.06em;font-size:12px;align-self:center}
+
+/* Entrées principales */
+.entries{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:-22px}
+.entry{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;text-align:left;color:var(--ink);display:flex;gap:14px;align-items:flex-start;box-shadow:0 6px 18px rgba(10,30,60,.08)}
+.entry[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.entry h2{font-size:28px;text-transform:uppercase}
+.entry p{margin:4px 0 0;color:var(--muted);font-size:15px}
+.entry .ico{flex:none;width:46px;height:46px;border-radius:8px;background:var(--chip);display:grid;place-items:center;color:var(--plan)}
+:root[data-theme="dark"] .entry .ico{color:var(--accent)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .entry .ico{color:var(--accent)}}
+
+/* Filtres */
+.filters{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:34px 0 14px}
+.filters .lbl{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700;margin-right:4px}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 14px;font-weight:700;font-size:15px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.count{margin-left:auto;color:var(--muted);font-size:15px}
+
+/* Grille ressources */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;padding-bottom:40px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card .meta{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 8px;border-radius:4px;background:var(--chip);color:var(--muted)}
+.tag.lvl{background:var(--plan);color:var(--plan-ink)}
+.card h3{font-size:24px}
+.card p{margin:0;color:var(--muted);font-size:15px}
+.formats{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:6px;border-top:1px dashed var(--line)}
+.fmt{font-size:13px;padding:4px 8px;border:1px solid var(--line);border-radius:4px}
+.fmt.tni{border-color:var(--accent);color:var(--accent);font-weight:700}
+.open{align-self:flex-start;background:var(--accent);color:var(--accent-ink);border:0;border-radius:6px;padding:9px 14px;font-weight:700}
+.soon{font-size:14px;color:var(--muted);font-style:italic}
+.note{font-size:14px;color:var(--muted);border-left:3px solid var(--accent);padding:6px 12px;margin:0 0 18px;background:var(--surface)}
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+footer .wrap{padding-block:20px}
+
+/* Vue activité (TNI) */
+.act-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-block:18px}
+.back{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:8px 14px;font-weight:700}
+.act-head h1{font-size:clamp(30px,4.5vw,46px);text-transform:uppercase}
+.consigne{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 18px;font-size:20px}
+.speak{display:inline-flex;gap:8px;align-items:center;border:0;background:var(--plan);color:var(--plan-ink);border-radius:6px;padding:8px 14px;font-weight:700;font-size:16px}
+.stage{display:grid;grid-template-columns:320px 1fr;gap:20px;margin-top:18px;padding-bottom:40px}
+.tasks{display:flex;flex-direction:column;gap:10px}
+.task{display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:14px 16px;color:var(--ink);font-weight:700;font-size:19px}
+.task[aria-current="true"]{border-color:var(--accent)}
+.task .st{font-size:13px;font-weight:700;padding:3px 8px;border-radius:4px;background:var(--chip);color:var(--muted);white-space:nowrap}
+.task .st.ok{background:var(--ok-bg);color:var(--ok)}
+.board{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;min-width:0}
+.board h2{font-size:34px;text-transform:uppercase}
+.board .q{margin:6px 0 16px;color:var(--muted);font-size:18px}
+.epis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.epi{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 8px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font-weight:700;font-size:17px;min-height:132px;justify-content:center}
+.epi svg{width:58px;height:58px}
+.epi[aria-pressed="true"]{border-color:var(--plan);background:var(--chip);box-shadow:inset 0 0 0 2px var(--plan)}
+.epi.good{border-color:var(--ok);background:var(--ok-bg)}
+.epi.bad{border-color:var(--ko);background:var(--ko-bg)}
+.epi.miss{border-style:dashed;border-color:var(--ok)}
+.actions{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap;align-items:center}
+.check{background:var(--accent);color:var(--accent-ink);border:0;border-radius:8px;padding:12px 22px;font-weight:700;font-size:19px}
+.ghost{background:transparent;border:2px solid var(--line);color:var(--ink);border-radius:8px;padding:10px 18px;font-weight:700;font-size:17px}
+.feedback{margin-top:16px;padding:14px 16px;border-radius:8px;font-size:18px}
+.feedback.ok{background:var(--ok-bg);color:var(--ok)}
+.feedback.ko{background:var(--ko-bg);color:var(--ko)}
+.feedback p{margin:4px 0 0;color:var(--ink);font-size:16px}
+.score{font-family:var(--f-display);font-size:26px;font-weight:700}
+
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr}
+  .entries{grid-template-columns:1fr;margin-top:16px}
+  .stage{grid-template-columns:1fr}
+  .epis{grid-template-columns:repeat(2,1fr)}
+}
+@media (prefers-reduced-motion:no-preference){.card,.entry,.epi{transition:border-color .15s,box-shadow .15s,background .15s}}
+</style>
+
+<!-- ============ ACCUEIL ============ -->
+<div id="home">
+  <header class="top">
+    <div class="wrap">
+      <nav class="nav" aria-label="Navigation principale">
+        <a class="brand" href="#accueil">
+          <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><path d="M3 17 17 5l14 12" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><rect x="8" y="16" width="18" height="14" fill="none" stroke="currentColor" stroke-width="3"/><rect x="14" y="21" width="6" height="9" fill="#e8711a"/></svg>
+          Atelier Habitat
+        </a>
+        <ul>
+          <li><a href="#accueil" data-go="securite">Sécurité</a></li>
+          <li><a href="#accueil" data-go="metiers">Métiers</a></li>
+          <li><a href="#accueil" data-go="projets">Projets</a></li>
+          <li><a href="#accueil" data-go="all">Toutes les ressources</a></li>
+        </ul>
+      </nav>
+      <div class="hero">
+        <div>
+          <h1>Des séances d'atelier <span>prêtes à projeter</span></h1>
+          <p>Ressources pour les PLP habitat en SEGPA : activités interactives pour le TNI, fiches élève, fiches prof avec corrigé et grilles d'évaluation. Rangées par niveau et par thème.</p>
+        </div>
+        <div class="cartouche" aria-label="Repères">
+          <div><b>Niveaux</b><span>5e (Parcours Avenir) · 4e · 3e</span></div>
+          <div><b>Thèmes</b><span>Sécurité · Métiers du bâtiment · Projets</span></div>
+          <div><b>En classe</b><span>TNI + PC, sans compte élève</span></div>
+          <div><b>Accès</b><span>Gratuit, téléchargement libre</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="entries" role="group" aria-label="Thèmes">
+      <button class="entry" data-theme-f="securite" aria-pressed="false">
+        <span class="ico"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M4 19a10 10 0 0 1 20 0z" fill="currentColor"/><rect x="2" y="19" width="24" height="4" rx="1" fill="currentColor"/><rect x="12" y="7" width="4" height="7" fill="var(--surface)"/></svg></span>
+        <span><h2>Sécurité</h2><p>EPI, règles d'atelier, risques sur chantier, gestes et postures.</p></span>
+      </button>
+      <button class="entry" data-theme-f="metiers" aria-pressed="false">
+        <span class="ico"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M3 24 15 12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M13 6h12l-4 8h-8z" fill="currentColor"/></svg></span>
+        <span><h2>Métiers</h2><p>Maçon, peintre, plaquiste, carreleur… découverte et gestes de base.</p></span>
+      </button>
+      <button class="entry" data-theme-f="projets" aria-pressed="false">
+        <span class="ico"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="3" y="4" width="22" height="20" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M3 11h22M10 11v13" stroke="currentColor" stroke-width="2.5"/></svg></span>
+        <span><h2>Projets</h2><p>Réalisations complètes de la conception à l'auto-évaluation.</p></span>
+      </button>
+    </div>
+
+    <div class="filters" role="group" aria-label="Filtrer par niveau">
+      <span class="lbl">Niveau</span>
+      <button class="chip" data-lvl="all" aria-pressed="true">Tous</button>
+      <button class="chip" data-lvl="5e" aria-pressed="false">5e · Parcours Avenir</button>
+      <button class="chip" data-lvl="4e" aria-pressed="false">4e</button>
+      <button class="chip" data-lvl="3e" aria-pressed="false">3e</button>
+      <span class="count" id="count"></span>
+    </div>
+    <p class="note">Maquette : les fiches ci-dessous sont des exemples de ce que le site contiendra. Seule l'activité « Quel EPI pour quelle tâche ? » fonctionne.</p>
+    <div class="grid" id="grid"></div>
+  </main>
+  <footer><div class="wrap">Atelier Habitat · ressources créées par des enseignants de SEGPA habitat · maquette du 10 novembre 2026</div></footer>
+</div>
+
+<!-- ============ ACTIVITE EPI ============ -->
+<div id="activity" hidden>
+  <main class="wrap">
+    <div class="act-head">
+      <button class="back" id="back">← Ressources</button>
+      <div>
+        <div class="meta" style="display:flex;gap:6px;margin-bottom:6px"><span class="tag lvl">4e</span><span class="tag">Sécurité</span><span class="tag">TNI</span></div>
+        <h1>Quel EPI pour quelle tâche ?</h1>
+      </div>
+    </div>
+    <div class="consigne">
+      <span id="consigne-txt">Choisis une tâche. Touche tous les équipements de protection à porter, puis appuie sur « Vérifier ».</span>
+      <button class="speak" id="speak"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 7h3l4-4v12l-4-4H2z" fill="currentColor"/><path d="M12 6a4 4 0 0 1 0 6M14 3.5a7 7 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Écouter</button>
+    </div>
+    <div class="stage">
+      <div class="tasks" id="tasks"></div>
+      <section class="board" aria-live="polite">
+        <h2 id="task-title"></h2>
+        <p class="q" id="task-q"></p>
+        <div class="epis" id="epis"></div>
+        <div class="actions">
+          <button class="check" id="check">Vérifier</button>
+          <button class="ghost" id="reset">Recommencer</button>
+          <span class="score" id="score"></span>
+        </div>
+        <div id="feedback"></div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script>
+const RES=[
+ {t:"Quel EPI pour quelle tâche ?",d:"Associer les équipements de protection à 5 situations d'atelier. Correction immédiate au TNI.",lvl:"4e",th:"securite",f:["TNI interactif","Fiche élève","Corrigé"],live:true},
+ {t:"Le règlement de l'atelier",d:"Découvrir les règles en images, puis signer le contrat d'atelier en début d'année.",lvl:"5e",th:"securite",f:["Diaporama TNI","Fiche élève","Contrat"]},
+ {t:"Repérer les situations dangereuses",d:"Photos de chantier : l'élève entoure les dangers et propose une prévention.",lvl:"4e",th:"securite",f:["TNI interactif","Fiche élève","Corrigé"]},
+ {t:"Le bruit et les décibels",d:"Placer machines et sons du quotidien sur l'échelle des décibels. Seuil de danger à 80 dB.",lvl:"3e",th:"securite",f:["TNI interactif","Évaluation"]},
+ {t:"Lever et porter sans se blesser",d:"Gestes et postures avec un sac de ciment de 25 kg : bon et mauvais geste.",lvl:"3e",th:"securite",f:["Vidéo","Fiche élève","Grille d'observation"]},
+ {t:"Les métiers du gros œuvre et du second œuvre",d:"Classer 12 métiers du bâtiment, découvrir leur outil emblématique.",lvl:"5e",th:"metiers",f:["TNI interactif","Fiche élève"]},
+ {t:"Portrait d'un métier",d:"Enquête guidée pour préparer un exposé ou un stage de découverte.",lvl:"5e",th:"metiers",f:["Fiche élève","Grille d'oral"]},
+ {t:"Peintre : préparer un support",d:"Rebouchage, ponçage, impression : ordre des opérations et outils.",lvl:"4e",th:"metiers",f:["Fiche élève","Fiche prof","Corrigé"]},
+ {t:"Maçon : monter un mur en parpaings",d:"Lire le plan, tracer, poser le premier rang, contrôler niveau et aplomb.",lvl:"3e",th:"metiers",f:["Fiche procédure","Grille d'évaluation"]},
+ {t:"Projet nichoir",d:"Du plan coté à la réalisation : débit, assemblage, finition, auto-évaluation.",lvl:"4e",th:"projets",f:["Dossier élève","Fiche prof","Grille d'évaluation"]},
+ {t:"Projet cloison en plaques de plâtre",d:"Réaliser un module de cloison avec ossature métallique et bandes.",lvl:"3e",th:"projets",f:["Dossier élève","Fiche prof","Grille d'évaluation"]},
+ {t:"Projet maquette de maison",d:"Parcours Avenir : relier chaque partie de la maison au métier qui la construit.",lvl:"5e",th:"projets",f:["Dossier élève","Diaporama TNI"]}
+];
+let fTheme="all",fLvl="all";
+const grid=document.getElementById('grid');
+function render(){
+  const list=RES.filter(r=>(fTheme==="all"||r.th===fTheme)&&(fLvl==="all"||r.lvl===fLvl));
+  const thName={securite:"Sécurité",metiers:"Métiers",projets:"Projets"};
+  grid.innerHTML=list.map(r=>`<article class="card">
+    <div class="meta"><span class="tag lvl">${r.lvl}</span><span class="tag">${thName[r.th]}</span></div>
+    <h3>${r.t}</h3><p>${r.d}</p>
+    <div class="formats">${r.f.map(x=>`<span class="fmt${/TNI/.test(x)?' tni':''}">${x}</span>`).join('')}</div>
+    ${r.live?'<button class="open" data-open="1">Ouvrir l\'activité</button>':'<span class="soon">Exemple de fiche à venir</span>'}
+  </article>`).join('')||'<p>Aucune ressource pour ce filtre.</p>';
+  document.getElementById('count').textContent=list.length+" ressource"+(list.length>1?"s":"");
+  document.querySelectorAll('.entry').forEach(b=>b.setAttribute('aria-pressed',b.dataset.themeF===fTheme));
+  document.querySelectorAll('.chip').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lvl===fLvl));
+}
+document.querySelectorAll('.entry').forEach(b=>b.onclick=()=>{fTheme=fTheme===b.dataset.themeF?"all":b.dataset.themeF;render()});
+document.querySelectorAll('[data-go]').forEach(a=>a.onclick=e=>{fTheme=a.dataset.go;render();grid.scrollIntoView({behavior:'smooth'})});
+document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{fLvl=b.dataset.lvl;render()});
+grid.addEventListener('click',e=>{if(e.target.closest('[data-open]'))location.hash='activite-epi'});
+
+/* ---- Activité EPI ---- */
+const S='stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"';
+const EPI={
+ casque:{n:"Casque",i:`<svg viewBox="0 0 60 60"><path d="M10 40a20 20 0 0 1 40 0z" fill="#e8b81a" stroke="currentColor" stroke-width="3"/><path d="M6 40h48v6H6z" fill="#e8b81a" stroke="currentColor" stroke-width="3"/><path d="M26 21v12M34 21v12" ${S}/></svg>`},
+ lunettes:{n:"Lunettes",i:`<svg viewBox="0 0 60 60"><rect x="6" y="22" width="20" height="16" rx="6" ${S}/><rect x="34" y="22" width="20" height="16" rx="6" ${S}/><path d="M26 28h8" ${S}/></svg>`},
+ gants:{n:"Gants",i:`<svg viewBox="0 0 60 60"><path d="M18 52V28l-6-8M18 30V12a3 3 0 0 1 6 0v14M24 26V8a3 3 0 0 1 6 0v18M30 26V10a3 3 0 0 1 6 0v18M36 28V16a3 3 0 0 1 6 0v22c0 8-6 14-12 14H18" ${S}/></svg>`},
+ antibruit:{n:"Anti-bruit",i:`<svg viewBox="0 0 60 60"><path d="M14 34a16 16 0 0 1 32 0" ${S}/><rect x="8" y="32" width="12" height="18" rx="5" fill="#d9502a" stroke="currentColor" stroke-width="3"/><rect x="40" y="32" width="12" height="18" rx="5" fill="#d9502a" stroke="currentColor" stroke-width="3"/></svg>`},
+ chaussures:{n:"Chaussures",i:`<svg viewBox="0 0 60 60"><path d="M10 14h16v18l20 6c5 2 6 5 6 10H10z" ${S}/><path d="M10 44h42" ${S}/></svg>`},
+ masque:{n:"Masque",i:`<svg viewBox="0 0 60 60"><path d="M12 26c6-8 30-8 36 0l-4 16c-8 6-20 6-28 0z" ${S}/><path d="M4 24l8 2M56 24l-8 2M24 34h12" ${S}/></svg>`},
+ harnais:{n:"Harnais",i:`<svg viewBox="0 0 60 60"><path d="M20 6v24l10 8 10-8V6M20 30h20M24 52l6-14 6 14" ${S}/><circle cx="30" cy="14" r="4" ${S}/></svg>`},
+ visiere:{n:"Visière",i:`<svg viewBox="0 0 60 60"><path d="M12 14h36v6H12z" ${S}/><path d="M14 20h32l-4 28H18z" fill="rgba(120,180,230,.35)" stroke="currentColor" stroke-width="3"/></svg>`}
+};
+const TASKS=[
+ {n:"Poncer un enduit",q:"Ponceuse électrique, beaucoup de poussière fine.",ok:["lunettes","masque","antibruit","chaussures"],why:"La poussière abîme les yeux et les poumons, la machine est bruyante."},
+ {n:"Couper avec la disqueuse",q:"Coupe d'un rail métallique : étincelles, éclats et bruit fort.",ok:["visiere","gants","antibruit","chaussures"],why:"Les éclats et étincelles touchent le visage entier : la visière protège mieux que les lunettes."},
+ {n:"Gâcher du mortier",q:"Mélange ciment, sable et eau dans l'auge.",ok:["gants","lunettes","chaussures"],why:"Le ciment brûle la peau et les yeux."},
+ {n:"Travailler sur un toit",q:"Pose de tuiles sans garde-corps.",ok:["casque","harnais","chaussures","gants"],why:"Sans protection collective, le harnais évite la chute. Le casque protège des chocs."},
+ {n:"Percer dans le béton",q:"Perforateur, poussière et bruit.",ok:["lunettes","masque","antibruit","chaussures"],why:"Le perçage projette des éclats et de la poussière, le perforateur dépasse 85 dB."}
+];
+let cur=0;const sel=TASKS.map(()=>new Set()),done=TASKS.map(()=>false);
+const tasksEl=document.getElementById('tasks'),episEl=document.getElementById('epis'),fb=document.getElementById('feedback');
+function drawTasks(){
+  tasksEl.innerHTML=TASKS.map((t,i)=>`<button class="task" data-i="${i}" aria-current="${i===cur}">${t.n}<span class="st ${done[i]?'ok':''}">${done[i]?'Réussi':'À faire'}</span></button>`).join('');
+  const n=done.filter(Boolean).length;document.getElementById('score').textContent=n+" / "+TASKS.length;
+}
+function drawBoard(checked){
+  const t=TASKS[cur];
+  document.getElementById('task-title').textContent=t.n;
+  document.getElementById('task-q').textContent=t.q;
+  episEl.innerHTML=Object.entries(EPI).map(([k,e])=>{
+    let c="";const on=sel[cur].has(k),need=t.ok.includes(k);
+    if(checked){c=on&&need?"good":on&&!need?"bad":!on&&need?"miss":""}
+    return `<button class="epi ${c}" data-k="${k}" aria-pressed="${on}">${e.i}${e.n}</button>`}).join('');
+}
+tasksEl.onclick=e=>{const b=e.target.closest('.task');if(!b)return;cur=+b.dataset.i;fb.innerHTML="";drawTasks();drawBoard(done[cur])};
+episEl.onclick=e=>{const b=e.target.closest('.epi');if(!b)return;const s=sel[cur];s.has(b.dataset.k)?s.delete(b.dataset.k):s.add(b.dataset.k);fb.innerHTML="";drawBoard(false)};
+document.getElementById('check').onclick=()=>{
+  const t=TASKS[cur],s=sel[cur];
+  const miss=t.ok.filter(k=>!s.has(k)),extra=[...s].filter(k=>!t.ok.includes(k));
+  if(!miss.length&&!extra.length){done[cur]=true;fb.className="feedback ok";fb.innerHTML=`<strong>Bravo, c'est juste !</strong><p>${t.why}</p>`}
+  else{fb.className="feedback ko";fb.innerHTML=`<strong>Pas encore.</strong><p>${miss.length?`Il manque ${miss.length} équipement${miss.length>1?'s':''} (cadre en pointillés vert). `:''}${extra.length?`${extra.length} équipement${extra.length>1?'s ne sont pas':' n\'est pas'} nécessaire${extra.length>1?'s':''} ici (en rouge).`:''}</p>`}
+  drawTasks();drawBoard(true);
+};
+document.getElementById('reset').onclick=()=>{sel[cur].clear();done[cur]=false;fb.innerHTML="";drawTasks();drawBoard(false)};
+document.getElementById('speak').onclick=()=>{
+  try{const u=new SpeechSynthesisUtterance(document.getElementById('consigne-txt').textContent+" "+TASKS[cur].n+". "+TASKS[cur].q);u.lang="fr-FR";speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}
+};
+document.getElementById('back').onclick=()=>{location.href='../index.html#ressources'};
+
+function route(){
+  const act=true;
+  document.getElementById('home').hidden=act;document.getElementById('activity').hidden=!act;
+  if(act){drawTasks();drawBoard(done[cur])}
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',route);
+render();route();
+</script>
+
+</body>
+</html>

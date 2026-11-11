@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Qui construit la maison</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout : diapositive 16:9 de 1280x720 mise à l'échelle de l'écran (TNI), barre de commande en bas, panneau notes prof repliable */
+:root{
+  --bg:#e9edf3; --slide:#ffffff; --ink:#14223a; --muted:#56637a; --line:#d6dce6;
+  --plan:#123a6b; --plan-ink:#eaf1fb; --accent:#e8711a; --accent-ink:#ffffff;
+  --gros:#8a5a2b; --gros-bg:#f5ebe0; --second:#1d6f8f; --second-bg:#e1f0f6;
+  --ok:#1f8a4c; --ok-bg:#e3f4ea; --ko:#b8322a; --ko-bg:#fbe7e5; --chip:#e7ecf3;
+  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Atkinson Hyperlegible",Verdana,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0b111c; --slide:#162133; --ink:#e7edf6; --muted:#9aa8bd; --line:#2a3850;
+  --plan:#0b2747; --plan-ink:#dce8f8; --accent:#f08a3a; --accent-ink:#1a0f05;
+  --gros:#e0a86c; --gros-bg:#33251a; --second:#6cc3e3; --second-bg:#132f3b;
+  --ok:#5fd193; --ok-bg:#12321f; --ko:#ff8a80; --ko-bg:#3a1714; --chip:#22314a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b111c; --slide:#162133; --ink:#e7edf6; --muted:#9aa8bd; --line:#2a3850;
+  --plan:#0b2747; --plan-ink:#dce8f8; --accent:#f08a3a; --accent-ink:#1a0f05;
+  --gros:#e0a86c; --gros-bg:#33251a; --second:#6cc3e3; --second-bg:#132f3b;
+  --ok:#5fd193; --ok-bg:#12321f; --ko:#ff8a80; --ko-bg:#3a1714; --chip:#22314a; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);margin:0;display:flex;flex-direction:column;overflow:hidden}
+button{font:inherit;cursor:pointer;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.02;text-wrap:balance}
+
+.viewport{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:12px max(12px,env(safe-area-inset-right,0px)) 8px max(12px,env(safe-area-inset-left,0px));position:relative}
+.stage{width:1280px;height:720px;flex:none;transform-origin:center center;position:relative}
+.slide{position:absolute;inset:0;background:var(--slide);border-radius:14px;box-shadow:0 10px 40px rgba(10,30,60,.18);padding:48px 64px;display:flex;flex-direction:column;overflow:hidden}
+.slide[hidden]{display:none!important}
+.eyebrow{font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:10px}
+.slide h2{font-size:64px;text-transform:uppercase}
+.lead{font-size:30px;line-height:1.4;margin:18px 0 0;max-width:46ch}
+.foot{position:absolute;left:64px;right:64px;bottom:22px;display:flex;justify-content:space-between;font-size:16px;color:var(--muted)}
+
+/* Couverture */
+.cover{background:var(--plan);color:var(--plan-ink);background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);background-size:32px 32px;justify-content:center}
+.cover h1{font-size:118px;text-transform:uppercase;font-weight:800}
+.cover h1 span{color:var(--accent)}
+.cover .foot{color:var(--plan-ink);opacity:.8}
+.goals{margin-top:34px;display:flex;flex-direction:column;gap:10px;font-size:28px}
+.goals div{display:flex;gap:14px;align-items:center}
+.goals b{background:var(--accent);color:var(--accent-ink);font-family:var(--f-display);font-size:24px;padding:2px 12px;border-radius:4px}
+
+/* Accroche */
+.big-q{font-family:var(--f-display);font-size:96px;font-weight:800;text-transform:uppercase;line-height:1;margin-top:30px}
+.reveal-btn{align-self:flex-start;margin-top:36px;background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:16px 30px;font-size:30px;font-weight:700}
+.answer{margin-top:26px;font-size:34px;line-height:1.4;max-width:42ch}
+.answer strong{font-family:var(--f-display);font-size:56px;color:var(--accent);display:block}
+
+/* Maison */
+.house-wrap{display:grid;grid-template-columns:640px 1fr;gap:36px;margin-top:14px;flex:1;min-height:0}
+.house svg{width:640px;height:auto;display:block}
+.hot{cursor:pointer}
+.hot circle{fill:var(--accent);stroke:var(--slide);stroke-width:4}
+.hot text{fill:var(--accent-ink);font:700 22px var(--f-display);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.hot.found circle{fill:var(--ok)}
+.hot:focus{outline:none}
+.hot:focus-visible circle{stroke:var(--ink)}
+.info{display:flex;flex-direction:column;gap:14px;align-self:center}
+.info .card{background:var(--chip);border-radius:12px;padding:24px 26px;min-height:220px}
+.info .card h3{font-size:46px;text-transform:uppercase}
+.info .card p{font-size:26px;margin:10px 0 0;line-height:1.4}
+.info .card .metier{display:inline-block;margin-top:14px;font-family:var(--f-display);font-size:34px;font-weight:700;color:var(--accent-ink);background:var(--accent);padding:2px 14px;border-radius:6px}
+.counter{font-family:var(--f-display);font-size:30px;font-weight:700;color:var(--muted)}
+
+/* Définitions */
+.defs{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:28px;flex:1}
+.def{border-radius:14px;padding:30px 32px;display:flex;flex-direction:column;gap:14px}
+.def.g{background:var(--gros-bg);border:3px solid var(--gros)}
+.def.s{background:var(--second-bg);border:3px solid var(--second)}
+.def h3{font-size:58px;text-transform:uppercase}
+.def.g h3{color:var(--gros)} .def.s h3{color:var(--second)}
+.def p{font-size:28px;line-height:1.4;margin:0}
+.def ul{margin:0;padding-left:28px;font-size:26px;line-height:1.5}
+
+/* Tri */
+.sort{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:16px;flex:1;min-height:0}
+.col{border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;border:3px dashed;text-align:left;align-items:stretch;justify-content:flex-start}
+.col.g{border-color:var(--gros);background:var(--gros-bg)}
+.col.s{border-color:var(--second);background:var(--second-bg)}
+.col h3{font-size:40px;text-transform:uppercase}
+.col.g h3{color:var(--gros)} .col.s h3{color:var(--second)}
+.col .placed{display:flex;flex-wrap:wrap;gap:8px}
+.pool{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;min-height:62px}
+.tile{border:3px solid var(--line);background:var(--slide);border-radius:10px;padding:10px 20px;font-size:28px;font-weight:700}
+.tile[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent)}
+.tile.ok{border-color:var(--ok);background:var(--ok-bg);color:var(--ok);cursor:default;font-size:24px;padding:6px 14px}
+.tile.shake{border-color:var(--ko);background:var(--ko-bg);color:var(--ko)}
+@media (prefers-reduced-motion:no-preference){.tile.shake{animation:shake .4s}}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.hint{font-size:24px;color:var(--muted);margin-top:8px}
+
+/* Qui suis-je */
+.who{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:22px;flex:1}
+.flip{border:3px solid var(--line);border-radius:12px;background:var(--chip);padding:18px;text-align:left;display:flex;flex-direction:column;justify-content:space-between;gap:10px}
+.flip .clue{font-size:23px;line-height:1.35}
+.flip .ans{font-family:var(--f-display);font-size:38px;font-weight:800;text-transform:uppercase;color:var(--muted)}
+.flip[aria-pressed="true"]{border-color:var(--accent);background:var(--slide)}
+.flip[aria-pressed="true"] .ans{color:var(--accent)}
+
+/* Ordre */
+.order{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
+.step{position:relative;border:3px solid var(--line);border-radius:12px;background:var(--slide);padding:24px 22px 24px 92px;text-align:left;font-size:28px;font-weight:700;min-height:120px;display:flex;align-items:center}
+.step .n{position:absolute;left:20px;top:50%;transform:translateY(-50%);width:56px;height:56px;border-radius:50%;border:3px dashed var(--line);display:grid;place-items:center;font-family:var(--f-display);font-size:34px}
+.step.ok{border-color:var(--ok);background:var(--ok-bg)}
+.step.ok .n{border:0;background:var(--ok);color:var(--slide)}
+.step.shake{border-color:var(--ko);background:var(--ko-bg)}
+@media (prefers-reduced-motion:no-preference){.step.shake{animation:shake .4s}}
+.done-msg{margin-top:20px;font-size:30px;font-weight:700;color:var(--ok)}
+
+/* Trace écrite */
+.trace{margin-top:20px;border:3px solid var(--plan);border-radius:12px;padding:26px 32px;font-size:28px;line-height:1.55;background:repeating-linear-gradient(var(--slide) 0 45px,var(--line) 45px 46px)}
+.trace p{margin:0 0 10px}
+.trace .g{color:var(--gros);font-weight:700} .trace .s{color:var(--second);font-weight:700}
+
+/* Avenir */
+.avenir{display:grid;grid-template-columns:1.1fr 1fr;gap:34px;margin-top:20px;flex:1}
+.me{border:3px solid var(--accent);border-radius:14px;padding:26px 30px;font-size:30px;line-height:2}
+.me .blank{display:inline-block;min-width:260px;border-bottom:3px dotted var(--muted)}
+.caps h3{font-size:34px;text-transform:uppercase;margin-bottom:12px}
+.caps ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.caps li{background:var(--chip);border-radius:6px;padding:8px 14px;font-size:22px;font-weight:700}
+.caps p{font-size:22px;color:var(--muted);margin:14px 0 0}
+
+/* Barre de commande */
+.bar{flex:none;display:flex;align-items:center;gap:10px;padding:8px max(12px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));flex-wrap:wrap;justify-content:center}
+.bar button{background:var(--slide);border:1px solid var(--line);border-radius:8px;padding:10px 16px;font-weight:700;font-size:16px;display:inline-flex;gap:8px;align-items:center}
+.bar .nav{background:var(--plan);color:var(--plan-ink);border-color:var(--plan);font-size:20px;padding:10px 22px}
+.bar .pos{font-family:var(--f-display);font-size:22px;font-weight:700;min-width:70px;text-align:center;font-variant-numeric:tabular-nums}
+.bar button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.notes{flex:none;background:var(--slide);border-top:3px solid var(--accent);padding:14px max(16px,env(safe-area-inset-right,0px)) 14px max(16px,env(safe-area-inset-left,0px));font-size:16px;line-height:1.5;max-height:32vh;overflow:auto}
+.notes h4{margin:0 0 4px;font-family:var(--f-display);font-size:20px;text-transform:uppercase;color:var(--accent)}
+.notes p{margin:0;max-width:110ch}
+</style>
+
+<div class="viewport" id="vp">
+<div class="stage" id="stage">
+
+<!-- 1 Couverture -->
+<section class="slide cover" data-title="Couverture"
+ data-say="Qui construit la maison ? Aujourd'hui, je découvre les métiers qui construisent une maison."
+ data-notes="Durée totale : 1 h. Parcours Avenir, 5e SEGPA. Lire les objectifs avec les élèves. Matériel : TNI, fiche élève (trace écrite) ou cahier.">
+  <div class="eyebrow" style="color:var(--accent)">5e SEGPA · Parcours Avenir · Champ Habitat</div>
+  <h1>Qui construit<br><span>la maison ?</span></h1>
+  <div class="goals">
+    <div><b>1</b>Je découvre les métiers qui construisent une maison.</div>
+    <div><b>2</b>Je sais trier : gros œuvre ou second œuvre.</div>
+    <div><b>3</b>Je réfléchis au métier qui m'intéresse.</div>
+  </div>
+  <div class="foot"><span>L'habitat en SEGPA</span><span>Séance 1 · Les métiers du bâtiment</span></div>
+</section>
+
+<!-- 2 Accroche -->
+<section class="slide" data-title="Accroche" hidden
+ data-say="Pour construire une maison, combien de métiers différents faut-il ? Proposez un nombre."
+ data-notes="5 min. Recueillir les propositions à l'oral et les noter au tableau. Ne pas donner la réponse tout de suite. Puis cliquer sur « Voir la réponse ».">
+  <div class="eyebrow">Je réfléchis</div>
+  <div class="big-q">Pour construire une maison,<br>combien de métiers<br>faut-il ?</div>
+  <button class="reveal-btn" data-reveal="ans2">Voir la réponse</button>
+  <div class="answer" id="ans2" hidden><strong>Au moins 10 métiers !</strong>Ils travaillent les uns après les autres, chacun avec ses outils et ses gestes.</div>
+</section>
+
+<!-- 3 Maison -->
+<section class="slide" data-title="La maison" hidden
+ data-say="Touche les numéros sur la maison. Découvre chaque partie et le métier qui la construit."
+ data-notes="10 min. Faire venir un élève au TNI par numéro. Lui demander d'abord : « À ton avis, qui fait cette partie ? » avant de toucher. Les numéros deviennent verts une fois découverts.">
+  <div class="eyebrow">Je découvre</div>
+  <h2>Une maison, 10 métiers</h2>
+  <div class="house-wrap">
+    <div class="house">
+      <svg viewBox="0 0 560 420" role="img" aria-label="Maison en coupe avec 10 numéros">
+        <rect x="0" y="352" width="560" height="68" fill="var(--gros-bg)"/>
+        <line x1="0" y1="352" x2="560" y2="352" stroke="var(--gros)" stroke-width="3"/>
+        <rect x="88" y="352" width="384" height="40" fill="#9aa3ad" stroke="var(--ink)" stroke-width="2"/>
+        <path d="M88 392l20-40M128 392l20-40M168 392l20-40M208 392l20-40M248 392l20-40M288 392l20-40M328 392l20-40M368 392l20-40M408 392l20-40M448 392l20-40" stroke="var(--ink)" stroke-opacity=".35" stroke-width="2"/>
+        <rect x="96" y="196" width="22" height="156" fill="#c7cdd4" stroke="var(--ink)" stroke-width="2"/>
+        <rect x="442" y="196" width="22" height="156" fill="#c7cdd4" stroke="var(--ink)" stroke-width="2"/>
+        <path d="M96 222h22M96 248h22M96 274h22M96 300h22M96 326h22M442 222h22M442 248h22M442 274h22M442 300h22M442 326h22" stroke="var(--ink)" stroke-opacity=".4" stroke-width="2"/>
+        <rect x="96" y="232" width="22" height="64" fill="#9fd0ee" stroke="var(--ink)" stroke-width="3"/>
+        <path d="M118 344h324" stroke="var(--ink)" stroke-width="3"/>
+        <path d="M290 344h152" stroke="#2f8f9d" stroke-width="7"/>
+        <path d="M296 344v-4M316 344v-4M336 344v-4M356 344v-4M376 344v-4M396 344v-4M416 344v-4M436 344v-4" stroke="var(--slide)" stroke-width="2"/>
+        <rect x="430" y="208" width="12" height="130" fill="#f2b84b"/>
+        <rect x="272" y="196" width="12" height="148" fill="#ece6da" stroke="var(--ink)" stroke-width="2"/>
+        <rect x="292" y="300" width="14" height="18" rx="2" fill="var(--slide)" stroke="var(--ink)" stroke-width="2"/>
+        <path d="M299 300V204" stroke="#d9502a" stroke-width="3" stroke-dasharray="6 4"/>
+        <path d="M150 344v-34h50" stroke="#3e7fc1" stroke-width="5" fill="none"/>
+        <path d="M196 300h40l-6 16h-28z" fill="var(--slide)" stroke="var(--ink)" stroke-width="2"/>
+        <path d="M70 200 280 62 490 200" fill="none" stroke="#b5442b" stroke-width="14" stroke-linejoin="round"/>
+        <path d="M96 196 280 76 464 196z" fill="none" stroke="#a8743c" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M280 76v120M188 136l92 60M372 136l-92 60" stroke="#a8743c" stroke-width="4"/>
+        <g class="hot" tabindex="0" role="button" data-h="0"><circle cx="280" cy="374" r="20"/><text x="280" y="374">1</text></g>
+        <g class="hot" tabindex="0" role="button" data-h="1"><circle cx="453" cy="250" r="20"/><text x="453" y="250">2</text></g>
+        <g class="hot" tabindex="0" role="button" data-h="2"><circle cx="230" cy="150" r="20"/><text x="230" y="150">3</text></g>
+        <g class="hot" tabindex="0" role="button" data-h="3"><circle cx="400" cy="112" r="20"/><text x="400" y="112">4</text></g>
+        <g class="hot" tabindex="0" role="button" data-h="4"><circle cx="72" cy="264" r="20"/><text x="72" y="264">5</text></g>
+        <g class="hot" tabindex="0" role="button" data-h="5"><circle cx="168" cy="290" r="20"/><text x="168" y="290">6</text></g>
+        <g class="hot" tabindex="0" role="button" data-h="6"><circle cx="330" cy="290" r="20"/><text x="330" y="290">7</text></g>
+        <g class="hot" tabindex="0" role="button" data-h="7"><circle cx="278" cy="226" r="20"/><text x="278" y="226">8</text></g>
+        <g class="hot" tabindex="0" role="button" data-h="8"><circle cx="370" cy="318" r="20"/><text x="370" y="318">9</text></g>
+        <g class="hot" tabindex="0" role="button" data-h="9"><circle cx="410" cy="232" r="20"/><text x="410" y="232">10</text></g>
+      </svg>
+    </div>
+    <div class="info">
+      <div class="card" id="hinfo"><h3>Touche un numéro</h3><p>Chaque numéro montre une partie de la maison. Qui la construit ?</p></div>
+      <div class="counter" id="hcount">0 / 10 découverts</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 Définitions -->
+<section class="slide" data-title="Gros œuvre / second œuvre" hidden
+ data-say="Le gros œuvre, c'est ce qui fait tenir la maison debout et la met à l'abri. Le second œuvre, c'est tout ce qui la rend habitable et confortable."
+ data-notes="5 min. Faire reformuler par les élèves. Image qui aide : le gros œuvre, c'est « le squelette et la carapace » ; le second œuvre, « les organes et la peau ».">
+  <div class="eyebrow">Je retiens</div>
+  <h2>Deux grandes familles</h2>
+  <div class="defs">
+    <div class="def g"><h3>Gros œuvre</h3><p>Ce qui fait <b>tenir la maison debout</b> et la met <b>hors d'eau</b>.</p><ul><li>fondations</li><li>murs</li><li>charpente et toiture</li></ul></div>
+    <div class="def s"><h3>Second œuvre</h3><p>Ce qui rend la maison <b>habitable</b> et <b>confortable</b>.</p><ul><li>fenêtres et portes</li><li>eau, électricité, cloisons</li><li>sols et murs finis</li></ul></div>
+  </div>
+</section>
+
+<!-- 5 Tri -->
+<section class="slide" data-title="Je trie les métiers" hidden
+ data-say="Touche un métier, puis touche la bonne famille : gros œuvre ou second œuvre."
+ data-notes="10 min. Un élève par métier au TNI. Si l'erreur arrive, le métier revient dans la liste : faire justifier par la classe avant de réessayer.">
+  <div class="eyebrow">Je m'entraîne</div>
+  <h2>Je trie les métiers</h2>
+  <div class="pool" id="pool"></div>
+  <div class="hint" id="sorthint">Touche un métier, puis touche la bonne famille.</div>
+  <div class="sort">
+    <button class="col g" data-col="g"><h3>Gros œuvre</h3><span class="placed" id="pg"></span></button>
+    <button class="col s" data-col="s"><h3>Second œuvre</h3><span class="placed" id="ps"></span></button>
+  </div>
+</section>
+
+<!-- 6 Qui suis-je -->
+<section class="slide" data-title="Qui suis-je ?" hidden
+ data-say="Qui suis-je ? Lis l'indice, trouve le métier, puis touche la carte pour vérifier."
+ data-notes="10 min. Lire l'indice à voix haute, laisser 10 secondes de réflexion, interroger, puis retourner la carte. Variante : par équipes, 1 point par bonne réponse.">
+  <div class="eyebrow">Je joue</div>
+  <h2>Qui suis-je ?</h2>
+  <div class="who" id="who"></div>
+</section>
+
+<!-- 7 Ordre -->
+<section class="slide" data-title="L'ordre du chantier" hidden
+ data-say="Dans quel ordre on construit la maison ? Touche les étapes de la première à la dernière."
+ data-notes="5 min. Faire verbaliser : « On ne peut pas poser la toiture avant les murs, pourquoi ? ». Notion clé : les métiers dépendent les uns des autres.">
+  <div class="eyebrow">Je réfléchis</div>
+  <h2>L'ordre du chantier</h2>
+  <p class="lead" style="font-size:26px;margin-top:8px">Touche les étapes dans l'ordre, de la première à la dernière.</p>
+  <div class="order" id="order"></div>
+  <div class="done-msg" id="orderdone" hidden>Bravo ! Chaque métier a besoin du travail du métier d'avant.</div>
+</section>
+
+<!-- 8 Trace écrite -->
+<section class="slide" data-title="Trace écrite" hidden
+ data-say="Je recopie ou je colle la trace écrite dans mon cahier."
+ data-notes="10 min. À recopier ou à coller (version imprimable dans la fiche élève). Pour les élèves en difficulté d'écriture : texte à trous.">
+  <div class="eyebrow">J'écris</div>
+  <h2>Ce que j'ai appris</h2>
+  <div class="trace">
+    <p>Pour construire une maison, de nombreux métiers travaillent les uns après les autres.</p>
+    <p>Le <span class="g">gros œuvre</span> fait tenir la maison debout : terrassier, maçon, charpentier, couvreur.</p>
+    <p>Le <span class="s">second œuvre</span> rend la maison habitable : menuisier, plombier, électricien, plaquiste, carreleur, peintre.</p>
+  </div>
+</section>
+
+<!-- 9 Avenir -->
+<section class="slide" data-title="Et moi ?" hidden
+ data-say="Et moi ? Quel métier du bâtiment m'intéresse, et pourquoi ?"
+ data-notes="5 min. Réponse individuelle sur la fiche, puis tour de table rapide. À conserver dans le dossier Parcours Avenir (Folios ou classeur). Liste de CAP à vérifier et adapter à l'offre de formation locale.">
+  <div class="eyebrow">Parcours Avenir</div>
+  <h2>Et moi ?</h2>
+  <div class="avenir">
+    <div class="me">Le métier qui m'intéresse :<br><span class="blank"></span><br>parce que <span class="blank" style="min-width:420px"></span><br><span class="blank" style="min-width:560px"></span></div>
+    <div class="caps">
+      <h3>Après la 3e : quelques CAP</h3>
+      <ul><li>Maçon</li><li>Charpentier bois</li><li>Couvreur</li><li>Menuisier installateur</li><li>Monteur en installations sanitaires</li><li>Électricien</li><li>Plâtrier-plaquiste</li><li>Carreleur mosaïste</li><li>Peintre applicateur de revêtements</li></ul>
+      <p>En lycée professionnel ou en apprentissage (CFA).</p>
+    </div>
+  </div>
+</section>
+
+</div>
+</div>
+
+<div class="notes" id="notes" hidden><h4 id="ntitle"></h4><p id="ntext"></p></div>
+<div class="bar">
+  <button class="nav" id="prev" aria-label="Diapositive précédente">←</button>
+  <span class="pos" id="pos">1 / 9</span>
+  <button class="nav" id="next" aria-label="Diapositive suivante">→</button>
+  <button id="say"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 7h3l4-4v12l-4-4H2z" fill="currentColor"/><path d="M12 6a4 4 0 0 1 0 6M14 3.5a7 7 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Lire la consigne</button>
+  <button id="ntoggle" aria-pressed="false">Notes prof</button>
+  <button id="fs">Plein écran</button>
+  <button id="restart">Recommencer les activités</button>
+</div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];let cur=0;
+const stage=document.getElementById('stage'),vp=document.getElementById('vp');
+function fit(){const r=vp.getBoundingClientRect();const s=Math.min((r.width-24)/1280,(r.height-20)/720);stage.style.transform=`scale(${Math.max(s,.1)})`}
+new ResizeObserver(fit).observe(vp);
+function show(i){
+  cur=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach((s,k)=>s.hidden=k!==cur);
+  document.getElementById('pos').textContent=(cur+1)+" / "+slides.length;
+  document.getElementById('ntitle').textContent=(cur+1)+". "+slides[cur].dataset.title;
+  document.getElementById('ntext').textContent=slides[cur].dataset.notes;
+  try{speechSynthesis.cancel()}catch(e){}
+  if(location.hash!=='#d'+(cur+1))history.replaceState(null,'','#d'+(cur+1));
+  requestAnimationFrame(fit);
+}
+document.getElementById('prev').onclick=()=>show(cur-1);
+document.getElementById('next').onclick=()=>show(cur+1);
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='PageDown')show(cur+1);
+  if(e.key==='ArrowLeft'||e.key==='PageUp')show(cur-1);
+  if(e.key==='n'||e.key==='N')toggleNotes();
+});
+function toggleNotes(){const n=document.getElementById('notes');n.hidden=!n.hidden;document.getElementById('ntoggle').setAttribute('aria-pressed',!n.hidden);requestAnimationFrame(fit)}
+document.getElementById('ntoggle').onclick=toggleNotes;
+document.getElementById('fs').onclick=()=>{try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{})}catch(e){}};
+document.getElementById('say').onclick=()=>{try{const u=new SpeechSynthesisUtterance(slides[cur].dataset.say);u.lang='fr-FR';u.rate=.95;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}};
+
+/* Révéler */
+document.querySelectorAll('[data-reveal]').forEach(b=>b.onclick=()=>{document.getElementById(b.dataset.reveal).hidden=false;b.hidden=true});
+
+/* Maison */
+const H=[
+ ["Les fondations","Elles portent toute la maison, sous la terre.","Maçon"],
+ ["Les murs","Ils sont montés en parpaings ou en briques.","Maçon"],
+ ["La charpente","La structure en bois qui porte le toit.","Charpentier"],
+ ["La toiture","Les tuiles protègent la maison de la pluie.","Couvreur"],
+ ["La fenêtre","Elle laisse entrer la lumière et ferme la maison.","Menuisier"],
+ ["L'eau","Les tuyaux amènent l'eau à l'évier.","Plombier"],
+ ["L'électricité","Les câbles et les prises apportent le courant.","Électricien"],
+ ["La cloison","Un mur fin en plaques de plâtre sépare les pièces.","Plaquiste"],
+ ["Le sol","Les carreaux sont collés au sol.","Carreleur"],
+ ["La peinture","Elle protège et décore les murs.","Peintre"]
+];
+const found=new Set();
+function hot(i){const [t,d,m]=H[i];found.add(i);
+  document.getElementById('hinfo').innerHTML=`<h3>${i+1}. ${t}</h3><p>${d}</p><span class="metier">${m}</span>`;
+  document.querySelector(`.hot[data-h="${i}"]`).classList.add('found');
+  document.getElementById('hcount').textContent=found.size+" / 10 découverts"}
+document.querySelectorAll('.hot').forEach(g=>{g.onclick=()=>hot(+g.dataset.h);g.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();hot(+g.dataset.h)}}});
+
+/* Tri */
+const M=[["Maçon","g"],["Plombier","s"],["Charpentier","g"],["Peintre","s"],["Électricien","s"],["Couvreur","g"],["Carreleur","s"],["Terrassier","g"],["Plaquiste","s"],["Menuisier","s"]];
+let pick=null;
+function drawPool(){
+  const pool=document.getElementById('pool');
+  pool.innerHTML=M.map((m,i)=>m.done?'':`<button class="tile" data-m="${i}" aria-pressed="${pick===i}">${m[0]}</button>`).join('');
+  ['g','s'].forEach(c=>document.getElementById('p'+c).innerHTML=M.filter(m=>m.done&&m[1]===c).map(m=>`<span class="tile ok">${m[0]}</span>`).join(''));
+  const left=M.filter(m=>!m.done).length;
+  document.getElementById('sorthint').textContent=left?"Touche un métier, puis touche la bonne famille.":"Bravo, les 10 métiers sont bien triés !";
+}
+document.getElementById('pool').onclick=e=>{const b=e.target.closest('.tile');if(!b)return;pick=+b.dataset.m;drawPool()};
+document.querySelectorAll('.col').forEach(c=>c.onclick=()=>{
+  if(pick===null)return;const m=M[pick];
+  if(m[1]===c.dataset.col){m.done=true;pick=null;drawPool()}
+  else{const b=document.querySelector(`.tile[data-m="${pick}"]`);b.classList.add('shake');setTimeout(()=>{pick=null;drawPool()},500)}
+});
+
+/* Qui suis-je */
+const W=[["J'utilise une truelle, du mortier et des parpaings.","Maçon"],["Je pose des tuiles ou des ardoises sur le toit.","Couvreur"],["Je travaille le bois pour faire la structure du toit.","Charpentier"],["J'installe les tuyaux, le lavabo et le chauffe-eau.","Plombier"],["Je pose les prises, les interrupteurs et le tableau.","Électricien"],["Je monte des cloisons avec des rails et des plaques.","Plaquiste"],["Je colle des carreaux avec des croisillons.","Carreleur"],["J'utilise un rouleau, un pinceau et de l'enduit.","Peintre"]];
+function drawWho(){document.getElementById('who').innerHTML=W.map((w,i)=>`<button class="flip" data-w="${i}" aria-pressed="false"><span class="clue">${w[0]}</span><span class="ans">?</span></button>`).join('')}
+document.getElementById('who').onclick=e=>{const b=e.target.closest('.flip');if(!b)return;const on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);b.querySelector('.ans').textContent=on?W[+b.dataset.w][1]:'?'};
+
+/* Ordre */
+const O=["Les fondations","Les murs","La charpente et la toiture","Les fenêtres et les portes","L'eau, l'électricité et les cloisons","Le carrelage et la peinture"];
+const OS=[3,0,5,1,4,2];let next=0;
+function drawOrder(){document.getElementById('order').innerHTML=OS.map(i=>`<button class="step${i<next?' ok':''}" data-o="${i}"><span class="n">${i<next?i+1:''}</span>${O[i]}</button>`).join('');document.getElementById('orderdone').hidden=next<O.length}
+document.getElementById('order').onclick=e=>{const b=e.target.closest('.step');if(!b)return;const i=+b.dataset.o;if(i<next)return;
+  if(i===next){next++;drawOrder()}else{b.classList.add('shake');setTimeout(()=>b.classList.remove('shake'),450)}};
+
+function resetAll(){
+  found.clear();document.querySelectorAll('.hot').forEach(g=>g.classList.remove('found'));
+  document.getElementById('hinfo').innerHTML='<h3>Touche un numéro</h3><p>Chaque numéro montre une partie de la maison. Qui la construit ?</p>';
+  document.getElementById('hcount').textContent="0 / 10 découverts";
+  M.forEach(m=>m.done=false);pick=null;drawPool();drawWho();next=0;drawOrder();
+  document.getElementById('ans2').hidden=true;document.querySelector('[data-reveal="ans2"]').hidden=false;
+}
+document.getElementById('restart').onclick=resetAll;
+resetAll();
+const h=parseInt((location.hash.match(/^#d(\d+)$/)||[])[1]);show(h?h-1:0);fit();
+</script>
+
+</body>
+</html>

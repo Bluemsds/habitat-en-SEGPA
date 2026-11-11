@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>L'habitat en SEGPA</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Fredoka:wght@600&family=Caveat:wght@600&display=swap">
+<style>
+/* Identité « Le Web du Coin » (nuit, mauve, DM Sans / Fredoka / Caveat) appliquée à un site de ressources : un parpaing qui devient pixel.
+   Mise en page : une colonne au téléphone, 2 à 3 colonnes à partir de 900px. Look sombre assumé (un seul thème), comme le site d'origine. */
+:root{
+  --nuit:#0B0A12; --nuit-2:#15121F; --nuit-3:#211C31; --trait:#2E2842;
+  --mauve:#C06BE0; --mauve-f:#8E44C9; --lilas:#E3C8F2; --craie:#F4F2F8; --gris:#ABA6BC; --pave:#8A8290;
+  --ok:#3DDC84; --orange:#F2A65A;
+  --f-txt:"DM Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-marque:"Fredoka","DM Sans",system-ui,sans-serif;
+  --f-main:"Caveat","Comic Sans MS",cursive;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--nuit);color:var(--craie);font:300 17px/1.6 var(--f-txt)}
+a{color:inherit;text-underline-offset:3px;text-decoration-color:var(--mauve)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--mauve);outline-offset:3px;border-radius:4px}
+::selection{background:var(--mauve);color:#fff}
+h1,h2,h3{font-weight:500;line-height:1.02;letter-spacing:-.03em;text-wrap:balance;margin:0}
+.wrap{max-width:1160px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+.kicker{font-weight:500;text-transform:uppercase;letter-spacing:.2em;font-size:.72rem;color:var(--mauve);display:flex;align-items:center;gap:10px}
+.kicker::before{content:"";width:8px;height:8px;background:var(--mauve);box-shadow:10px 0 0 var(--mauve-f);margin-right:10px;flex:none}
+.hand{font-family:var(--f-main);font-weight:600;color:var(--lilas);letter-spacing:0}
+.mute{color:var(--gris)}
+section{padding-block:64px}
+.sec-head{display:grid;gap:12px;margin-bottom:30px;max-width:720px}
+.sec-head h2{font-size:clamp(2rem,6vw,3.4rem)}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 22px;border-radius:14px;font-weight:500;text-decoration:none;border:1px solid var(--trait)}
+.btn-main{background:var(--mauve);color:#140A1C;border-color:var(--mauve);box-shadow:0 10px 30px -10px rgba(192,107,224,.7)}
+.btn-ghost{background:var(--nuit-2)}
+
+/* Barre */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(11,10,18,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--trait)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:21;background:var(--nuit)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:64px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--f-marque);font-size:1.3rem;text-decoration:none;letter-spacing:-.01em}
+.logo em{font-style:normal;color:var(--mauve)}
+.nav ul{display:flex;gap:4px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+.nav ul a{display:block;padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:400;color:var(--gris)}
+.nav ul a:hover{color:var(--craie);background:var(--nuit-2)}
+
+/* Hero */
+.hero{padding-block:56px 40px;display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(2.6rem,7vw,4.8rem);margin-top:16px}
+.hero h1 .px{background:conic-gradient(var(--mauve) 25%,var(--lilas) 0 50%,var(--mauve) 0 75%,var(--mauve-f) 0) 0 0/.16em .16em;-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{font-size:1.15rem;color:#DAD6E4;max-width:52ch;margin:18px 0 24px}
+.hero .hand{font-size:1.7rem;display:block;margin-top:14px;transform:rotate(-2deg)}
+.screen{margin:0;position:relative;background:var(--nuit-2);border:1px solid var(--trait);border-radius:20px;overflow:hidden;box-shadow:0 30px 80px -30px rgba(192,107,224,.45)}
+.scr-bar{display:flex;align-items:center;gap:6px;padding:10px 14px;border-bottom:1px solid var(--trait);background:var(--nuit-3);font-size:.78rem;color:var(--gris)}
+.scr-bar span{width:9px;height:9px;border-radius:50%;background:var(--trait)}
+.scr-bar b{font-weight:500;margin-left:8px}
+.scr-body{background:#F4F2F8;color:#1B1726;padding:20px;display:grid;gap:14px}
+.scr-q{font-family:var(--f-marque);font-size:1.35rem;line-height:1.15}
+.scr-q small{display:block;font-family:var(--f-txt);font-size:.82rem;color:#6B6480;margin-bottom:4px}
+.scr-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.t{border:2px solid #DCD7E6;border-radius:10px;padding:12px 6px;text-align:center;font-weight:500;font-size:.92rem;background:#fff}
+.t.ok{border-color:#8E44C9;background:#F1E4F8;color:#5B2386}
+.scr-fb{background:#E3F6EA;color:#17713E;border-radius:10px;padding:10px 12px;font-size:.9rem;font-weight:500}
+.screen figcaption{position:absolute;right:16px;bottom:-4px;font-size:1.35rem;transform:rotate(-3deg);text-shadow:0 2px 8px var(--nuit)}
+.screen{margin-bottom:18px;overflow:visible}
+.screen .scr-bar{border-radius:20px 20px 0 0}
+.screen .scr-body{border-radius:0 0 20px 20px}
+.screen figcaption{bottom:-44px}
+/* Etapes */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.step{background:var(--nuit-2);border:1px solid var(--trait);border-radius:18px;padding:22px;display:grid;gap:10px;align-content:start}
+.step .n{font-family:var(--f-marque);font-size:2.2rem;color:var(--mauve);line-height:1}
+.step h3{font-size:1.35rem}
+.step p{margin:0;color:var(--gris)}
+
+/* Ressources */
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:18px}
+.filters .lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.16em;color:var(--gris);margin-right:4px}
+.chip{border:1px solid var(--trait);background:var(--nuit-2);border-radius:99px;padding:7px 14px;font-weight:500;font-size:.92rem}
+.chip[aria-pressed="true"]{background:var(--mauve);color:#140A1C;border-color:var(--mauve)}
+.sep{width:1px;height:24px;background:var(--trait);margin:0 6px}
+.count{margin-left:auto;color:var(--gris);font-size:.92rem}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:var(--nuit-2);border:1px solid var(--trait);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card.live{border-color:rgba(192,107,224,.55)}
+.meta{display:flex;gap:6px;flex-wrap:wrap}
+.tg{font-size:.7rem;font-weight:500;text-transform:uppercase;letter-spacing:.12em;padding:3px 8px;border-radius:6px;background:var(--nuit-3);color:var(--gris)}
+.tg.lv{background:var(--mauve-f);color:#fff}
+.card h3{font-size:1.3rem;letter-spacing:-.02em}
+.card p{margin:0;color:var(--gris);font-size:.95rem}
+.fmts{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:10px;border-top:1px dashed var(--trait)}
+.fmt{font-size:.8rem;padding:3px 8px;border:1px solid var(--trait);border-radius:6px;color:var(--gris)}
+.fmt.tni{color:var(--lilas);border-color:var(--mauve-f)}
+.go{align-self:flex-start;display:inline-flex;gap:8px;align-items:center;background:var(--mauve);color:#140A1C;border-radius:10px;padding:8px 14px;font-weight:500;text-decoration:none}
+.row-go{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.dl{font-size:.85rem;color:var(--lilas);padding:6px 10px;border:1px solid var(--trait);border-radius:10px;text-decoration:none}.soon{font-family:var(--f-main);font-size:1.25rem;color:var(--pave)}
+
+/* Métiers */
+.metiers{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.metier{display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--nuit-2);border:1px solid var(--trait);border-radius:14px;padding:14px 16px;font-weight:500}
+.metier small{font-weight:400;color:var(--pave);font-size:.82rem;white-space:nowrap}
+.metier.on{border-color:var(--mauve)}
+.metier.on small{color:var(--mauve)}
+
+/* Suivi */
+.suivi{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center;background:linear-gradient(135deg,var(--nuit-2),var(--nuit-3));border:1px solid var(--trait);border-radius:24px;padding:34px}
+.blocs{display:grid;gap:10px}
+.bloc{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:center;background:var(--nuit);border:1px solid var(--trait);border-radius:14px;padding:14px 16px}
+.bloc b{font-family:var(--f-marque);font-weight:600;font-size:1.05rem}
+.bloc span.c{grid-row:span 2;width:14px;height:14px}
+.bloc p{margin:0;color:var(--gris);font-size:.9rem;grid-column:2}
+.lock{display:flex;gap:10px;align-items:flex-start;color:var(--ok);font-weight:500;margin:16px 0 22px;font-size:.98rem}
+.lock span{color:var(--gris);font-weight:300}
+.scale{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.scale i{font-style:normal;font-size:.78rem;font-weight:500;padding:3px 8px;border-radius:6px}
+
+/* A propos */
+.about{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center}
+.avatar{width:120px;height:120px;border-radius:28px;background:var(--nuit-3);border:1px solid var(--trait);display:grid;place-items:center;font-family:var(--f-marque);font-size:2.6rem;color:var(--mauve)}
+.about p{margin:8px 0 0;max-width:62ch;color:#DAD6E4}
+.about .hand{font-size:1.6rem}
+footer{border-top:1px solid var(--trait);color:var(--gris);font-size:.9rem}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:22px}
+
+@media (max-width:900px){
+  .hero,.suivi{grid-template-columns:1fr}
+  .screen{max-width:460px}
+  .steps,.grid{grid-template-columns:1fr}
+  .metiers{grid-template-columns:repeat(2,1fr)}
+  .about{grid-template-columns:1fr}
+  .count{margin-left:0;width:100%}
+}
+@media (min-width:600px) and (max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+
+<header class="top">
+  <div class="wrap nav">
+    <a class="logo" href="#accueil" aria-label="L'habitat en SEGPA, accueil">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M3 15 15 4l12 11" fill="none" stroke="#C06BE0" stroke-width="3" stroke-linejoin="round"/><rect x="7" y="14" width="7" height="5" fill="#8A8290"/><rect x="16" y="14" width="7" height="5" fill="#8A8290"/><rect x="7" y="21" width="4" height="4" fill="#C06BE0"/><rect x="12" y="21" width="4" height="4" fill="#E3C8F2"/><rect x="17" y="21" width="6" height="4" fill="#8E44C9"/></svg>
+      <span>L'habitat <em>en SEGPA</em></span>
+    </a>
+    <ul>
+      <li><a href="#ressources">Ressources</a></li>
+      <li><a href="#metiers">Métiers</a></li>
+      <li><a href="#suivi">Mon suivi</a></li>
+      <li><a href="#apropos">À propos</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="accueil">
+  <div class="wrap hero">
+    <div>
+      <div class="kicker">Ressources pour les PLP Habitat en SEGPA</div>
+      <h1>Des séances d'atelier <span class="px">prêtes à l'emploi</span></h1>
+      <p class="lead">Activités interactives pour le TNI, fiches élève et fiches prof à imprimer, et un suivi des compétences pour chaque élève. Classées par niveau, de la 5e à la 3e.</p>
+      <div class="btns">
+        <a class="btn btn-main" href="#ressources">Voir les ressources</a>
+        <a class="btn btn-ghost" href="suivi.html">Ouvrir mon suivi</a>
+      </div>
+      <span class="hand">Gratuit, sans compte élève, modifiable.</span>
+    </div>
+    <figure class="screen" aria-label="Aperçu d'une activité au TNI">
+      <div class="scr-bar"><span></span><span></span><span></span><b>Activité TNI · 4e · Sécurité</b></div>
+      <div class="scr-body">
+        <div class="scr-q"><small>Ponceuse électrique, beaucoup de poussière</small>Quels EPI pour poncer un enduit ?</div>
+        <div class="scr-tiles">
+          <div class="t ok">Lunettes</div><div class="t ok">Masque</div><div class="t">Casque</div>
+          <div class="t ok">Anti-bruit</div><div class="t">Harnais</div><div class="t ok">Chaussures</div>
+        </div>
+        <div class="scr-fb">Bravo, c'est juste ! La poussière abîme les yeux et les poumons.</div>
+      </div>
+      <figcaption class="hand">les élèves touchent, le TNI corrige</figcaption>
+    </figure>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head"><div class="kicker">Comment ça marche</div><h2>Trois étapes, de la préparation au bilan</h2></div>
+      <div class="steps">
+        <div class="step"><span class="n">1</span><h3>Je choisis</h3><p>Par thème (sécurité, métiers, projets) et par niveau. Chaque ressource annonce sa durée, ses formats et les compétences visées.</p></div>
+        <div class="step"><span class="n">2</span><h3>Je fais la séance</h3><p>Au TNI avec les activités interactives et la consigne lue à voix haute, ou sur papier avec la fiche élève. La fiche prof donne le déroulé et le corrigé.</p></div>
+        <div class="step"><span class="n">3</span><h3>Je suis mes élèves</h3><p>Je note chaque compétence : métier (CAP), sécurité, socle commun. La fiche élève montre les progrès au fil de l'année.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ressources">
+    <div class="wrap">
+      <div class="sec-head"><div class="kicker">Ressources</div><h2>Toutes les séances</h2><p class="mute">Les ressources en violet sont déjà disponibles. Les autres sont en préparation.</p></div>
+      <div class="filters" role="group" aria-label="Filtres">
+        <span class="lbl">Thème</span>
+        <button class="chip" data-th="all" aria-pressed="true">Tous</button>
+        <button class="chip" data-th="Sécurité" aria-pressed="false">Sécurité</button>
+        <button class="chip" data-th="Métiers" aria-pressed="false">Métiers</button>
+        <button class="chip" data-th="Projets" aria-pressed="false">Projets</button>
+        <span class="sep" aria-hidden="true"></span>
+        <span class="lbl">Niveau</span>
+        <button class="chip" data-lv="all" aria-pressed="true">Tous</button>
+        <button class="chip" data-lv="5e" aria-pressed="false">5e</button>
+        <button class="chip" data-lv="4e" aria-pressed="false">4e</button>
+        <button class="chip" data-lv="3e" aria-pressed="false">3e</button>
+        <span class="count" id="count"></span>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <section id="metiers">
+    <div class="wrap">
+      <div class="sec-head"><div class="kicker">Par métier</div><h2>Les métiers de l'habitat</h2><p class="mute">Une séquence par métier : outils, gestes, sécurité, réalisation. Compétences reliées au référentiel du CAP.</p></div>
+      <div class="metiers" id="mlist"></div>
+    </div>
+  </section>
+
+  <section id="suivi">
+    <div class="wrap">
+      <div class="suivi">
+        <div>
+          <div class="kicker">Mon suivi</div>
+          <h2 style="font-size:clamp(2rem,5vw,3rem);margin-top:12px">Les compétences de chaque élève, en un coup d'œil</h2>
+          <div class="lock"><svg width="20" height="20" viewBox="0 0 22 22" aria-hidden="true" style="flex:none;margin-top:3px"><rect x="4" y="10" width="14" height="10" rx="2" fill="currentColor"/><path d="M7 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg><div>Les données restent sur votre ordinateur. <span>Prénoms uniquement, aucun envoi sur internet, export vers un tableur.</span></div></div>
+          <a class="btn btn-main" href="suivi.html">Ouvrir mon suivi</a>
+        </div>
+        <div>
+          <div class="blocs">
+            <div class="bloc"><span class="c" style="background:var(--mauve)"></span><b>Métier (CAP)</b><p>Compétences du référentiel, par exemple « Choisir les matériels et les outillages ».</p></div>
+            <div class="bloc"><span class="c" style="background:var(--orange)"></span><b>Sécurité</b><p>EPI, règlement, outils et machines, risques, rangement, gestes et postures.</p></div>
+            <div class="bloc"><span class="c" style="background:var(--lilas)"></span><b>Socle commun</b><p>Domaines 1 à 5, avec l'échelle officielle de maîtrise.</p></div>
+          </div>
+          <div class="scale" aria-label="Échelle de maîtrise">
+            <i style="background:#3a1714;color:#ff8a80">Insuffisante</i><i style="background:#3a2a10;color:#ffc46b">Fragile</i><i style="background:#12321f;color:#5fd193">Satisfaisante</i><i style="background:#13283f;color:#8cc0ff">Très bonne</i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="apropos">
+    <div class="wrap about">
+      <div class="avatar" aria-hidden="true">DS</div>
+      <div>
+        <div class="kicker">À propos</div>
+        <h2 style="font-size:clamp(1.8rem,4.5vw,2.6rem);margin-top:10px">Un site fait par un prof d'atelier, pour les profs d'atelier</h2>
+        <p>Site conçu et réalisé par M. Dos Santos, professeur de lycée professionnel (PLP) Habitat en SEGPA. Les ressources sont testées en classe avec mes élèves de 5e, 4e et 3e avant d'être publiées ici.</p>
+        <p class="mute">Ressources libres de réutilisation pour un usage pédagogique non commercial.</p>
+        <span class="hand">Une idée, une correction, une ressource à partager ? Écrivez-moi.</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span>L'habitat en SEGPA · ressources pour l'atelier Habitat</span><span>Site réalisé par M. Dos Santos, PLP</span></div></footer>
+
+<script>
+const R=[
+ {t:"Qui construit la maison ?",d:"Séance Parcours Avenir : la maison en coupe, gros œuvre et second œuvre, tri des métiers, « Qui suis-je ? ».",th:"Métiers",lv:"5e",f:["Diaporama TNI","Notes prof","Trace écrite"],url:"activites/qui-construit-la-maison.html"},
+ {t:"Les outils du carreleur",d:"Découvrir 12 outils, leur usage et leur famille. Jeu « Quel outil pour… ? » au TNI.",th:"Métiers",lv:"4e",f:["Activité TNI","Fiche élève","Fiche prof + corrigé"],dl:[["Fiche élève (Word)","fiches/carreleur/carreleur-outils-fiche-eleve.docx"],["Fiche prof (Word)","fiches/carreleur/carreleur-outils-fiche-prof.docx"]],url:"activites/outils-carreleur.html"},
+ {t:"Quel EPI pour quelle tâche ?",d:"Associer les équipements de protection à 5 situations d'atelier, avec correction immédiate.",th:"Sécurité",lv:"4e",f:["Activité TNI","Corrigé"],url:"activites/epi.html"},
+ {t:"Le règlement de l'atelier",d:"Les règles en images et le contrat d'atelier à signer en début d'année.",th:"Sécurité",lv:"5e",f:["Diaporama TNI","Fiche élève","Contrat"]},
+ {t:"Repérer les situations dangereuses",d:"Photos de chantier : entourer les dangers et proposer une prévention.",th:"Sécurité",lv:"4e",f:["Activité TNI","Fiche élève","Corrigé"]},
+ {t:"Le bruit et les décibels",d:"Placer machines et sons sur l'échelle des décibels. Seuil de danger à 80 dB.",th:"Sécurité",lv:"3e",f:["Activité TNI","Évaluation"]},
+ {t:"Carreleur : poser un panneau 40 × 40",d:"Préparer, tracer, encoller, poser avec croisillons, faire les joints, contrôler.",th:"Métiers",lv:"4e",f:["Fiche procédure","Grille d'évaluation"]},
+ {t:"Peintre : préparer un support",d:"Rebouchage, ponçage, impression : ordre des opérations et outils.",th:"Métiers",lv:"4e",f:["Fiche élève","Fiche prof"]},
+ {t:"Projet nichoir",d:"Du plan coté à la réalisation : débit, assemblage, finition, auto-évaluation.",th:"Projets",lv:"4e",f:["Dossier élève","Fiche prof","Grille"]},
+ {t:"Projet cloison en plaques de plâtre",d:"Un module de cloison avec ossature métallique et bandes.",th:"Projets",lv:"3e",f:["Dossier élève","Fiche prof","Grille"]},
+ {t:"Projet maquette de maison",d:"Relier chaque partie de la maison au métier qui la construit.",th:"Projets",lv:"5e",f:["Dossier élève","Diaporama TNI"]}
+];
+let th="all",lv="all";
+function render(){
+  const L=R.filter(r=>(th==="all"||r.th===th)&&(lv==="all"||r.lv===lv)).sort((a,b)=>(!!b.url)-(!!a.url));
+  document.getElementById('grid').innerHTML=L.map(r=>`<article class="card${r.url?' live':''}"><div class="meta"><span class="tg lv">${r.lv}</span><span class="tg">${r.th}</span></div><h3>${r.t}</h3><p>${r.d}</p>
+   <div class="fmts">${r.f.map(x=>`<span class="fmt${/TNI/.test(x)?' tni':''}">${x}</span>`).join('')}</div>
+   ${r.url?`<span class="row-go"><a class="go" href="${r.url}">Ouvrir</a>${(r.dl||[]).map(d=>`<a class="dl" href="${d[1]}" download>${d[0]}</a>`).join('')}</span>`:'<span class="soon">bientôt…</span>'}</article>`).join('')||'<p class="mute">Aucune ressource pour ce filtre.</p>';
+  document.getElementById('count').textContent=L.length+" ressource"+(L.length>1?"s":"");
+  document.querySelectorAll('[data-th]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.th===th));
+  document.querySelectorAll('[data-lv]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lv===lv));
+}
+document.querySelectorAll('[data-th]').forEach(b=>b.onclick=()=>{th=b.dataset.th;render()});
+document.querySelectorAll('[data-lv]').forEach(b=>b.onclick=()=>{lv=b.dataset.lv;render()});
+render();
+const M=[["Carreleur mosaïste","1 séquence"],["Maçon","à venir"],["Peintre","à venir"],["Plâtrier-plaquiste","à venir"],["Menuisier","à venir"],["Charpentier","à venir"],["Couvreur","à venir"],["Plombier","à venir"],["Électricien","à venir"],["Métallier","à venir"],["Dessin technique","à venir"],["Parcours Avenir","1 séance"]];
+document.getElementById('mlist').innerHTML=M.map(([n,s])=>`<div class="metier${s!=='à venir'?' on':''}">${n}<small>${s}</small></div>`).join('');
+
+</script>
+
+</body>
+</html>
