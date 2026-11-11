@@ -129,7 +129,7 @@
 <script>
 let th="all",lv="all";
 function render(){
-  const L=R.filter(r=>(th==="all"||r.th===th)&&(lv==="all"||r.lv===lv)), ok=L.filter(r=>r.url), av=L.filter(r=>!r.url);
+  const L=R.filter(r=>(th==="all"||r.th===th)&&(lv==="all"||r.lv===lv)), ok=L.filter(dispo), av=L.filter(r=>!dispo(r));
   document.getElementById('grid').innerHTML=ok.map(r=>carte(r)).join('')||'<p class="mute">Aucune ressource disponible pour ce filtre pour le moment.</p>';
   document.getElementById('soon').innerHTML=av.length?`<div class="sub-head"><h3>En préparation</h3><span class="mute">${av.length} ressource${av.length>1?"s":""}</span></div>${aVenir(av)}`:'';
   document.getElementById('count').textContent=`${ok.length} disponible${ok.length>1?"s":""} · ${av.length} en préparation`;
