@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Espace prof · L'habitat en SEGPA</title>
+<meta name="description" content="Séances d'atelier prêtes à l'emploi pour les PLP Habitat en SEGPA : activités interactives pour le TNI, fiches élève et prof modifiables, suivi des compétences. De la 5e à la 3e.">
+<meta name="theme-color" content="#0B0A12">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Fredoka:wght@600&family=Caveat:wght@600&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<body>
+<body>
+<header class="top">
+  <div class="wrap nav">
+    <a class="logo" href="index.html" aria-label="L'habitat en SEGPA, accueil">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M3 15 15 4l12 11" fill="none" stroke="#C06BE0" stroke-width="3" stroke-linejoin="round"/><rect x="7" y="14" width="7" height="5" fill="#8A8290"/><rect x="16" y="14" width="7" height="5" fill="#8A8290"/><rect x="7" y="21" width="4" height="4" fill="#C06BE0"/><rect x="12" y="21" width="4" height="4" fill="#E3C8F2"/><rect x="17" y="21" width="6" height="4" fill="#8E44C9"/></svg>
+      <span>L'habitat <em>en SEGPA</em></span>
+    </a>
+    <ul>
+      <li><a href="index.html#ressources">Ressources</a></li>
+      <li><a href="index.html#metiers">Métiers</a></li>
+      <li><a href="suivi.html">Mon suivi</a></li>
+      <li><a href="index.html#apropos">À propos</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+<style>
+.acc{max-width:520px}
+.onglets{display:flex;gap:6px;margin:26px 0 18px;flex-wrap:wrap}
+.onglets button{font:inherit;color:var(--lilas);background:var(--nuit-2);border:1px solid var(--trait);border-radius:999px;padding:8px 16px;cursor:pointer}
+.onglets button[aria-pressed=true]{background:var(--mauve);color:#140A1C;border-color:var(--mauve)}
+.f{display:grid;gap:14px}
+.f label{display:grid;gap:6px;font-weight:500}
+.f input[type=email],.f input[type=password]{font:inherit;color:var(--craie);background:var(--nuit-2);border:1px solid var(--trait);border-radius:12px;padding:12px 14px;min-height:48px}
+.f input:focus{outline:2px solid var(--mauve);outline-offset:1px}
+.f .coche{display:flex;gap:10px;align-items:flex-start;font-weight:400;color:#DAD6E4}
+.f .coche input{margin-top:4px;width:18px;height:18px;accent-color:var(--mauve);flex:none}
+.f button.btn{cursor:pointer;justify-content:center;font:inherit;font-weight:500}
+.f small{color:var(--gris);font-weight:400}
+.msg{border-radius:12px;padding:12px 14px;margin-top:14px;display:none}
+.msg.on{display:block}.msg.ok{background:#12321f;color:#5fd193}.msg.ko{background:#3a1714;color:#ff8a80}
+.msg.info{background:var(--nuit-3);color:var(--lilas)}
+.f[hidden]{display:none}
+</style>
+<div class="wrap m-hero acc">
+  <a class="crumb" href="index.html">← Accueil</a>
+  <div class="kicker">Espace prof</div>
+  <h1 id="titre">Mon compte prof</h1>
+  <p class="lead" id="intro">Le site reste libre d'accès. Le compte sert à ouvrir les fiches prof et les corrigés, pour que les élèves ne tombent pas dessus. Il faut une adresse académique (@ac-….fr).</p>
+
+  <div id="hors-ligne" class="msg info">L'espace prof est en cours d'installation. Revenez bientôt.</div>
+
+  <div id="invite" hidden>
+    <div class="onglets" role="group" aria-label="Choix">
+      <button data-o="connexion" aria-pressed="true">Se connecter</button>
+      <button data-o="inscription" aria-pressed="false">Créer un compte</button>
+      <button data-o="oubli" aria-pressed="false">Mot de passe oublié</button>
+    </div>
+
+    <form class="f" id="connexion">
+      <label>Adresse académique<input type="email" name="email" autocomplete="email" required></label>
+      <label>Mot de passe<input type="password" name="mdp" autocomplete="current-password" required></label>
+      <button class="btn btn-main">Se connecter</button>
+    </form>
+
+    <form class="f" id="inscription" hidden>
+      <label>Adresse académique<input type="email" name="email" autocomplete="email" required placeholder="prenom.nom@ac-versailles.fr"><small>Seules les adresses @ac-….fr sont acceptées.</small></label>
+      <label>Mot de passe<input type="password" name="mdp" autocomplete="new-password" minlength="8" required><small>8 caractères au moins.</small></label>
+      <label class="coche"><input type="checkbox" name="cgu" required><span>J'ai lu <a href="donnees.html" target="_blank">comment mes données sont utilisées</a>.</span></label>
+      <label class="coche"><input type="checkbox" name="recontact"><span>J'accepte d'être recontacté par mail (nouveautés du site, communauté des profs d'atelier). <small>Facultatif, modifiable à tout moment.</small></span></label>
+      <button class="btn btn-main">Créer mon compte</button>
+    </form>
+
+    <form class="f" id="oubli" hidden>
+      <label>Adresse académique<input type="email" name="email" autocomplete="email" required></label>
+      <button class="btn btn-main">Recevoir un lien pour changer mon mot de passe</button>
+    </form>
+  </div>
+
+  <form class="f" id="nouveau" hidden>
+    <label>Nouveau mot de passe<input type="password" name="mdp" autocomplete="new-password" minlength="8" required></label>
+    <button class="btn btn-main">Enregistrer</button>
+  </form>
+
+  <div id="connecte" hidden>
+    <p class="lead">Vous êtes connecté avec <b id="moi"></b>. Les documents marqués d'un cadenas s'ouvrent maintenant.</p>
+    <div class="f" style="margin-top:22px">
+      <a class="btn btn-main" id="retour" href="index.html#ressources">Voir les ressources</a>
+      <label class="coche"><input type="checkbox" id="recontact"><span>J'accepte d'être recontacté par mail (nouveautés, communauté).</span></label>
+      <a class="btn btn-ghost" id="admin" href="admin.html" hidden>Statistiques du site</a>
+      <button class="btn btn-ghost" id="deco" type="button">Se déconnecter</button>
+      <button class="btn btn-ghost" id="suppr" type="button" style="color:#ff8a80">Supprimer mon compte</button>
+    </div>
+  </div>
+  <div id="msg" class="msg" role="status" aria-live="polite"></div>
+</div>
+</main>
+
+<footer><div class="wrap"><span>L'habitat en SEGPA · ressources pour l'atelier Habitat</span><span>Site réalisé par M. Dos Santos, PLP</span></div></footer>
+<script src="assets/site.js"></script>
+<script src="assets/compte.js"></script>
+<script>
+(async()=>{
+const $=s=>document.getElementById(s), msg=(t,k="ok")=>{const m=$("msg");m.className="msg on "+k;m.textContent=t};
+const ACAD=/@ac-[a-z0-9-]+\.fr$/i;
+const retour=new URLSearchParams(location.search).get("retour");
+const page=location.href.split(/[?#]/)[0];
+if(!Compte.actif){$("hors-ligne").classList.add("on");return}
+let c;try{c=await Compte.charger()}catch(e){msg(e.message,"ko");return}
+const ERR=e=>{const t=(e&&e.message)||"";
+  if(/Invalid login/i.test(t))return "Adresse ou mot de passe incorrect.";
+  if(/not confirmed/i.test(t))return "Adresse pas encore confirmée : cliquez sur le lien reçu par mail.";
+  if(/acad|Database error/i.test(t))return "Seules les adresses académiques (@ac-….fr) sont acceptées.";
+  if(/rate limit|too many/i.test(t))return "Trop de demandes en même temps. Réessayez dans quelques minutes.";
+  if(/already registered/i.test(t))return "Un compte existe déjà avec cette adresse : connectez-vous.";
+  return "Une erreur est survenue : "+t};
+function onglet(o){document.querySelectorAll("[data-o]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.o===o));["connexion","inscription","oubli"].forEach(i=>$(i).hidden=i!==o);$("msg").className="msg"}
+document.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>onglet(b.dataset.o));
+
+async function afficher(){
+  const {data}=await c.auth.getSession(); const u=data.session&&data.session.user;
+  $("invite").hidden=!!u; $("connecte").hidden=!u;
+  $("titre").textContent=u?"Mon compte prof":"Espace prof";
+  if(!u) return;
+  if(retour){location.href=retour;return}
+  $("moi").textContent=u.email;
+  const p=await c.from("profils").select("recontact").eq("id",u.id).maybeSingle();
+  $("recontact").checked=!!(p.data&&p.data.recontact);
+  c.rpc("stats").then(r=>{if(!r.error)$("admin").hidden=false});
+}
+c.auth.onAuthStateChange(ev=>{if(ev==="PASSWORD_RECOVERY"){$("invite").hidden=true;$("connecte").hidden=true;$("nouveau").hidden=false;$("titre").textContent="Nouveau mot de passe"}});
+
+$("connexion").onsubmit=async e=>{e.preventDefault();const f=e.target;
+  const {error}=await c.auth.signInWithPassword({email:f.email.value.trim(),password:f.mdp.value});
+  error?msg(ERR(error),"ko"):afficher()};
+$("inscription").onsubmit=async e=>{e.preventDefault();const f=e.target,email=f.email.value.trim();
+  if(!ACAD.test(email)){msg("Seules les adresses académiques (@ac-….fr) sont acceptées.","ko");return}
+  const {error}=await c.auth.signUp({email,password:f.mdp.value,options:{data:{recontact:f.recontact.checked},emailRedirectTo:page}});
+  error?msg(ERR(error),"ko"):msg("Presque fini : ouvrez le mail envoyé à "+email+" et cliquez sur le lien pour confirmer votre adresse. Pensez à regarder dans les indésirables.")};
+$("oubli").onsubmit=async e=>{e.preventDefault();
+  const {error}=await c.auth.resetPasswordForEmail(e.target.email.value.trim(),{redirectTo:page});
+  error?msg(ERR(error),"ko"):msg("Si un compte existe avec cette adresse, un mail vient de partir avec un lien pour changer le mot de passe.")};
+$("nouveau").onsubmit=async e=>{e.preventDefault();
+  const {error}=await c.auth.updateUser({password:e.target.mdp.value});
+  if(error){msg(ERR(error),"ko");return} $("nouveau").hidden=true; msg("Mot de passe changé."); afficher()};
+$("recontact").onchange=async e=>{const {data}=await c.auth.getSession();
+  const {error}=await c.from("profils").update({recontact:e.target.checked}).eq("id",data.session.user.id);
+  error?msg(ERR(error),"ko"):msg(e.target.checked?"C'est noté : vous pourrez être recontacté.":"C'est noté : vous ne serez pas recontacté.")};
+$("deco").onclick=async()=>{await c.auth.signOut();location.href="index.html"};
+$("suppr").onclick=async()=>{if(!confirm("Supprimer définitivement votre compte et vos données ?"))return;
+  const {error}=await c.rpc("supprimer_mon_compte"); if(error){msg(ERR(error),"ko");return}
+  await c.auth.signOut(); $("connecte").hidden=true; msg("Votre compte et vos données sont supprimés.")};
+afficher();
+})();
+</script>
+</body>
+</html>

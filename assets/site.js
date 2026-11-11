@@ -8,19 +8,19 @@
            Sans url ni docs, la ressource est rangée dans « En préparation ».
      go    texte du bouton violet
      incl  ce qui est déjà inclus dans l'activité (texte simple, rien à télécharger)
-     docs  fichiers à télécharger : [nom, format, chemin]
+     docs  fichiers à télécharger : [nom, format, chemin, "prof" si réservé aux profs connectés (chemin dans l'espace « prof » de Supabase)] ; un « Word » doit avoir son PDF au même nom (bouton PDF ajouté)
      prevu formats prévus, pour une ressource en préparation */
 const R=[
  {t:"Qui construit la maison ?",d:"Séance Parcours Avenir : la maison en coupe, gros œuvre et second œuvre, tri des métiers, « Qui suis-je ? ».",th:"Métiers",lv:"5e",m:"parcours",url:"activites/qui-construit-la-maison.html",go:"Ouvrir le diaporama",type:"Diaporama TNI",incl:"Notes prof et trace écrite incluses dans le diaporama."},
- {t:"La fiche métier du carreleur",d:"Le métier expliqué aux élèves : étapes du travail, lieux, qualités, EPI, formation après la 3e. Avec un questionnaire et le corrigé.",th:"Métiers",lv:"4e",m:"carreleur",type:"Fiche métier",docs:[["Fiche métier élève et corrigé","Word","fiches/carreleur/carreleur-fiche-metier.docx"]]},
- {t:"Les outils du carreleur",d:"Découvrir 12 outils, leur usage et leur famille. Jeu « Quel outil pour… ? » au TNI.",th:"Métiers",lv:"4e",m:"carreleur",url:"activites/outils-carreleur.html",go:"Ouvrir l'activité",type:"Activité TNI",docs:[["Fiche élève","Word","fiches/carreleur/carreleur-outils-fiche-eleve.docx"],["Fiche prof et corrigé","Word","fiches/carreleur/carreleur-outils-fiche-prof.docx"]]},
+ {t:"La fiche métier du carreleur",d:"Le métier expliqué aux élèves : étapes du travail, lieux, qualités, EPI, formation après la 3e. Avec un questionnaire et le corrigé.",th:"Métiers",lv:"4e",m:"carreleur",type:"Fiche métier",docs:[["Fiche métier élève","Word","fiches/carreleur/carreleur-fiche-metier.docx"],["Fiche métier avec corrigé","Word","carreleur/carreleur-fiche-metier-corrige.docx","prof"]]},
+ {t:"Les outils du carreleur",d:"Découvrir 12 outils, leur usage et leur famille. Jeu « Quel outil pour… ? » au TNI.",th:"Métiers",lv:"4e",m:"carreleur",url:"activites/outils-carreleur.html",go:"Ouvrir l'activité",type:"Activité TNI",docs:[["Fiche élève","Word","fiches/carreleur/carreleur-outils-fiche-eleve.docx"],["Fiche prof et corrigé","Word","carreleur/carreleur-outils-fiche-prof.docx","prof"]]},
  {t:"Quel EPI pour quelle tâche ?",d:"Associer les équipements de protection à 5 situations d'atelier, avec correction immédiate.",th:"Sécurité",lv:"4e",url:"activites/epi.html",go:"Ouvrir l'activité",type:"Activité TNI",incl:"Correction intégrée à l'activité."},
  {t:"Le règlement de l'atelier",d:"Les règles en images et le contrat d'atelier à signer en début d'année.",th:"Sécurité",lv:"5e",prevu:"Diaporama TNI, fiche élève, contrat"},
  {t:"Repérer les situations dangereuses",d:"Photos de chantier : entourer les dangers et proposer une prévention.",th:"Sécurité",lv:"4e",prevu:"Activité TNI, fiche élève, corrigé"},
  {t:"Le bruit et les décibels",d:"Placer machines et sons sur l'échelle des décibels. Seuil de danger à 80 dB.",th:"Sécurité",lv:"3e",prevu:"Activité TNI, évaluation"},
  {t:"Carreleur : poser un panneau 40 × 40",d:"Préparer, tracer, encoller, poser avec croisillons, faire les joints, contrôler.",th:"Métiers",lv:"4e",m:"carreleur",prevu:"Fiche procédure, grille d'évaluation"},
  {t:"Peintre : préparer un support",d:"Rebouchage, ponçage, impression : ordre des opérations et outils.",th:"Métiers",lv:"4e",m:"peintre",prevu:"Fiche élève, fiche prof"},
- {t:"Monter un mur droit en parpaings",d:"Projet complet en 8 étapes : lire le plan, gâcher, poser au cordeau, croiser les joints, contrôler. Première étape du parcours maçonnerie.",th:"Projets",lv:"3e",m:"macon",url:"projet.html?p=mur-droit",go:"Voir le projet",type:"Projet",incl:"Étapes, ressources, compétences, grille d'évaluation et fiche pédagogique sur la page."},
+ {t:"Monter un mur droit en parpaings",d:"Projet complet en 8 étapes : lire le plan, gâcher, poser au cordeau, croiser les joints, contrôler. Première étape du parcours maçonnerie.",th:"Projets",lv:"3e",m:"macon",url:"projet.html?p=mur-droit",go:"Voir le projet",type:"Projet",incl:"Étapes, ressources, compétences et fiche pédagogique sur la page.",docs:[["Dossier élève","Word","fiches/macon/mur-droit-dossier-eleve.docx"],["Fiche pédagogique et corrigé","Word","macon/mur-droit-fiche-peda.docx","prof"],["Grille d'évaluation","Word","fiches/macon/mur-droit-grille.docx"],["Plan coté du mur","PDF","fiches/macon/mur-droit-plan.pdf"]]},
  {t:"Monter un mur en angle avec un poteau",d:"Suite du mur droit : deux murs à 90° et un poteau.",th:"Projets",lv:"3e",m:"macon",prevu:"Fiche projet, dossier élève, grille"},
  {t:"Enduire et couvrir le mur",d:"Enduit dressé à la règle, puis chaperon pour protéger le dessus du mur.",th:"Projets",lv:"3e",m:"macon",prevu:"Fiche projet, dossier élève, grille"},
  {t:"Projet nichoir",d:"Du plan coté à la réalisation : débit, assemblage, finition, auto-évaluation.",th:"Projets",lv:"4e",m:"menuisier",prevu:"Dossier élève, fiche prof, grille"},
@@ -48,12 +48,16 @@ const M=[
 const dispo=r=>!!(r.url||r.docs);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const ICO_DL='<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 2v9m0 0L5.5 7.5M9 11l3.5-3.5M3 14.5h12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const ICO_LOCK='<svg width="14" height="14" viewBox="0 0 22 22" aria-hidden="true"><rect x="4" y="10" width="14" height="10" rx="2" fill="currentColor"/><path d="M7 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
 const ICO_PLAY='<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9-5.5z" fill="currentColor"/></svg>';
 
 /* Carte d'une ressource disponible. Règle d'affichage : tout ce qui ressemble à un bouton ou à un lien se clique.
    base = préfixe des chemins ; num = numéro de séance (page métier). */
 function carte(r,base="",num){
-  const docs=(r.docs||[]).map(([n,f,h])=>`<li><a href="${base+h}" download>${ICO_DL}<span>${esc(n)}</span><small>${esc(f)}</small></a></li>`).join("");
+  /* Un document Word est toujours accompagné de son PDF (même nom, extension .pdf) : imprimer tel quel ou modifier.
+     4e valeur "prof" : document rangé dans l'espace réservé (compte prof), chemin relatif à fiches/ */
+  const lien=(h,f,prof)=>prof?`<a href="${base}compte.html" data-prof="${h}" title="Réservé aux profs connectés">${ICO_LOCK}${f}</a>`:`<a href="${base+h}" download>${ICO_DL}${f}</a>`;
+  const docs=(r.docs||[]).map(([n,f,h,prof])=>`<li class="two${prof?" prof":""}"><span>${esc(n)}</span>${f==="Word"?lien(h.replace(/\.docx$/,".pdf"),"PDF",prof)+lien(h,"Word",prof):lien(h,esc(f),prof)}</li>`).join("");
   return `<article class="card live">
     <div class="meta">${num?`<span class="num">Séance ${num}</span>`:""}<span class="tg lv">${r.lv}</span><span class="tg">${esc(r.th)}</span><span class="tg">${esc(r.type)}</span></div>
     <h3>${esc(r.t)}</h3><p>${esc(r.d)}</p>

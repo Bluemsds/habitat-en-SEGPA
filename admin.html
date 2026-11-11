@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Statistiques · L'habitat en SEGPA</title>
+<meta name="description" content="Séances d'atelier prêtes à l'emploi pour les PLP Habitat en SEGPA : activités interactives pour le TNI, fiches élève et prof modifiables, suivi des compétences. De la 5e à la 3e.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0B0A12">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Fredoka:wght@600&family=Caveat:wght@600&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<body>
+<body>
+<header class="top">
+  <div class="wrap nav">
+    <a class="logo" href="index.html" aria-label="L'habitat en SEGPA, accueil">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M3 15 15 4l12 11" fill="none" stroke="#C06BE0" stroke-width="3" stroke-linejoin="round"/><rect x="7" y="14" width="7" height="5" fill="#8A8290"/><rect x="16" y="14" width="7" height="5" fill="#8A8290"/><rect x="7" y="21" width="4" height="4" fill="#C06BE0"/><rect x="12" y="21" width="4" height="4" fill="#E3C8F2"/><rect x="17" y="21" width="6" height="4" fill="#8E44C9"/></svg>
+      <span>L'habitat <em>en SEGPA</em></span>
+    </a>
+    <ul>
+      <li><a href="index.html#ressources">Ressources</a></li>
+      <li><a href="index.html#metiers">Métiers</a></li>
+      <li><a href="suivi.html">Mon suivi</a></li>
+      <li><a href="index.html#apropos">À propos</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+<style>
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-top:26px}
+.kpi div{background:var(--nuit-2);border:1px solid var(--trait);border-radius:18px;padding:18px 20px}
+.kpi b{display:block;font-family:var(--f-marque);font-size:2.6rem;color:var(--craie);line-height:1.1}
+.kpi span{color:var(--gris);font-size:.9rem}
+.tab{width:100%;border-collapse:collapse;margin-top:10px;font-size:.95rem}
+.tab th,.tab td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--trait)}
+.tab th{color:var(--gris);font-weight:500;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em}
+.tw{overflow-x:auto}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+@media(max-width:760px){.two-col{grid-template-columns:1fr}}
+</style>
+<div class="wrap m-hero">
+  <a class="crumb" href="compte.html">← Mon compte</a>
+  <div class="kicker">Réservé à l'administrateur</div>
+  <h1>Statistiques du site</h1>
+  <p class="lead" id="etat">Chargement…</p>
+  <div class="kpi" id="kpi" hidden>
+    <div><b id="k-visites">–</b><span>visites depuis le début</span></div>
+    <div><b id="k-inscrits">–</b><span>profs inscrits</span></div>
+    <div><b id="k-30">–</b><span>inscrits ces 30 derniers jours</span></div>
+    <div><b id="k-tel">–</b><span>documents prof téléchargés</span></div>
+    <div><b id="k-rec">–</b><span>acceptent d'être recontactés</span></div>
+  </div>
+</div>
+<section style="padding-top:28px" id="details" hidden><div class="wrap">
+  <div class="two-col">
+    <div><h2 class="h2s">Documents les plus téléchargés</h2><div class="tw"><table class="tab" id="t-doc"></table></div></div>
+    <div><h2 class="h2s">Académies</h2><div class="tw"><table class="tab" id="t-acad"></table></div></div>
+  </div>
+  <h2 class="h2s" style="margin-top:34px">Les inscrits</h2>
+  <p class="mute">Seules les adresses qui ont coché « recontacter » peuvent recevoir un mail de votre part (newsletter, communauté). <button class="btn btn-ghost" id="csv" style="min-height:40px;margin-left:8px;cursor:pointer;font:inherit">Exporter ces adresses (tableur)</button></p>
+  <div class="tw"><table class="tab" id="t-prof"></table></div>
+  <p class="mute" style="margin-top:18px" id="goat"></p>
+</div></section>
+
+</main>
+
+<footer><div class="wrap"><span>L'habitat en SEGPA · ressources pour l'atelier Habitat</span><span>Site réalisé par M. Dos Santos, PLP</span></div></footer>
+<script src="assets/site.js"></script>
+<script src="assets/compte.js"></script>
+<script>
+(async()=>{
+const $=s=>document.getElementById(s);
+if(!Compte.actif){$("etat").textContent="L'espace prof n'est pas encore installé.";return}
+const c=await Compte.charger(); const u=await Compte.utilisateur();
+if(!u){location.href="compte.html?retour="+encodeURIComponent(location.href);return}
+const {data:s,error}=await c.rpc("stats");
+if(error){$("etat").textContent="Cette page est réservée à l'administrateur du site.";return}
+$("etat").textContent="Les chiffres des comptes sont à jour à l'ouverture de la page.";
+$("kpi").hidden=false;$("details").hidden=false;
+$("k-inscrits").textContent=s.inscrits;$("k-30").textContent=s.inscrits_30j;$("k-tel").textContent=s.telechargements;$("k-rec").textContent=s.recontact;
+const d=x=>new Date(x).toLocaleDateString("fr-FR");
+$("t-doc").innerHTML="<tr><th>Document</th><th>Téléchargements</th></tr>"+(s.par_doc.map(x=>`<tr><td>${esc(x.doc)}</td><td>${x.n}</td></tr>`).join("")||"<tr><td colspan=2>Aucun pour l'instant</td></tr>");
+$("t-acad").innerHTML="<tr><th>Académie</th><th>Inscrits</th></tr>"+(s.par_acad.map(x=>`<tr><td>${esc(x.acad||"autre")}</td><td>${x.n}</td></tr>`).join("")||"<tr><td colspan=2>Aucun pour l'instant</td></tr>");
+$("t-prof").innerHTML="<tr><th>Adresse</th><th>Inscrit le</th><th>Recontact</th></tr>"+s.profils.map(x=>`<tr><td>${esc(x.email)}</td><td>${d(x.cree_le)}</td><td>${x.recontact?"oui":"non"}</td></tr>`).join("");
+$("csv").onclick=()=>{const L=s.profils.filter(x=>x.recontact).map(x=>x.email+";"+d(x.cree_le));
+  const b=new Blob(["\ufeffadresse;inscrit le\n"+L.join("\n")],{type:"text/csv"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="profs-a-recontacter.csv";a.click()};
+const g=CONFIG.goatcounter;
+if(g){$("goat").innerHTML=`Visites détaillées (pages, jours, provenance) : <a href="https://${g}.goatcounter.com" target="_blank" rel="noopener">tableau de bord GoatCounter</a>.`;
+  fetch(`https://${g}.goatcounter.com/counter/TOTAL.json`).then(r=>r.json()).then(j=>$("k-visites").textContent=j.count).catch(()=>$("k-visites").textContent="?")}
+else $("goat").textContent="Compteur de visites pas encore branché.";
+})();
+</script>
+</body>
+</html>
