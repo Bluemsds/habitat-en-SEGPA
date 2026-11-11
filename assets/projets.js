@@ -2,7 +2,7 @@
    Chaque projet suit le même plan : infos clés, présentation, ce qu'on fabrique, matériaux, outils, EPI,
    étapes (avec ressources et compétences), évaluation, fiche pédagogique.
    Ressource d'une étape : {t:titre, k:type, href:lien} ; sans href = « en préparation ».
-   Document : [nom, chemin sans extension, pdfSeul] ; le site propose le PDF et le Word (.docx) du même nom.
+   Document : [nom, chemin sans extension, pdfSeul, prof] ; prof = réservé aux profs connectés (chemin dans l'espace « prof ») ; le site propose le PDF et le Word (.docx) du même nom.
    Compétences : identifiants de la page Mon suivi (CM-xx métier, S1 à S6 sécurité, D1 à D5 socle). */
 
 /* Libellés des compétences, repris de Mon suivi */
@@ -97,7 +97,7 @@ const P=[
   vigilance:["Mortier de chaux plutôt que ciment : le mur se démonte et les blocs se réutilisent.","Blocs de 15 cm (environ 15 kg) plutôt que 20 cm (environ 20 kg) pour des élèves de collège.","Prévoir un temps de nettoyage réel : 20 minutes en fin de séance."],
   diff:["Élève en difficulté : 2 rangs au lieu de 4, gabarit de joint de 1 cm.","Élève à l'aise : chef d'équipe sur le contrôle, ou mur de 5 rangs."]
  },
- docs:[["Dossier élève","fiches/macon/mur-droit-dossier-eleve"],["Fiche pédagogique et corrigé","fiches/macon/mur-droit-fiche-peda"],["Grille d'évaluation","fiches/macon/mur-droit-grille"],["Plan coté du mur (A4 paysage, à imprimer à 100 %)","fiches/macon/mur-droit-plan",true]]
+ docs:[["Dossier élève","fiches/macon/mur-droit-dossier-eleve"],["Fiche pédagogique et corrigé","macon/mur-droit-fiche-peda",false,true],["Grille d'évaluation","fiches/macon/mur-droit-grille"],["Plan coté du mur (A4 paysage, à imprimer à 100 %)","fiches/macon/mur-droit-plan",true]]
 },
 {id:"mur-angle",parcours:"maconnerie",m:"macon",t:"Monter un mur en angle avec un poteau",lv:"3e",court:"Deux murs à 90° qui se croisent dans l'angle, et un poteau en blocs d'angle."},
 {id:"enduit",parcours:"maconnerie",m:"macon",t:"Enduire le mur",lv:"3e",court:"Préparer le support, projeter l'enduit, dresser à la règle, talocher."},

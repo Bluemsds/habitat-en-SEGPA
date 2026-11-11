@@ -270,3 +270,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
 .docs li.two{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:6px 0}
 .docs li.two>span{flex:1 1 140px;color:var(--lilas);font-size:.95rem}
 .docs .two a{margin:0;padding:4px 10px;font-size:.78rem}
+/* Documents réservés aux profs connectés */
+.prof a{border-style:dashed}
+.dl-p li.prof b small{display:block;font-size:.75rem;color:var(--gris);font-weight:400;margin-top:2px}
+.lien-donnees{color:var(--gris)}

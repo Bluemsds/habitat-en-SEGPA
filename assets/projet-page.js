@@ -105,7 +105,8 @@ ${parcoursHTML(p)}
 <section id="documents" style="padding-top:20px"><div class="wrap">
   <div class="sec-head"><div class="kicker">Documents</div><h2 class="h2s">À télécharger</h2></div>
   <p class="mute">Le PDF s'imprime tel quel. Le Word se modifie pour l'adapter à votre atelier.</p>
-  <ul class="dl-p">${p.docs.map(([n,f,pdfSeul])=>`<li><b>${esc(n)}</b><span><a href="${f}.pdf" download>${ICO_DL}PDF</a>${pdfSeul?"":`<a href="${f}.docx" download>${ICO_DL}Word</a>`}</span></li>`).join("")}</ul>
+  <ul class="dl-p">${p.docs.map(([n,f,pdfSeul,prof])=>{const l=(x,t)=>prof?`<a href="compte.html" data-prof="${x}" title="Réservé aux profs connectés">${ICO_LOCK}${t}</a>`:`<a href="${x}" download>${ICO_DL}${t}</a>`;
+    return `<li${prof?' class="prof"':""}><b>${esc(n)}${prof?'<small>réservé aux profs connectés</small>':""}</b><span>${l(f+".pdf","PDF")}${pdfSeul?"":l(f+".docx","Word")}</span></li>`}).join("")}</ul>
 </div></section>`;
 
 function parcoursHTML(p){
