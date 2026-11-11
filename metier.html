@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Métiers · L'habitat en SEGPA</title>
+<meta name="description" content="Séances d'atelier prêtes à l'emploi pour les PLP Habitat en SEGPA : activités interactives pour le TNI, fiches élève et prof modifiables, suivi des compétences. De la 5e à la 3e.">
+<meta name="theme-color" content="#0B0A12">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Fredoka:wght@600&family=Caveat:wght@600&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap nav">
+    <a class="logo" href="index.html" aria-label="L'habitat en SEGPA, accueil">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M3 15 15 4l12 11" fill="none" stroke="#C06BE0" stroke-width="3" stroke-linejoin="round"/><rect x="7" y="14" width="7" height="5" fill="#8A8290"/><rect x="16" y="14" width="7" height="5" fill="#8A8290"/><rect x="7" y="21" width="4" height="4" fill="#C06BE0"/><rect x="12" y="21" width="4" height="4" fill="#E3C8F2"/><rect x="17" y="21" width="6" height="4" fill="#8E44C9"/></svg>
+      <span>L'habitat <em>en SEGPA</em></span>
+    </a>
+    <ul>
+      <li><a href="index.html#ressources">Ressources</a></li>
+      <li><a href="index.html#metiers" aria-current="page">Métiers</a></li>
+      <li><a href="suivi.html">Mon suivi</a></li>
+      <li><a href="index.html#apropos">À propos</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+  <div class="wrap m-hero">
+    <a class="crumb" href="index.html#metiers">← Tous les métiers</a>
+    <div class="kicker" id="kick">Métier de l'habitat</div>
+    <h1 id="nom">Les métiers de l'habitat</h1>
+    <p class="lead" id="intro"></p>
+    <div class="m-stats" id="stats"></div>
+  </div>
+
+  <section id="seances" style="padding-top:36px">
+    <div class="wrap">
+      <div class="grid" id="grid"></div>
+      <div id="soon"></div>
+      <p class="note" id="note" hidden></p>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head"><div class="kicker">Par métier</div><h2 style="font-size:clamp(1.6rem,4vw,2.2rem)">Les autres métiers</h2></div>
+      <div class="metiers" id="mlist"></div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span>L'habitat en SEGPA · ressources pour l'atelier Habitat</span><span>Site réalisé par M. Dos Santos, PLP</span></div></footer>
+
+<script src="assets/site.js"></script>
+<script>
+const k=new URLSearchParams(location.search).get('m'), met=M.find(x=>x[0]===k);
+document.getElementById('mlist').innerHTML=cartesMetiers(k);
+if(met){
+  const L=R.filter(r=>r.m===k), ok=L.filter(r=>r.url), av=L.filter(r=>!r.url);
+  document.title=met[1]+" · L'habitat en SEGPA";
+  document.getElementById('nom').textContent=met[1];
+  document.getElementById('intro').textContent=met[2];
+  document.getElementById('stats').innerHTML=(ok.length?`<span class="ok">${ok.length} séance${ok.length>1?"s":""} disponible${ok.length>1?"s":""}</span>`:"")+(av.length?`<span>${av.length} en préparation</span>`:"")+(!L.length?"<span>à venir</span>":"");
+  document.getElementById('grid').innerHTML=ok.map((r,i)=>carte(r,"",ok.length>1?i+1:0)).join('');
+  if(!ok.length) document.getElementById('grid').hidden=true;
+  document.getElementById('soon').innerHTML=av.length?`<div class="sub-head"${ok.length?"":' style="margin-top:0"'}><h3>En préparation</h3></div>${aVenir(av)}`:'';
+  const note=document.getElementById('note');
+  if(!L.length){note.hidden=false;note.innerHTML='Les séances de ce métier ne sont pas encore prêtes. En attendant, <a href="index.html#ressources">voir toutes les ressources disponibles</a>.';}
+}else{
+  document.getElementById('kick').textContent="Par métier";
+  document.getElementById('intro').textContent="Choisissez un métier pour voir ses séances et ses documents.";
+  document.getElementById('seances').hidden=true;
+}
+</script>
+</body>
+</html>
