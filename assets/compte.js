@@ -4,7 +4,7 @@
 const CONFIG={
   supabaseUrl:"https://bsopqwdeozzxmwduolys.supabase.co",      // ex. https://abcdefgh.supabase.co
   supabaseCle:"sb_publishable_nWAL5lmLKKF-9K2gMg3Rfw_BFapbmik", // clé publique (publishable)
-  goatcounter:""       // ex. habitat-segpa
+  goatcounter:"habitat-segpa" // compteur de visites : habitat-segpa.goatcounter.com
 };
 
 const Compte=(()=>{
