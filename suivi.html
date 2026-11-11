@@ -8,16 +8,13 @@
 <body>
 <title>Mon suivi de classe</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap">
 <style>
 /* Layout : colonne classes à gauche, tableau élèves x activités à droite (défilement horizontal), outils d'export en bas */
-:root{--bg:#f3f5f8;--surface:#ffffff;--ink:#14223a;--muted:#56637a;--line:#d6dce6;--plan:#123a6b;--plan-ink:#eaf1fb;--accent:#e8711a;--accent-ink:#ffffff;--chip:#e7ecf3;
---na:#b8322a;--na-bg:#fbe7e5;--ec:#a35a00;--ec-bg:#fdf0dc;--a:#1f8a4c;--a-bg:#e3f4ea;--d:#1d5fa8;--d-bg:#e2edf9;
---f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;--f-body:"Atkinson Hyperlegible",Verdana,Arial,sans-serif}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0e1522;--surface:#172234;--ink:#e7edf6;--muted:#9aa8bd;--line:#2a3850;--plan:#0b2747;--plan-ink:#dce8f8;--accent:#f08a3a;--accent-ink:#1a0f05;--chip:#22314a;
---na:#ff8a80;--na-bg:#3a1714;--ec:#ffc46b;--ec-bg:#3a2a10;--a:#5fd193;--a-bg:#12321f;--d:#8cc0ff;--d-bg:#13283f;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0e1522;--surface:#172234;--ink:#e7edf6;--muted:#9aa8bd;--line:#2a3850;--plan:#0b2747;--plan-ink:#dce8f8;--accent:#f08a3a;--accent-ink:#1a0f05;--chip:#22314a;
---na:#ff8a80;--na-bg:#3a1714;--ec:#ffc46b;--ec-bg:#3a2a10;--a:#5fd193;--a-bg:#12321f;--d:#8cc0ff;--d-bg:#13283f;color-scheme:dark}
+/* Thème unique, sombre, aux couleurs du site (nuit et mauve) */
+:root{--bg:#0B0A12;--surface:#15121F;--ink:#F4F2F8;--muted:#ABA6BC;--line:#2E2842;--plan:#211C31;--plan-ink:#E3C8F2;--accent:#C06BE0;--accent-ink:#140A1C;--chip:#211C31;
+--na:#ff8a80;--na-bg:#3a1714;--ec:#ffc46b;--ec-bg:#3a2a10;--a:#5fd193;--a-bg:#12321f;--d:#8cc0ff;--d-bg:#13283f;color-scheme:dark;
+--f-display:"DM Sans",system-ui,sans-serif;--f-body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
 .wrap{max-width:1320px;margin:0 auto;padding-block:16px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
@@ -130,7 +127,7 @@ th.grp.metier{background:var(--plan);color:var(--plan-ink)} th.grp.secu{backgrou
 
 <div class="wrap">
   <div class="top">
-    <div><div style="font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;font-size:14px">L'habitat en SEGPA</div><h1>Mon suivi de classe</h1></div>
+    <div><a href="index.html" style="font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;font-size:14px;text-decoration:none">← L'habitat en SEGPA</a><h1>Mon suivi de classe</h1></div>
     <div class="privacy"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="4" y="10" width="14" height="10" rx="2" fill="currentColor"/><path d="M7 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg><div>Données gardées sur cet ordinateur <span>· aucun envoi sur internet. Prénoms seulement, jamais de nom.</span></div></div>
   </div>
 
