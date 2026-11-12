@@ -78,7 +78,8 @@ const c=await Compte.charger(); const u=await Compte.utilisateur();
 if(!u){location.href="compte.html?retour="+encodeURIComponent(location.href);return}
 const {data:s,error}=await c.rpc("stats");
 if(error){$("etat").textContent="Cette page est réservée à l'administrateur du site.";return}
-$("etat").textContent="Les chiffres des comptes sont à jour à l'ouverture de la page.";
+try{localStorage.setItem("skipgc","t")}catch(e){}
+$("etat").textContent="Les chiffres sont à jour à l'ouverture de la page. Vos propres visites, inscription et téléchargements ne sont pas comptés (visites : sur chaque appareil où vous avez ouvert cette page).";
 $("kpi").hidden=false;$("details").hidden=false;
 $("k-inscrits").textContent=s.inscrits;$("k-30").textContent=s.inscrits_30j;$("k-tel").textContent=s.telechargements;$("k-rec").textContent=s.recontact;
 const d=x=>new Date(x).toLocaleDateString("fr-FR");

@@ -12,8 +12,11 @@ const Compte=(()=>{
   const racine=document.currentScript?document.currentScript.src.replace(/assets\/compte\.js.*$/,""):"";
   let client=null, pret=null;
 
-  /* Compteur de visites : GoatCounter, sans cookie */
-  if(CONFIG.goatcounter&&!/^(localhost|127\.)/.test(location.hostname)){
+  /* Compteur de visites : GoatCounter, sans cookie.
+     Les visites de l'administrateur ne sont pas comptées : dès qu'il ouvre la page Statistiques (ou Mon compte) connecté,
+     l'appareil reçoit la marque « skipgc » (convention GoatCounter), et le compteur n'est plus chargé sur cet appareil. */
+  let pasCompte=false;try{pasCompte=localStorage.getItem("skipgc")==="t"}catch(e){}
+  if(CONFIG.goatcounter&&!pasCompte&&!/^(localhost|127\.)/.test(location.hostname)){
     const s=document.createElement("script");s.async=true;s.src="https://gc.zgo.at/count.js";
     s.dataset.goatcounter=`https://${CONFIG.goatcounter}.goatcounter.com/count`;document.head.appendChild(s);
   }

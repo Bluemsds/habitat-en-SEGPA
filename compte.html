@@ -129,7 +129,7 @@ async function afficher(){
   $("moi").textContent=u.email;
   const p=await c.from("profils").select("recontact").eq("id",u.id).maybeSingle();
   $("recontact").checked=!!(p.data&&p.data.recontact);
-  c.rpc("stats").then(r=>{if(!r.error)$("admin").hidden=false});
+  c.rpc("stats").then(r=>{if(!r.error){$("admin").hidden=false;try{localStorage.setItem("skipgc","t")}catch(e){}}});
 }
 c.auth.onAuthStateChange(ev=>{if(ev==="PASSWORD_RECOVERY"){$("invite").hidden=true;$("connecte").hidden=true;$("nouveau").hidden=false;$("titre").textContent="Nouveau mot de passe"}});
 
