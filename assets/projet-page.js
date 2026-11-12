@@ -23,7 +23,7 @@ $('facts').innerHTML=[["Classe",p.lv+(p.lvNote?` <small>(${esc(p.lvNote)})</smal
   .map(([a,b])=>`<div><dt>${a}</dt><dd>${b}</dd></div>`).join("");
 
 /* Schémas des ouvrages, un par projet (clé = p.schema, sinon p.id). Sans schéma : image p.ouvrage.img, ou rien. */
-const SCHEMAS={"mur-droit":mur,"mur-angle":murAngle,"enduit":enduit,"panneau-carreleur":panneau,"nichoir":nichoir};
+const SCHEMAS={"mur-droit":mur,"mur-angle":murAngle,"enduit":enduit,"panneau-carreleur":panneau,"nichoir":nichoir,"coffrage":poteau};
 function figOuvrage(){
   const f=SCHEMAS[p.schema||p.id];
   const art=f?f():(p.ouvrage.img?`<img src="${p.ouvrage.img}" alt="${esc(p.ouvrage.alt||p.t)}" loading="lazy">`:"");
@@ -89,6 +89,30 @@ function nichoir(){
    <g class="cote"><path d="M${ox+W*sc/2+16*sc} ${fy+F*sc-170*sc}H${ox+W*sc+60}"/><text x="${ox+W*sc+68}" y="${fy+F*sc-170*sc+6}" style="text-anchor:start">Ø 28</text></g>
    <g class="cote"><path d="M${ox+W*sc+18} ${fy+F*sc}V${fy+F*sc+80*sc}M${ox+W*sc+10} ${fy+F*sc+80*sc}h16"/><text x="${ox+W*sc+30}" y="${fy+F*sc+50}" style="text-anchor:start">dos : +80 pour fixer</text></g>
    <text class="lg" x="${ox}" y="18">Vue de face · cotes en mm</text></svg>`;
+}
+
+/* Poteau : vue de face du coffrage sur son plateau, et coupe vue de dessus */
+function poteau(){
+  const k=5.2,E=1.8,S=20,H=60,PL=60,x0=20,y0=30;
+  const GF=S+2*E, xp=x0+(PL-GF)/2*k, yb=y0+H*k;
+  const cx=420,cy=60,k2=9;
+  return `<svg viewBox="0 0 720 420" role="img" aria-label="Poteau de 20 par 20 et 60 cm de haut, coffré sur un plateau de 60 par 60, avec 4 aciers et 4 vis d'ancrage">
+   <rect x="${x0}" y="${yb}" width="${PL*k}" height="${E*k}" fill="#E8D3B0" stroke="#5B5466" stroke-width="2"/>
+   <rect x="${xp}" y="${y0}" width="${GF*k}" height="${H*k}" fill="#E8D3B0" stroke="#5B5466" stroke-width="2"/>
+   <rect x="${xp+E*k}" y="${y0}" width="${S*k}" height="${H*k}" fill="none" stroke="#5B5466" stroke-dasharray="6 4"/>
+   <rect x="${xp-3*k}" y="${yb-4*k}" width="${3*k}" height="${4*k}" fill="#C9A77A" stroke="#5B5466"/><rect x="${xp+GF*k}" y="${yb-4*k}" width="${3*k}" height="${4*k}" fill="#C9A77A" stroke="#5B5466"/>
+   <g class="cote"><path d="M${x0} ${yb+E*k+16}H${x0+PL*k}M${x0} ${yb+E*k+8}v16M${x0+PL*k} ${yb+E*k+8}v16"/><text x="${x0+PL*k/2}" y="${yb+E*k+40}">plateau 60 cm</text></g>
+   <g class="cote"><path d="M${xp+GF*k+30} ${y0}V${yb}M${xp+GF*k+22} ${y0}h16M${xp+GF*k+22} ${yb}h16"/><text x="${xp+GF*k+42}" y="${y0+H*k/2}" style="text-anchor:start">60 cm</text></g>
+   <text class="lg" x="${x0}" y="18">Vue de face</text>
+   <rect x="${cx}" y="${cy}" width="${GF*k2}" height="${E*k2}" fill="#E8D3B0" stroke="#5B5466" stroke-width="2"/><rect x="${cx}" y="${cy+(E+S)*k2}" width="${GF*k2}" height="${E*k2}" fill="#E8D3B0" stroke="#5B5466" stroke-width="2"/>
+   <rect x="${cx}" y="${cy+E*k2}" width="${E*k2}" height="${S*k2}" fill="#E8D3B0" stroke="#5B5466" stroke-width="2"/><rect x="${cx+(E+S)*k2}" y="${cy+E*k2}" width="${E*k2}" height="${S*k2}" fill="#E8D3B0" stroke="#5B5466" stroke-width="2"/>
+   <rect x="${cx+E*k2}" y="${cy+E*k2}" width="${S*k2}" height="${S*k2}" class="bloc"/>
+   <rect x="${cx+(E+2.5)*k2}" y="${cy+(E+2.5)*k2}" width="${15*k2}" height="${15*k2}" fill="none" stroke="#2B2733" stroke-width="3"/>
+   ${[[2.5,2.5],[17.5,2.5],[2.5,17.5],[17.5,17.5]].map(([a,b])=>`<circle cx="${cx+(E+a)*k2}" cy="${cy+(E+b)*k2}" r="7" fill="#2B2733"/>`).join("")}
+   ${[[6,6],[14,6],[6,14],[14,14]].map(([a,b])=>`<circle cx="${cx+(E+a)*k2}" cy="${cy+(E+b)*k2}" r="5" fill="#E07A1F"/>`).join("")}
+   <g class="cote"><path d="M${cx+E*k2} ${cy+GF*k2+16}H${cx+(E+S)*k2}M${cx+E*k2} ${cy+GF*k2+8}v16M${cx+(E+S)*k2} ${cy+GF*k2+8}v16"/><text x="${cx+GF*k2/2}" y="${cy+GF*k2+40}">20 cm</text></g>
+   <text class="lg" x="${cx}" y="${cy-14}">Coupe vue de dessus</text>
+   <text class="lg" x="${cx}" y="${cy+GF*k2+76}" style="font-size:15px">● noir : 4 aciers HA8</text><text class="lg" x="${cx}" y="${cy+GF*k2+98}" style="font-size:15px;fill:#E07A1F">● orange : 4 vis d'ancrage</text></svg>`;
 }
 /* Schéma du mur droit : élévation à l'échelle, rangs décalés d'un demi-bloc */
 function mur(){
