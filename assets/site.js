@@ -6,7 +6,7 @@
      m     clé du métier dans M (facultatif)
      url   page de l'activité, ou lien externe https (vidéo YouTube : ouvre un nouvel onglet) ; facultatif si la ressource n'a que des documents
            Sans url ni docs, la ressource est rangée dans « En préparation ».
-     go    texte du bouton orange
+     go    texte du bouton bleu
      incl  ce qui est déjà inclus dans l'activité (texte simple, rien à télécharger)
      docs  fichiers à télécharger : [nom, format, chemin, "prof" si réservé aux profs connectés (chemin dans l'espace « prof » de Supabase)] ; un « Word » doit avoir son PDF au même nom (bouton PDF ajouté)
      prevu formats prévus, pour une ressource en préparation */
