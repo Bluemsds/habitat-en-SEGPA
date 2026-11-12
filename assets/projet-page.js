@@ -22,7 +22,14 @@ const totalH=p.etapes.length;
 $('facts').innerHTML=[["Classe",p.lv+(p.lvNote?` <small>(${esc(p.lvNote)})</small>`:"")],["Durée",esc(p.duree)],["Étapes",totalH+" étapes"],["Métier",esc(p.metiers.join(", "))],["Organisation",esc(p.orga)]]
   .map(([a,b])=>`<div><dt>${a}</dt><dd>${b}</dd></div>`).join("");
 
-/* Schéma du mur : élévation à l'échelle, rangs décalés d'un demi-bloc */
+/* Schémas des ouvrages, un par projet (clé = p.schema, sinon p.id). Sans schéma : image p.ouvrage.img, ou rien. */
+const SCHEMAS={"mur-droit":mur};
+function figOuvrage(){
+  const f=SCHEMAS[p.schema||p.id];
+  const art=f?f():(p.ouvrage.img?`<img src="${p.ouvrage.img}" alt="${esc(p.ouvrage.alt||p.t)}" loading="lazy">`:"");
+  return art?`<figure class="plan">${art}<figcaption>${esc(p.ouvrage.dims)}</figcaption></figure>`:`<p class="plan-txt"><b>${esc(p.ouvrage.dims)}</b></p>`;
+}
+/* Schéma du mur droit : élévation à l'échelle, rangs décalés d'un demi-bloc */
 function mur(){
   const L=152,R=4,bh=20,j=1,sc=4.2,W=L*sc,H=(R*(bh+j))*sc;let r="";
   for(let i=0;i<R;i++){
@@ -59,7 +66,7 @@ ${parcoursHTML(p)}
 <section id="fabrique"><div class="wrap">
   <div class="sec-head"><div class="kicker">Ce qu'on fabrique</div><h2 class="h2s">L'ouvrage</h2></div>
   <div class="ouvr">
-    <figure class="plan">${mur()}<figcaption>${esc(p.ouvrage.dims)}</figcaption></figure>
+    ${figOuvrage()}
     <ul class="pts">${p.ouvrage.points.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
   </div>
   <div class="need">
