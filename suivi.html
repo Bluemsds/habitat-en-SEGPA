@@ -11,9 +11,9 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap">
 <style>
 /* Layout : colonne classes à gauche, tableau élèves x activités à droite (défilement horizontal), outils d'export en bas */
-/* Thème unique, sombre, aux couleurs du site (nuit et mauve) */
-:root{--bg:#0B0A12;--surface:#15121F;--ink:#F4F2F8;--muted:#ABA6BC;--line:#2E2842;--plan:#211C31;--plan-ink:#E3C8F2;--accent:#C06BE0;--accent-ink:#140A1C;--chip:#211C31;
---na:#ff8a80;--na-bg:#3a1714;--ec:#ffc46b;--ec-bg:#3a2a10;--a:#5fd193;--a-bg:#12321f;--d:#8cc0ff;--d-bg:#13283f;color-scheme:dark;
+/* Thème clair, aux couleurs du site (bleu plan, orange chantier) */
+:root{--bg:#F4F6F9;--surface:#FFFFFF;--ink:#14223A;--muted:#56637A;--line:#D5DDE7;--plan:#123A6B;--plan-ink:#FFFFFF;--accent:#E8711A;--accent-ink:#FFFFFF;--chip:#E8EDF4;
+--na:#b3261e;--na-bg:#fde2df;--ec:#8a5a00;--ec-bg:#fdf0d5;--a:#1e6b3f;--a-bg:#dcf3e5;--d:#1a4f8a;--d-bg:#dceafb;color-scheme:light;
 --f-display:"DM Sans",system-ui,sans-serif;--f-body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
@@ -119,7 +119,7 @@ th.grp.metier{background:var(--plan);color:var(--plan-ink)} th.grp.secu{backgrou
 .padd{width:100%;text-align:left}
 .lib-top{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
 .lib-grp{margin-top:14px}
-.lib-grp h4{margin:0 0 6px;font-size:14px;text-transform:uppercase;letter-spacing:.05em;color:var(--plan-ink)}
+.lib-grp h4{margin:0 0 6px;font-size:14px;text-transform:uppercase;letter-spacing:.05em;color:var(--plan)}
 .lib-l{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px}
 .lib-l li{display:flex;gap:6px;align-items:stretch}
 .lib-it{flex:1;min-width:0;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 10px;font-size:14px;line-height:1.3;cursor:pointer}
@@ -129,7 +129,7 @@ th.grp.metier{background:var(--plan);color:var(--plan-ink)} th.grp.secu{backgrou
 .lib-it .ok{color:var(--a);font-weight:700}
 .lib-it.off{cursor:default;opacity:.5}
 .lib-it.off:hover{border-color:var(--line)}
-.lib-see{display:grid;place-items:center;border:1px solid var(--line);border-radius:8px;padding:0 10px;font-size:13px;font-weight:700;color:var(--plan-ink);text-decoration:none;white-space:nowrap}
+.lib-see{display:grid;place-items:center;border:1px solid var(--line);border-radius:8px;padding:0 10px;font-size:13px;font-weight:700;color:var(--plan);text-decoration:none;white-space:nowrap}
 .lib-see:hover{border-color:var(--accent)}
 .padd{width:100%;font-size:14px}
 .panel2{border:2px solid var(--accent);border-radius:12px;padding:14px;margin:10px 0;display:grid;gap:8px;background:var(--surface)}
