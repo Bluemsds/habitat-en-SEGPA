@@ -324,3 +324,7 @@ header.top{border-bottom:3px solid var(--trait);background:rgba(255,255,255,.95)
 .step:nth-child(1){background:#FFF4CC}.step:nth-child(2){background:var(--bleu-clair)}.step:nth-child(3){background:#FFE6E1}
 a.metier.on{background:#fff}
 .avatar{background:var(--pop);color:var(--craie);border:3px solid var(--trait)!important}
+
+/* Lien du jeu dans le menu : bien visible */
+.nav ul a.nav-jeu{display:flex;align-items:center;gap:6px;background:var(--mauve);color:#fff;border-color:var(--trait);box-shadow:3px 3px 0 var(--trait)}
+.nav ul a.nav-jeu:hover{background:var(--mauve);color:#fff;transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--trait)}
