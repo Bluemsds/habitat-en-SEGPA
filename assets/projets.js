@@ -51,7 +51,7 @@ const P=[
  etapes:[
   {t:"Découvrir le projet et lire le plan",h:"1 h",obj:"Je comprends ce que je vais construire et je lis les cotes du plan.",
    faire:["Présenter le mur fini (photo ou mur témoin) et le métier de maçon.","Lire le plan : vue de face, vue de dessus, cotes.","Calculer le nombre de blocs par rang, puis pour tout le mur."],
-   res:[{t:"Diaporama : le mur en parpaings",k:"TNI"},{t:"Dossier élève, pages 1 et 2",k:"PDF",href:"fiches/macon/mur-droit-dossier-eleve.pdf"},{t:"Plan coté du mur",k:"PDF",href:"fiches/macon/mur-droit-plan.pdf"}],
+   res:[{t:"Diaporama : le mur en parpaings",k:"TNI",href:"activites/mur-parpaings.html"},{t:"Dossier élève, pages 1 et 2",k:"PDF",href:"fiches/macon/mur-droit-dossier-eleve.pdf"},{t:"Plan coté du mur",k:"PDF",href:"fiches/macon/mur-droit-plan.pdf"}],
    c:["CM-11","CM-12","D1.3"]},
   {t:"Préparer son poste",h:"1 h",obj:"Je choisis mes outils, mes matériaux et mes équipements de protection.",
    faire:["Lister les outils et les matériaux à partir du dossier.","Préparer le poste : aire dégagée, outils rangés sur le côté.","Choisir ses EPI : chaussures de sécurité, gants, lunettes."],
