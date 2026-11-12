@@ -362,7 +362,7 @@ const P=[
   points:["Pin ou sapin non traité, 18 mm d'épaisseur","Planche 1 (145 × 800) : façade 145 × 220, dos 145 × 330 (dépasse de 80 mm en bas pour la fixation), toit 145 × 210","Planche 2 (120 × 650) : 2 côtés en trapèze 120 × 250 / 220 tracés tête-bêche, fond 120 × 109 avec 4 trous Ø 6","Trou d'envol Ø 28 (mésange bleue) ou Ø 32 (mésange charbonnière), centre à 170 mm du bas","16 vis 4 × 40 avec avant-trous Ø 3, sans colle ; toit fixé par 2 vis seulement"]
  },
  materiaux:[["Planche pin ou sapin 145 × 18 mm","800 mm"],["Planche pin ou sapin 120 × 18 mm","650 mm"],["Vis 4 × 40","16"],["Papier de verre","grain 80 puis 120"]],
- outils:[["Mètre","carreleur/metre"],["Équerre","menuisier/equerre"],["Crayon","macon/crayon"],["Serre-joint","macon/serre-joint"],["Scie égoïne","menuisier/scie-egoine"],["Scie à dos","menuisier/scie-a-dos"],["Perceuse","macon/perceuse"],["Visseuse","menuisier/visseuse"],["Râpe","menuisier/rape"]],
+ outils:[["Mètre","carreleur/metre"],["Équerre","menuisier/equerre"],["Crayon","macon/crayon"],["Serre-joint",null],["Scie égoïne","menuisier/scie-egoine"],["Scie à dos","menuisier/scie-a-dos"],["Perceuse","macon/perceuse"],["Visseuse","menuisier/visseuse"],["Râpe","menuisier/rape"]],
  epi:["lunettes","chaussures","masque"],
  etapes:[
   {t:"Découvrir le projet et lire le plan",h:"1 h",obj:"Je comprends à quoi sert le nichoir et je lis son plan.",
