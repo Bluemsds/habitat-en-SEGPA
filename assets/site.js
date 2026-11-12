@@ -44,6 +44,7 @@ const R=[
  {t:"Coffrer et couler un poteau",d:"Dernier projet du parcours maçonnerie : coffrage en contreplaqué, cage d'armature sur cales, béton dosé au seau, décoffrage. On découvre le béton armé.",th:"Projets",lv:"3e",m:"macon",url:"projet.html?p=coffrage",go:"Voir le projet",type:"Projet",incl:"Étapes, ressources, compétences et fiche pédagogique sur la page.",docs:[["Dossier élève","Word","fiches/macon/poteau-dossier-eleve.docx"],["Fiche pédagogique et corrigé","Word","macon/poteau-fiche-peda.docx","prof"],["Grille d'évaluation","Word","fiches/macon/poteau-grille.docx"],["Plan coté du poteau","PDF","fiches/macon/poteau-plan.pdf"]]},
  {t:"Projet nichoir",d:"Un nichoir à mésanges en pin, du plan coté au nichoir assemblé : débit, sciage, perçage, vissage, toit ouvrable.",th:"Projets",lv:"4e",m:"menuisier",url:"projet.html?p=nichoir",go:"Voir le projet",type:"Projet",incl:"Étapes, ressources, compétences et fiche prof sur la page.",docs:[["Dossier élève","Word","fiches/menuisier/nichoir-dossier-eleve.docx"],["Fiche prof et corrigé","Word","menuisier/nichoir-fiche-prof.docx","prof"],["Grille d'évaluation","Word","fiches/menuisier/nichoir-grille.docx"],["Plan coté et plan de débit","PDF","fiches/menuisier/nichoir-plan.pdf"]]},
  {t:"Projet cloison en plaques de plâtre",d:"Un module de cloison avec ossature métallique et bandes.",th:"Projets",lv:"3e",m:"plaquiste",prevu:"Dossier élève, fiche prof, grille"},
+ {t:"Le jeu des métiers du bâtiment",d:"Une appli en forme de jeu pour découvrir plus de 40 métiers du bâtiment : maison à explorer, « Qui suis-je ? », quiz et passeport à tampons. Utilisable dès la 5e.",th:"Métiers",lv:"5e",m:"parcours",prevu:"Appli interactive sur PC"},
  {t:"Projet maquette de maison",d:"Relier chaque partie de la maison au métier qui la construit.",th:"Projets",lv:"5e",m:"parcours",prevu:"Dossier élève, diaporama TNI"}
 ];
 
@@ -92,15 +93,15 @@ function aVenir(L){
 /* Photo d'outil qui représente chaque métier (tuiles de l'accueil) */
 const PHOTO_M={carreleur:"carreleur/peigne",macon:"macon/truelle",peintre:"peintre/rouleau",plaquiste:"plaquiste/platoir",menuisier:"menuisier/rabot",
  charpentier:"couvreur-charpentier/marteau-de-charpentier",couvreur:"couvreur-charpentier/marteau-de-couvreur",plombier:"plombier/cle-a-molette",electricien:"electricien/multimetre",metallier:"metallier/poste-a-souder"};
-/* Ressources d'un métier : celles rangées sous sa clé (m), plus l'étape du Tour du monde qui lui est consacrée
-   (repérée par le nom du métier dans le titre : « Étape 2 : Marrakech, le maçon » → macon) */
+/* Ressources d'un métier : celles rangées sous sa clé (m). Le Parcours Avenir (m:"parcours") a son propre onglet :
+   ses étapes du Tour du monde ne remontent plus dans les pages métier (demande de David, 12/11). */
 const sansAccent=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
 function ressourcesMetier(k){
-  return R.filter(r=>r.m===k||(r.m==="parcours"&&/^Tour du monde/.test(r.t)&&new RegExp("\\b(le |l')"+k+"\\b").test(sansAccent(r.t))));
+  return R.filter(r=>r.m===k);
 }
 /* Cartes métier : cliquables dès qu'il y a au moins une ressource, disponible ou en préparation */
 function cartesMetiers(courant){
-  return M.map(([k,n])=>{
+  return M.filter(([k])=>k!=="parcours").map(([k,n])=>{
     const L=ressourcesMetier(k), ok=L.filter(dispo).length, av=L.length-ok;
     if(!L.length) return `<div class="metier">${esc(n)}<small>à venir</small></div>`;
     const txt=[ok?`${ok} disponible${ok>1?"s":""}`:"",av?`${av} en préparation`:""].filter(Boolean).join(" · ");
