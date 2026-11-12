@@ -141,7 +141,8 @@ document.querySelectorAll('[data-th]').forEach(b=>b.onclick=()=>{th=b.dataset.th
 document.querySelectorAll('[data-lv]').forEach(b=>b.onclick=()=>{lv=b.dataset.lv;render()});
 render();
 document.getElementById('now').innerHTML=M.filter(([k])=>PHOTO_M[k]).map(([k,n])=>{const L=ressourcesMetier(k),ok=L.filter(dispo).length;
-  return `<li><a href="metier.html?m=${k}"><img src="img/outils/${PHOTO_M[k]}.jpg" alt="" loading="lazy"><span><b>${esc(n)}</b><small${ok?' class="ok"':''}>${ok?`${ok} ressource${ok>1?"s":""}`:L.length?"en préparation":"bientôt"}</small></span></a></li>`}).join('');
+  return `<li><a href="metier.html?m=${k}"><img src="img/outils/${PHOTO_M[k]}.jpg" alt="" loading="lazy"><span><b>${esc(n)}</b><small${ok?' class="ok"':''}>${ok?`${ok} ressource${ok>1?"s":""}`:L.length?"en préparation":"bientôt"}</small></span></a></li>`}).join('')
+  +(()=>{const n=R.filter(r=>r.m==="parcours"&&dispo(r)).length;return `<li class="pa"><a href="metier.html?m=parcours"><span class="pa-ic" aria-hidden="true">▶</span><span><b>Parcours Avenir · Le tour du monde des bâtisseurs</b><small class="ok">5e · ${n} séances, dont les étapes en vidéo</small></span></a></li>`})();
 document.getElementById('mlist').innerHTML=cartesMetiers();
 </script>
 </body>

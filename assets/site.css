@@ -53,6 +53,9 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .now-m b{display:block;font-weight:500;font-size:1rem;line-height:1.2}
 .now-m small{display:block;color:var(--gris);font-size:.8rem}
 .now-m small.ok{color:var(--ok)}
+.now-m .pa{grid-column:1/-1}
+.now-m .pa a{border-color:var(--mauve);background:linear-gradient(90deg,rgba(192,107,224,.18),var(--nuit))}
+.now-m .pa-ic{width:48px;height:48px;border-radius:10px;flex:none;display:grid;place-items:center;background:var(--mauve);color:var(--nuit);font-size:1.2rem}
 @media (max-width:420px){.now-m{grid-template-columns:1fr}}
 /* Panneau « Disponible maintenant » : remplace la fausse capture d'écran, chaque ligne ouvre une vraie ressource */
 .now{background:var(--nuit-2);border:1px solid var(--trait);border-radius:20px;padding:20px;box-shadow:0 30px 80px -30px rgba(192,107,224,.45)}
