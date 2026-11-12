@@ -20,8 +20,9 @@
     </a>
     <ul>
       <li><a href="index.html#ressources">Ressources</a></li>
-      <li><a href="index.html#metiers" aria-current="page">Métiers</a></li>
+      <li><a href="index.html#metiers" aria-current="page" data-nav="metiers">Métiers</a></li>
       <li><a href="suivi.html">Mon suivi</a></li>
+      <li><a href="metier.html?m=parcours" data-nav="parcours">Parcours Avenir</a></li>
       <li><a href="index.html#apropos">À propos</a></li>
     </ul>
   </div>
@@ -59,6 +60,14 @@
 <script>
 const k=new URLSearchParams(location.search).get('m'), met=M.find(x=>x[0]===k);
 document.getElementById('mlist').innerHTML=cartesMetiers(k);
+/* Parcours Avenir : onglet à part, sans la grille des métiers */
+if(k==="parcours"){
+  document.querySelector('[data-nav="metiers"]').removeAttribute('aria-current');
+  document.querySelector('[data-nav="parcours"]').setAttribute('aria-current','page');
+  document.querySelector('.crumb').outerHTML='<a class="crumb" href="index.html">← Accueil</a>';
+  document.getElementById('kick').textContent="5e · Découvrir les métiers";
+  document.getElementById('mlist').closest('section').hidden=true;
+}
 if(met){
   const L=ressourcesMetier(k), ok=L.filter(dispo), av=L.filter(r=>!dispo(r));
   document.title=met[1]+" · L'habitat en SEGPA";
