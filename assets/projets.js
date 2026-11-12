@@ -55,7 +55,7 @@ const P=[
    c:["CM-11","CM-12","D1.3"]},
   {t:"Préparer son poste",h:"1 h",obj:"Je choisis mes outils, mes matériaux et mes équipements de protection.",
    faire:["Lister les outils et les matériaux à partir du dossier.","Préparer le poste : aire dégagée, outils rangés sur le côté.","Choisir ses EPI : chaussures de sécurité, gants, lunettes."],
-   res:[{t:"Quel EPI pour quelle tâche ?",k:"TNI",href:"activites/epi.html"},{t:"Dossier élève, page 2 : je prépare mon poste",k:"PDF",href:"fiches/macon/mur-droit-dossier-eleve.pdf"},{t:"Les outils du maçon",k:"TNI"}],
+   res:[{t:"Quel EPI pour quelle tâche ?",k:"TNI",href:"activites/epi.html"},{t:"Dossier élève, page 2 : je prépare mon poste",k:"PDF",href:"fiches/macon/mur-droit-dossier-eleve.pdf"},{t:"Les outils du maçon",k:"TNI",href:"activites/outils-macon.html"}],
    c:["CM-13","CM-21","S1","S5"],secu:"Un parpaing de 15 cm pèse environ 15 kg : on le porte près du corps, dos droit, jambes fléchies."},
   {t:"Implanter le mur",h:"1 h",obj:"Je trace l'emplacement exact du mur au sol.",
    faire:["Repérer les deux extrémités du mur à partir d'un point de départ.","Tendre le cordeau entre les deux repères et tracer la ligne.","Vérifier la longueur au mètre : 1,52 m."],
