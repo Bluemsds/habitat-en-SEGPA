@@ -86,7 +86,7 @@ th.grp.metier{background:var(--plan);color:var(--plan-ink)} th.grp.secu{backgrou
 .note2{font-size:13px;color:var(--muted);margin:6px 0 0}
 @media (max-width:1000px){.fiche{grid-template-columns:1fr}}
 
-.prog{display:grid;grid-template-columns:repeat(5,minmax(200px,1fr));gap:10px;overflow-x:auto;padding-bottom:6px}
+.prog{display:grid;grid-template-columns:repeat(var(--n,5),minmax(200px,1fr));gap:10px;overflow-x:auto;padding-bottom:6px}
 .per{border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px;min-width:0;background:var(--bg)}
 .per.now{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
 .ph{display:flex;gap:8px;align-items:baseline;font-family:var(--f-display);font-size:19px;font-weight:700;text-transform:uppercase;line-height:1.1}
@@ -94,6 +94,8 @@ th.grp.metier{background:var(--plan);color:var(--plan-ink)} th.grp.secu{backgrou
 .pm{font-size:12px;color:var(--muted)}
 .stg{font-size:12px;font-weight:700;background:var(--a-bg);color:var(--a);border-radius:6px;padding:4px 8px}
 .stg.tbc{background:var(--ec-bg);color:var(--ec)}
+.evt{font-size:12px;font-weight:700;background:var(--d-bg);color:var(--d);border-radius:6px;padding:4px 8px}
+.evt small{font-weight:400;opacity:.85}
 .pl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
 .pi{display:flex;gap:8px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px;font-size:14px;line-height:1.3}
 .pi b{display:block;font-weight:700}
@@ -113,6 +115,22 @@ th.grp.metier{background:var(--plan);color:var(--plan-ink)} th.grp.secu{backgrou
 .ed button:disabled{opacity:.35;cursor:default}
 .ed .prop{color:var(--plan)}
 .perso{font-style:normal;font-weight:700;color:var(--accent)}
+.pi a.lk{color:inherit;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.padd{width:100%;text-align:left}
+.lib-top{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.lib-grp{margin-top:14px}
+.lib-grp h4{margin:0 0 6px;font-size:14px;text-transform:uppercase;letter-spacing:.05em;color:var(--plan-ink)}
+.lib-l{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px}
+.lib-l li{display:flex;gap:6px;align-items:stretch}
+.lib-it{flex:1;min-width:0;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 10px;font-size:14px;line-height:1.3;cursor:pointer}
+.lib-it:hover{border-color:var(--accent)}
+.lib-it b{display:block}
+.lib-it small{color:var(--muted);font-size:12px}
+.lib-it .ok{color:var(--a);font-weight:700}
+.lib-it.off{cursor:default;opacity:.5}
+.lib-it.off:hover{border-color:var(--line)}
+.lib-see{display:grid;place-items:center;border:1px solid var(--line);border-radius:8px;padding:0 10px;font-size:13px;font-weight:700;color:var(--plan-ink);text-decoration:none;white-space:nowrap}
+.lib-see:hover{border-color:var(--accent)}
 .padd{width:100%;font-size:14px}
 .panel2{border:2px solid var(--accent);border-radius:12px;padding:14px;margin:10px 0;display:grid;gap:8px;background:var(--surface)}
 .panel2 h3{font-size:22px;text-transform:uppercase}
@@ -159,6 +177,8 @@ th.grp.metier{background:var(--plan);color:var(--plan-ink)} th.grp.secu{backgrou
   </div>
 </div>
 
+<script src="assets/site.js"></script>
+<script src="assets/projets.js"></script>
 <script>
 /* ===== Référentiels ===== */
 const COMP=[
@@ -238,18 +258,46 @@ const PROG={
 const LV=[["no","—","Pas évalué"],["na","NA","Maîtrise insuffisante"],["ec","F","Maîtrise fragile"],["a","S","Maîtrise satisfaisante"],["d","TB","Très bonne maîtrise"]];
 const RANK={na:1,ec:2,a:3,d:4};
 const KEY="habitat-segpa-suivi-v2";
-const cById=id=>COMP.find(c=>c.id===id), aById=id=>ACT.find(a=>a.id===id)||(S&&S.custom||[]).find(a=>a.id===id)||{id,t:"(séquence supprimée)",th:"",lvl:"",c:[]};
-const allActs=()=>ACT.concat(S.custom||[]);
+/* ===== Bibliothèque : tout ce que le site propose, pour « Ajouter… » dans Ma progression =====
+   Sources : séquences du modèle (ACT), ressources du site (R, assets/site.js), projets (P, assets/projets.js).
+   Une ressource du site déjà présente dans le modèle garde l'identifiant du modèle (même titre, même niveau).
+   Une ressource ajoutée depuis le site est recopiée dans S.lib : elle reste dans la progression même si le site change. */
+const slug=s=>String(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const C_TOUR=["D1.1","D1.3","D2","D5"];
+const GROUPS=[["Sécurité","Sécurité"],["Métiers","Métiers"],["Tour du monde","Tour du monde des bâtisseurs (Un jour, un métier)"],["Projets","Projets d'atelier"],["Orientation","Orientation et stages"]];
+/* Ressource du site = séquence du modèle sous un autre titre (titre du site en minuscules sans accents → id du modèle) */
+const ALIAS={"monter-un-mur-droit-en-parpaings":"m-macon","projet-cloison-en-plaques-de-platre":"p-cloison"};
+let LIB=null;
+function lib(){if(LIB)return LIB;
+  const SITE=typeof R!=="undefined"?R:[],PJ=typeof P!=="undefined"?P:[];
+  const out=[],seen=new Map(),key=(t,l)=>slug(t)+"|"+l;
+  const add=x=>{const k=key(x.t,x.lvl);const o=seen.get(k)||out.find(y=>y.id===x.id);if(o){if(!o.url&&x.url)o.url=x.url;if(o.ok===undefined)o.ok=x.ok;if(!o.c.length)o.c=x.c;return}seen.set(k,x);out.push(x)};
+  SITE.forEach(r=>{const tour=/^Tour du monde/.test(r.t);const pid=((r.url||"").match(/projet\.html\?p=([\w-]+)/)||[])[1];const pr=pid&&PJ.find(p=>p.id===pid);
+    const m=ACT.find(a=>key(a.t,a.lvl)===key(r.t,r.lv)||a.id===ALIAS[slug(r.t)]);
+    add({id:m?m.id:"r-"+slug(r.t),t:r.t,th:tour?"Tour du monde":r.th,lvl:r.lv,c:m?m.c:pr&&pr.etapes?[...new Set(pr.etapes.flatMap(e=>e.c||[]))]:tour?C_TOUR:[],url:r.url||(r.docs&&r.m?"metier.html?m="+r.m:""),ok:!!(r.url||r.docs)})});
+  PJ.forEach(p=>add({id:"r-p-"+p.id,t:p.t,th:"Projets",lvl:p.lv,c:p.etapes?[...new Set(p.etapes.flatMap(e=>e.c||[]))]:[],url:p.etapes?"projet.html?p="+p.id:"",ok:!!p.etapes}));
+  ACT.forEach(a=>add({...a,url:"",ok:undefined}));
+  return LIB=out}
+const libById=id=>lib().find(a=>a.id===id);
+const cById=id=>COMP.find(c=>c.id===id)||{id,b:"socle",code:id,t:id}, aById=id=>ACT.find(a=>a.id===id)||(S&&S.custom||[]).find(a=>a.id===id)||(S&&S.lib||{})[id]||libById(id)||{id,t:"(séquence supprimée)",th:"",lvl:"",c:[]};
+const urlOf=id=>(libById(id)||{}).url||(S&&S.lib&&S.lib[id]||{}).url||"";
+const allActs=()=>ACT.concat(S.custom||[],Object.values(S.lib||{}));
 const example={classes:[{id:"ex",name:"4e A (exemple)",lvl:"4e",students:["Lina","Yanis","Inès","Kylian","Maëlys","Rayan"],
  ev:{"s-epi":{date:"2026-11-03",r:{"Lina":{"S1":"a","S4":"a","D4":"ec"},"Yanis":{"S1":"ec","S4":"ec","D4":"ec"},"Inès":{"S1":"d","S4":"a","D4":"a"},"Kylian":{"S1":"na","S4":"ec"},"Maëlys":{"S1":"a","S4":"a","D4":"a"},"Rayan":{"S1":"a","S4":"ec","D4":"ec"}}},
      "m-carr-outils":{date:"2026-11-10",r:{"Lina":{"CM-13":"ec","S3":"a","D1.1":"ec"},"Yanis":{"CM-13":"a","S3":"a","D1.1":"ec","D2":"a"},"Inès":{"CM-13":"a","S3":"d","D1.1":"a"},"Kylian":{"CM-13":"ec","S3":"ec","D1.1":"na"},"Maëlys":{"CM-13":"a","S3":"a"}}}}}],cur:"ex"};
 let S;
 function load(){try{const j=localStorage.getItem(KEY);if(j){S=JSON.parse(j);ensure();return}}catch(e){}S=JSON.parse(JSON.stringify(example));ensure()}
 function modelCfg(){return {per:PER.map(p=>({t:p.t,from:p.from,to:p.to})),hours:{...HOURS},stages:JSON.parse(JSON.stringify(STAGES))}}
-function ensure(){S.custom=S.custom||[];S.prog=S.prog||JSON.parse(JSON.stringify(PROG));S.cfg=S.cfg||modelCfg()}
+function ensure(){S.custom=S.custom||[];S.lib=S.lib||{};S.prog=S.prog||JSON.parse(JSON.stringify(PROG));S.cfg=S.cfg||modelCfg();S.cfg.events=S.cfg.events||[];fitProg()}
+/* La progression de chaque niveau a autant de colonnes que de périodes dans le calendrier.
+   Période en trop : son contenu rejoint la période précédente. */
+function fitProg(){const n=S.cfg.per.length;for(const lv of Object.keys(S.prog)){const L=S.prog[lv];while(L.length<n)L.push([]);while(L.length>n){const x=L.pop();L[L.length-1].push(...x)}}}
+/* Période d'une date : celle qui la contient, sinon (vacances) la suivante ; -1 si après la dernière */
+function perOf(d){const P=S.cfg.per;if(!d)return -1;let i=P.findIndex(p=>p.from&&p.to&&d>=p.from&&d<=p.to);if(i<0)i=P.findIndex(p=>p.from&&d<p.from);return i}
+const EVT_IDEES=["Brevet blanc","Oral blanc du brevet","Brevet (DNB)","Oral du brevet","CFG blanc","Oral blanc du CFG","Oral du CFG","Conseil de classe","Réunion parents-professeurs","Journée portes ouvertes","Forum des métiers","Sortie pédagogique"];
 function weeks(from,to){if(!from||!to)return 0;let n=0;for(let d=new Date(from+"T12:00:00"),e=new Date(to+"T12:00:00");d<=e;d.setDate(d.getDate()+1)){const w=d.getDay();if(w>0&&w<6)n++}return Math.round(n/5)}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+/* esc() vient de assets/site.js */
 const cls=()=>S.classes.find(c=>c.id===S.cur);
 let progLv=null;
 let view="prog",curAct=null,curStudent=null,confirmDel=false,allLv=false;
@@ -297,7 +345,7 @@ function vFiche(c){
 /* ===== Progression annuelle ===== */
 const fmtD=d=>d?new Date(d+"T12:00:00").toLocaleDateString("fr-FR",{day:"numeric",month:"short"}):"";
 function doneDate(lv,aid){let best="";for(const c of S.classes){if(c.lvl!==lv)continue;const d=c.ev?.[aid]?.date;if(d&&(!best||d<best))best=d}return best}
-let progEdit=false,calEdit=false,seqFor=null,confirmReset=false,propMsg="";
+let progEdit=false,calEdit=false,seqFor=null,confirmReset=false,propMsg="",addFor=null,addLv=null;
 function vProg(c){
   const lv=progLv||c.lvl||"4e";const today=new Date().toISOString().slice(0,10);const P=S.cfg.per;const H=+S.cfg.hours[lv]||0;
   const pi=P.findIndex(p=>today>=p.from&&today<=p.to);const curP=pi>=0?pi:Math.max(0,P.findIndex(p=>today<p.from));
@@ -305,15 +353,14 @@ function vProg(c){
   const cols=P.map((p,i)=>{
     const st=(S.cfg.stages[lv]||[]).filter(x=>+x.p===i+1);const wk=Math.max(0,weeks(p.from,p.to)-st.reduce((a,x)=>a+(+x.wk||0),0));
     const items=prog[i].map((aid,j)=>{const a=aById(aid);const d=doneDate(lv,aid);if(!d&&i<curP)late++;const perso=aid.startsWith("u-");
-      return `<li class="pi ${d?'done':i<curP?'late':''}"><span class="ck">${d?'✓':''}</span><span style="flex:1;min-width:0"><b>${esc(a.t)}</b><small>${esc(a.th)}${perso?' · <em class="perso">perso</em>':''}${d?' · faite le '+fmtD(d):i<curP?' · pas encore faite':''}</small>
+      return `<li class="pi ${d?'done':i<curP?'late':''}"><span class="ck">${d?'✓':''}</span><span style="flex:1;min-width:0"><b>${(u=>u?`<a class="lk" href="${esc(u)}" target="_blank" rel="noopener" title="Ouvrir la ressource">${esc(a.t)} ↗</a>`:esc(a.t))(urlOf(aid))}</b><small>${esc(a.th)}${perso?' · <em class="perso">perso</em>':''}${d?' · faite le '+fmtD(d):i<curP?' · pas encore faite':''}</small>
       ${progEdit?`<span class="ed"><button data-pm="${i},${j},-1" ${i===0?'disabled':''} aria-label="Période précédente">←</button><button data-pm="${i},${j},1" ${i===P.length-1?'disabled':''} aria-label="Période suivante">→</button><button data-pd="${i},${j}" aria-label="Retirer">×</button>${perso?`<button data-prop="${aid}" class="prop">Proposer au site</button>`:''}</span>`:''}</span></li>`}).join('');
     const nd=prog[i].filter(aid=>doneDate(lv,aid)).length;
-    const placed=new Set(prog.flat());
-    const cand=allActs().filter(a=>a.lvl===lv&&!placed.has(a.id));
-    const add=progEdit?`<select class="padd" data-p="${i}" aria-label="Ajouter une séquence en P${i+1}"><option value="">＋ Ajouter…</option>${cand.map(a=>`<option value="${a.id}">${esc(a.th)} · ${esc(a.t)}</option>`).join('')}<option value="__new">＋ Créer une séquence perso…</option></select>`:'';
+    const add=progEdit?`<button type="button" class="btn padd${addFor===i?' primary':''}" data-addp="${i}" aria-label="Ajouter une séquence en P${i+1}">＋ Ajouter…</button>`:'';
     return `<div class="per${i===curP?' now':''}"><div class="ph"><span class="pn">P${i+1}</span><span>${esc(p.t)}</span></div>
       <div class="pm">${fmtD(p.from)} → ${fmtD(p.to)} · ${wk} sem. d'atelier ≈ ${wk*H} h</div>
       ${st.map(x=>`<div class="stg${x.tbc?' tbc':''}">${esc(x.t)} · ${esc(x.d)}</div>`).join('')}
+      ${S.cfg.events.filter(x=>(x.lv==="tous"||x.lv===lv)&&perOf(x.d)===i).sort((a,b)=>a.d.localeCompare(b.d)).map(x=>`<div class="evt">${esc(x.t||"Date")} · ${fmtD(x.d)}${x.d<p.from?' <small>(pendant les vacances)</small>':''}</div>`).join('')}
       <ul class="pl">${items||(progEdit?'':'<li class="pm">Rien de prévu</li>')}</ul>${add}
       <div class="pbar"><i style="width:${prog[i].length?Math.round(100*nd/prog[i].length):0}%"></i></div><div class="pm">${nd} / ${prog[i].length} faites${i===curP?' · période en cours':''}</div></div>`}).join('');
   const planned=new Set(prog.flat().flatMap(aid=>aById(aid).c));const worked=new Set();prog.flat().forEach(aid=>{if(doneDate(lv,aid))aById(aid).c.forEach(k=>worked.add(k))});
@@ -324,10 +371,30 @@ function vProg(c){
     <p class="note2">Compétences travaillées :</p><div class="cks">${Object.keys(BLK).map(b=>`<fieldset><legend>${BLK[b]}</legend>${COMP.filter(k=>k.b===b).map(k=>`<label><input type="checkbox" value="${k.id}"> <span class="blk ${k.b}">${k.code}</span> ${esc(k.t)}</label>`).join('')}</fieldset>`).join('')}</div>
     <div class="row"><button class="btn primary">Créer et placer en P${seqFor+1}</button><button type="button" class="btn" id="sq-cancel">Annuler</button></div></form>`:'';
   const calPanel=calEdit?`<div class="panel2"><h3>Mon calendrier</h3><p class="note2">Adapte les dates à ta zone et à ton collège. Les semaines d'atelier se calculent toutes seules.</p>
-    <div class="caltab">${P.map((p,i)=>`<div class="row"><b style="width:30px">P${i+1}</b><input type="text" data-cal="t" data-i="${i}" value="${esc(p.t)}" aria-label="Nom P${i+1}" style="flex:1;min-width:140px"><input type="date" data-cal="from" data-i="${i}" value="${p.from}" aria-label="Début P${i+1}"><input type="date" data-cal="to" data-i="${i}" value="${p.to}" aria-label="Fin P${i+1}"><span class="pm">${weeks(p.from,p.to)} sem.</span></div>`).join('')}</div>
+    <div class="caltab">${P.map((p,i)=>`<div class="row"><b style="width:30px">P${i+1}</b><input type="text" data-cal="t" data-i="${i}" value="${esc(p.t)}" aria-label="Nom P${i+1}" style="flex:1;min-width:140px"><input type="date" data-cal="from" data-i="${i}" value="${p.from}" aria-label="Début P${i+1}"><input type="date" data-cal="to" data-i="${i}" value="${p.to}" aria-label="Fin P${i+1}"><span class="pm">${weeks(p.from,p.to)} sem.</span><button class="btn danger" data-perdel="${i}" type="button" ${P.length<2?'disabled':''} title="Ce qui est prévu dans cette période passe dans la période d'avant">Retirer</button></div>`).join('')}</div>
+    <div class="row" style="margin-top:8px"><button class="btn" id="per-add" type="button">＋ Ajouter une période</button><span class="note2" style="margin:0">Une période retirée : ses séquences et ses stages passent dans la période voisine.</span></div>
     <div class="row" style="margin-top:10px">${["5e","4e","3e"].map(l=>`<label>${l} : <input type="number" min="0" max="20" data-hours="${l}" value="${S.cfg.hours[l]}" style="width:64px"> h/sem.</label>`).join('')}</div>
     <h3 style="margin-top:14px">Stages en ${lv}</h3>${(S.cfg.stages[lv]||[]).map((x,k)=>`<div class="row" style="margin-top:6px"><select data-stg="p" data-k="${k}">${P.map((_,i)=>`<option value="${i+1}" ${+x.p===i+1?'selected':''}>P${i+1}</option>`).join('')}</select><input type="text" data-stg="t" data-k="${k}" value="${esc(x.t)}" style="width:110px" aria-label="Nom du stage"><input type="text" data-stg="d" data-k="${k}" value="${esc(x.d)}" style="flex:1;min-width:150px" aria-label="Dates du stage"><label><input type="number" min="0" max="6" data-stg="wk" data-k="${k}" value="${x.wk}" style="width:56px"> sem.</label><button class="btn danger" data-stgdel="${k}" type="button">Retirer</button></div>`).join('')}
-    <div class="row" style="margin-top:8px"><button class="btn" id="stg-add" type="button">＋ Ajouter un stage</button><button class="btn" id="cal-close" type="button">Fermer</button></div></div>`:'';
+    <div class="row" style="margin-top:8px"><button class="btn" id="stg-add" type="button">＋ Ajouter un stage</button></div>
+    <h3 style="margin-top:14px">Dates importantes</h3><p class="note2">Brevet blanc, oral du CFG, conseil de classe… Chaque date s'affiche dans la période où elle tombe.</p>
+    <datalist id="evt-idees">${EVT_IDEES.map(x=>`<option value="${esc(x)}">`).join('')}</datalist>
+    ${S.cfg.events.map((x,k)=>`<div class="row" style="margin-top:6px"><input type="text" list="evt-idees" data-evt="t" data-k="${k}" value="${esc(x.t)}" placeholder="Ex. : Brevet blanc" aria-label="Nom de la date" style="flex:1;min-width:160px"><input type="date" data-evt="d" data-k="${k}" value="${x.d}" aria-label="Date"><select data-evt="lv" data-k="${k}" aria-label="Niveau concerné">${[["tous","Tous niveaux"],["5e","5e"],["4e","4e"],["3e","3e"]].map(([v,l])=>`<option value="${v}" ${x.lv===v?'selected':''}>${l}</option>`).join('')}</select><span class="pm">${x.d?(perOf(x.d)>=0?'P'+(perOf(x.d)+1):'hors périodes'):''}</span><button class="btn danger" data-evtdel="${k}" type="button">Retirer</button></div>`).join('')}
+    <div class="row" style="margin-top:8px"><button class="btn" id="evt-add" type="button">＋ Ajouter une date</button><button class="btn" id="cal-close" type="button">Fermer</button></div></div>`:'';
+  let libPanel='';
+  if(addFor!==null){const fl=addLv||lv;const where={};prog.forEach((L,k)=>L.forEach(id=>where[id]=k));
+    const pool=lib().concat((S.custom||[]).map(a=>({...a,th:"Perso"})),Object.values(S.lib||{}).filter(a=>!libById(a.id)));
+    const L=pool.filter(a=>fl==="tous"||a.lvl===fl);
+    const item=a=>{const w=where[a.id];const st=a.th==="Perso"?'séquence perso':a.ok?'<span class="ok">disponible sur le site</span>':a.ok===false?'en préparation':'séquence du modèle';
+      const body=`<b>${esc(a.t.replace(/^Tour du monde des bâtisseurs · /,""))}</b><small>${fl==="tous"?a.lvl+' · ':''}${st}${w!==undefined?' · déjà en P'+(w+1):''}</small>`;
+      return `<li>${w!==undefined?`<span class="lib-it off">${body}</span>`:`<button type="button" class="lib-it" data-addid="${esc(a.id)}">${body}</button>`}${a.url?`<a class="lib-see" href="${esc(a.url)}" target="_blank" rel="noopener" title="Voir la ressource dans un nouvel onglet">Voir ↗</a>`:''}</li>`};
+    const grp=(name,arr)=>arr.length?`<div class="lib-grp"><h4>${esc(name)} · ${arr.length}</h4><ul class="lib-l">${arr.map(item).join('')}</ul></div>`:'';
+    libPanel=`<div class="panel2" id="lib"><h3>Ajouter en P${addFor+1} · ${esc(P[addFor].t)}</h3>
+      <p class="note2">Clique sur une ressource pour la placer dans cette période. « Voir ↗ » ouvre la ressource dans un nouvel onglet.</p>
+      <div class="lib-top"><label for="addlv">Niveau</label><select id="addlv">${["5e","4e","3e"].map(l=>`<option value="${l}" ${l===fl?'selected':''}>${l}</option>`).join('')}<option value="tous" ${fl==="tous"?'selected':''}>Tous les niveaux</option></select>
+      <button type="button" class="btn" id="lib-new">＋ Créer une séquence perso</button><button type="button" class="btn" id="lib-close">Fermer</button></div>
+      ${GROUPS.map(([k,n])=>grp(n,L.filter(a=>a.th===k))).join('')}${grp("Mes séquences perso",L.filter(a=>a.th==="Perso"))}
+      ${grp("Autres",L.filter(a=>a.th!=="Perso"&&!GROUPS.some(([k])=>k===a.th)))}
+      ${L.length?'':'<p class="note2">Rien pour ce niveau pour l\'instant.</p>'}</div>`}
   return `<div class="pick"><label for="plv">Niveau</label><select id="plv">${["5e","4e","3e"].map(l=>`<option ${l===lv?'selected':''}>${l}</option>`).join('')}</select>
     <button class="btn ${progEdit?'primary':''}" id="pedit">${progEdit?'Terminer les modifications':'Modifier ma progression'}</button>
     <button class="btn" id="pcal">Mon calendrier</button>
@@ -335,9 +402,9 @@ function vProg(c){
     <span class="note2" style="margin:0">${H} h d'atelier par semaine · une séquence se coche dès qu'elle est datée dans « Évaluer une activité ».</span></div>
     ${confirmReset?`<div class="confirm">Remplacer ta progression de ${lv} par le modèle du site ? Tes séquences perso restent disponibles dans « Ajouter ». <button class="btn danger" id="preset-yes">Oui, remplacer</button><button class="btn" id="preset-no">Annuler</button></div>`:''}
     ${propMsg?`<div class="msg">${propMsg}</div>`:''}
-    ${calPanel}${seqForm}
+    ${calPanel}${seqForm}${libPanel}
     ${late&&!progEdit?`<div class="confirm" style="background:var(--ec-bg);color:var(--ec)">${late} séquence${late>1?'s':''} des périodes passées ${late>1?'ne sont':'n\'est'} pas encore faite${late>1?'s':''}.</div>`:''}
-    <div class="prog">${cols}</div>
+    <div class="prog" style="--n:${P.length}">${cols}</div>
     <h3 style="font-size:22px;text-transform:uppercase;margin:22px 0 10px">Couverture des compétences en ${lv}</h3><div class="covs">${cov}</div>
     <p class="note2">Les codes sous chaque barre sont les compétences prévues dans l'année mais pas encore travaillées.</p>`;
 }
@@ -374,13 +441,25 @@ document.getElementById('main').addEventListener('click',e=>{
   const pr=t.closest('[data-prop]');if(pr){const a=aById(pr.dataset.prop);const txt=`Proposition de séquence pour L'habitat en SEGPA\nTitre : ${a.t}\nNiveau : ${a.lvl}\nThème : ${a.th}\nCompétences : ${a.c.map(k=>cById(k).code+' '+cById(k).t).join(' ; ')}`;
     navigator.clipboard.writeText(txt).then(()=>{propMsg="Proposition copiée. Colle-la dans un message à M. Dos Santos (sur le vrai site, un formulaire l'enverra directement).";drawMain()}).catch(()=>{propMsg="Copie refusée. "+esc(txt).replace(/\n/g,' · ');drawMain()});return}
   const sd=t.closest('[data-stgdel]');if(sd){S.cfg.stages[lvP].splice(+sd.dataset.stgdel,1);save();drawMain();return}
-  if(t.id==="pedit"){progEdit=!progEdit;confirmReset=false;seqFor=null;propMsg="";drawMain();return}
+  const ap=t.closest('[data-addp]');if(ap){const i=+ap.dataset.addp;addFor=addFor===i?null:i;addLv=null;seqFor=null;drawMain();if(addFor!==null)document.getElementById('lib')?.scrollIntoView({behavior:"smooth",block:"nearest"});return}
+  const ai=t.closest('[data-addid]');if(ai&&addFor!==null){const id=ai.dataset.addid;if(!ACT.some(a=>a.id===id)&&!S.custom.some(a=>a.id===id)&&!S.lib[id]){const x=libById(id);if(x)S.lib[id]={id,t:x.t,th:x.th,lvl:x.lvl,c:x.c.slice(),url:x.url}}
+    S.prog[lvP][addFor].push(id);save();drawMain();return}
+  if(t.id==="lib-close"){addFor=null;drawMain();return}
+  if(t.id==="lib-new"){seqFor=addFor;addFor=null;drawMain();document.getElementById('f-seq')?.scrollIntoView({behavior:"smooth",block:"nearest"});return}
+  if(t.id==="pedit"){progEdit=!progEdit;confirmReset=false;seqFor=null;addFor=null;propMsg="";drawMain();return}
   if(t.id==="pcal"){calEdit=!calEdit;drawMain();return}
   if(t.id==="cal-close"){calEdit=false;drawMain();return}
+  if(t.id==="per-add"){const P=S.cfg.per;P.push({t:"Nouvelle période",from:"",to:""});fitProg();save();drawMain();return}
+  const pdl=t.closest('[data-perdel]');if(pdl&&S.cfg.per.length>1){const i=+pdl.dataset.perdel,to=i>0?i-1:0;
+    for(const L of Object.values(S.prog)){const x=L.splice(i,1)[0]||[];L[to].push(...x)}
+    for(const L of Object.values(S.cfg.stages))L.forEach(x=>{if(+x.p===i+1)x.p=to+1;else if(+x.p>i+1)x.p=+x.p-1});
+    S.cfg.per.splice(i,1);if(addFor!==null)addFor=null;save();drawMain();return}
+  if(t.id==="evt-add"){S.cfg.events.push({t:"",d:"",lv:progLv||c.lvl||"tous"});save();drawMain();return}
+  const edl=t.closest('[data-evtdel]');if(edl){S.cfg.events.splice(+edl.dataset.evtdel,1);save();drawMain();return}
   if(t.id==="stg-add"){(S.cfg.stages[lvP]=S.cfg.stages[lvP]||[]).push({p:1,t:"Stage",d:"dates à préciser",wk:1});save();drawMain();return}
   if(t.id==="preset"){confirmReset=true;drawMain();return}
   if(t.id==="preset-no"){confirmReset=false;drawMain();return}
-  if(t.id==="preset-yes"){S.prog[lvP]=JSON.parse(JSON.stringify(PROG[lvP]));confirmReset=false;save();drawMain();return}
+  if(t.id==="preset-yes"){S.prog[lvP]=JSON.parse(JSON.stringify(PROG[lvP]));fitProg();confirmReset=false;save();drawMain();return}
   if(t.id==="sq-cancel"){seqFor=null;drawMain();return}
   if(t.id==="del"){confirmDel=true;drawMain();return}
   if(t.id==="del-no"){confirmDel=false;drawMain();return}
@@ -390,10 +469,11 @@ document.getElementById('main').addEventListener('change',e=>{const c=cls();cons
   if(t.id==="act"){curAct=t.value;drawMain()}
   if(t.id==="adate"){c.ev[curAct]=c.ev[curAct]||{r:{}};c.ev[curAct].date=t.value;save()}
   if(t.id==="alllv"){allLv=t.checked;drawMain()}
-  if(t.id==="plv"){progLv=t.value;seqFor=null;drawMain()}
+  if(t.id==="plv"){progLv=t.value;seqFor=null;addFor=null;drawMain()}
   const lvP=progLv||c.lvl||"4e";
-  if(t.classList.contains('padd')){const i=+t.dataset.p;if(t.value==="__new"){seqFor=i;drawMain();return}if(t.value){S.prog[lvP][i].push(t.value);save()}drawMain();return}
+  if(t.id==="addlv"){addLv=t.value;drawMain();return}
   if(t.dataset.cal){const p=S.cfg.per[+t.dataset.i];p[t.dataset.cal]=t.value;save();if(t.dataset.cal!=="t")drawMain();return}
+  if(t.dataset.evt){S.cfg.events[+t.dataset.k][t.dataset.evt]=t.value;save();if(t.dataset.evt!=="t")drawMain();return}
   if(t.dataset.hours){S.cfg.hours[t.dataset.hours]=+t.value||0;save();drawMain();return}
   if(t.dataset.stg){const x=S.cfg.stages[lvP][+t.dataset.k];x[t.dataset.stg]=t.dataset.stg==="wk"||t.dataset.stg==="p"?+t.value:t.value;if(t.dataset.stg==="d")x.tbc=/confirmer/i.test(t.value);save();drawMain();return}
   if(t.id==="stsel"){curStudent=t.value;drawMain()}
@@ -411,7 +491,7 @@ document.getElementById('copy-tsv').onclick=()=>{const c=cls(),m=document.getEle
   const lines=[["Élève",...COMP.map(k=>BLK[k.b]+" "+k.code+" - "+k.t)].join("\t"),...c.students.map(s=>[s,...COMP.map(k=>{const v=last(c,s,k.id);return v?lvOf(v)[2]:""})].join("\t"))];
   copy(lines.join("\n"),m,"Bilan des compétences copié. Colle-le dans ton tableur (Ctrl+V).")};
 document.getElementById('copy-json').onclick=()=>copy(JSON.stringify(S),document.getElementById('msg-json'),"Code copié. Colle-le dans un fichier texte pour le garder.");
-function restore(txt){const m=document.getElementById('msg-json');try{const d=JSON.parse(txt);if(!Array.isArray(d.classes))throw 0;d.classes.forEach(c=>c.ev=c.ev||{});S=d;save();draw();m.textContent="Suivi restauré : "+d.classes.length+" classe(s)."}catch(e){m.textContent="Ce code n'est pas une sauvegarde valide. Vérifie que tu l'as copié en entier."}}
+function restore(txt){const m=document.getElementById('msg-json');try{const d=JSON.parse(txt);if(!Array.isArray(d.classes))throw 0;d.classes.forEach(c=>c.ev=c.ev||{});S=d;ensure();save();draw();m.textContent="Suivi restauré : "+d.classes.length+" classe(s)."}catch(e){m.textContent="Ce code n'est pas une sauvegarde valide. Vérifie que tu l'as copié en entier."}}
 document.getElementById('restore').onclick=()=>restore(document.getElementById('json-in').value);
 document.getElementById('file-in').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>restore(r.result);r.readAsText(f)};
 load();draw();
