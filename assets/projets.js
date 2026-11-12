@@ -46,7 +46,7 @@ const P=[
   points:["4 rangs de parpaings creux 50 × 20 × 15 cm","Joints de 1 cm, verticaux et horizontaux","Joints croisés : chaque rang est décalé d'un demi-bloc","Quantités : 10 blocs entiers et 4 demi-blocs"]
  },
  materiaux:[["Parpaings creux 50 × 20 × 15 cm","10 entiers + 2 à couper en deux"],["Chaux hydraulique","1 volume"],["Sable 0/4","3 volumes"],["Eau","au besoin, consistance pâteuse"]],
- outils:[["Truelle de maçon","macon/truelle"],["Auge","macon/auge"],["Seau","macon/seau"],["Cordeau et broches","macon/cordeau"],["Niveau à bulle","carreleur/niveau"],["Règle de maçon","macon/regle"],["Mètre ruban","carreleur/metre"],["Massette","macon/massette"],["Burin","macon/burin"],["Brouette","macon/brouette"],["Fil à plomb",null]],
+ outils:[["Truelle de maçon","macon/truelle"],["Auge","macon/auge"],["Seau","macon/seau"],["Cordeau et broches","macon/cordeau"],["Niveau à bulle","carreleur/niveau"],["Règle de maçon","macon/regle"],["Mètre ruban","carreleur/metre"],["Massette","macon/massette"],["Burin","macon/burin"],["Brouette","macon/brouette"],["Fil à plomb","macon/fil-a-plomb"]],
  epi:["chaussures","gants","lunettes","combinaison"],
  etapes:[
   {t:"Découvrir le projet et lire le plan",h:"1 h",obj:"Je comprends ce que je vais construire et je lis les cotes du plan.",
@@ -109,7 +109,7 @@ const P=[
   points:["Un poteau de 4 blocs poteau 20 × 20 × 20 cm, dans l'angle","4 rangs de parpaings creux 50 × 20 × 15 cm sur chaque aile","Rangs 1 et 3 : 2 blocs entiers ; rangs 2 et 4 : un demi-bloc contre le poteau, un entier, un demi-bloc","Quantités : 12 blocs entiers, 8 demi-blocs (4 blocs à couper), 4 blocs poteau","Joints de 1 cm ; angle droit contrôlé au 60 / 80 / 100"]
  },
  materiaux:[["Parpaings creux 50 × 20 × 15 cm","16 (dont 4 à couper en deux)"],["Blocs poteau 20 × 20 × 20 cm","4"],["Chaux hydraulique","1 volume"],["Sable 0/4","3 volumes"],["Eau","au besoin, consistance pâteuse"]],
- outils:[["Truelle de maçon","macon/truelle"],["Auge","macon/auge"],["Seau","macon/seau"],["Cordeau et broches","macon/cordeau"],["Niveau à bulle","carreleur/niveau"],["Règle de maçon","macon/regle"],["Mètre ruban","carreleur/metre"],["Massette","macon/massette"],["Burin","macon/burin"],["Équerre","menuisier/equerre"],["Fil à plomb",null]],
+ outils:[["Truelle de maçon","macon/truelle"],["Auge","macon/auge"],["Seau","macon/seau"],["Cordeau et broches","macon/cordeau"],["Niveau à bulle","carreleur/niveau"],["Règle de maçon","macon/regle"],["Mètre ruban","carreleur/metre"],["Massette","macon/massette"],["Burin","macon/burin"],["Équerre","menuisier/equerre"],["Fil à plomb","macon/fil-a-plomb"]],
  epi:["chaussures","gants","lunettes","combinaison"],
  etapes:[
   {t:"Découvrir le projet et lire le plan",h:"1 h",obj:"Je comprends ce que je vais construire et je lis les cotes du plan.",
@@ -172,7 +172,7 @@ const P=[
   points:["1re couche (corps d'enduit) : 15 mm, chaux et sable 0/4 dosés 1:3, dressée à la règle sur 2 tasseaux","2e couche (finition) : 5 mm, chaux et sable 0/2 dosés 1:2, talochée","Volumes : environ 19 L pour la 1re couche, 6,4 L pour la 2e","3 chaperons béton à deux pentes, 50 + 1 + 50 + 1 + 50 cm, sur un lit de 1 cm","Le chaperon dépasse des deux côtés et porte une goutte d'eau"]
  },
  materiaux:[["Chaux hydraulique NHL","1re couche 1 volume, 2e couche 1 volume"],["Sable 0/4","3 volumes (1re couche)"],["Sable 0/2","2 volumes (2e couche)"],["Chaperons béton 2 pentes, 50 cm","3 (12 à 15 kg chacun)"],["Tasseaux de 15 mm","2"]],
- outils:[["Truelle de maçon","macon/truelle"],["Auge","macon/auge"],["Seau","macon/seau"],["Règle de maçon","macon/regle"],["Taloche","macon/taloche"],["Niveau à bulle","carreleur/niveau"],["Cordeau","macon/cordeau"],["Éponge","carreleur/eponge"],["Pulvérisateur",null],["Brosse",null]],
+ outils:[["Truelle de maçon","macon/truelle"],["Auge","macon/auge"],["Seau","macon/seau"],["Règle de maçon","macon/regle"],["Taloche","macon/taloche"],["Niveau à bulle","carreleur/niveau"],["Cordeau","macon/cordeau"],["Éponge","carreleur/eponge"],["Pulvérisateur","macon/pulverisateur"],["Brosse métallique","macon/brosse"]],
  epi:["chaussures","gants","lunettes","combinaison"],
  etapes:[
   {t:"Découvrir le projet",h:"1 h",obj:"Je comprends à quoi servent l'enduit et le chaperon.",
@@ -235,7 +235,7 @@ const P=[
   points:["Coffrage en contreplaqué 18 mm : 2 grandes faces 23,6 × 60 vissées sur 2 petites faces 20 × 60","Plateau 60 × 60 : 4 vis 6 × 80 vissées par-dessous relient le poteau au plateau, 4 tasseaux tiennent le pied du coffrage","Cage d'armature du commerce : 4 aciers HA8, étriers HA6, coupée à 55 cm par le prof","Enrobage de 2,5 cm partout, assuré par des cales dessous et sur les côtés","Béton dosé au seau : 1 ciment, 2 sable 0/4, 3 gravillons 4/16, environ un demi-seau d'eau"]
  },
  materiaux:[["Contreplaqué 18 mm","plateau, 2 grandes faces, 2 petites faces"],["Vis 4 × 40 et 6 × 80","environ 24 + 4"],["Tasseaux de pied","4 × 30 cm"],["Huile de décoffrage","1 couche"],["Cage d'armature 4 HA8 + étriers HA6","55 cm"],["Cales d'enrobage 2,5 cm","8"],["Ciment, sable 0/4, gravillons 4/16","1 / 2 / 3 seaux de 10 L"]],
- outils:[["Mètre ruban","carreleur/metre"],["Équerre","menuisier/equerre"],["Scie égoïne","menuisier/scie-egoine"],["Visseuse","menuisier/visseuse"],["Pinceau","peintre/brosse-plate"],["Seau","macon/seau"],["Auge","macon/auge"],["Pelle",null],["Truelle","macon/truelle"],["Taloche","macon/taloche"],["Maillet","menuisier/maillet"],["Niveau à bulle","carreleur/niveau"],["Tige à piquer",null]],
+ outils:[["Mètre ruban","carreleur/metre"],["Équerre","menuisier/equerre"],["Scie égoïne","menuisier/scie-egoine"],["Visseuse","menuisier/visseuse"],["Pinceau","peintre/brosse-plate"],["Seau","macon/seau"],["Auge","macon/auge"],["Pelle","macon/pelle"],["Truelle","macon/truelle"],["Taloche","macon/taloche"],["Maillet","menuisier/maillet"],["Niveau à bulle","carreleur/niveau"],["Tige à piquer","macon/tige-a-piquer"]],
  epi:["chaussures","gants","lunettes","masque","combinaison"],
  etapes:[
   {t:"Découvrir le projet et lire le plan",h:"1 h",obj:"Je comprends à quoi sert un poteau et je lis le plan.",
@@ -362,7 +362,7 @@ const P=[
   points:["Pin ou sapin non traité, 18 mm d'épaisseur","Planche 1 (145 × 800) : façade 145 × 220, dos 145 × 330 (dépasse de 80 mm en bas pour la fixation), toit 145 × 210","Planche 2 (120 × 650) : 2 côtés en trapèze 120 × 250 / 220 tracés tête-bêche, fond 120 × 109 avec 4 trous Ø 6","Trou d'envol Ø 28 (mésange bleue) ou Ø 32 (mésange charbonnière), centre à 170 mm du bas","16 vis 4 × 40 avec avant-trous Ø 3, sans colle ; toit fixé par 2 vis seulement"]
  },
  materiaux:[["Planche pin ou sapin 145 × 18 mm","800 mm"],["Planche pin ou sapin 120 × 18 mm","650 mm"],["Vis 4 × 40","16"],["Papier de verre","grain 80 puis 120"]],
- outils:[["Mètre","carreleur/metre"],["Équerre","menuisier/equerre"],["Crayon",null],["Serre-joint",null],["Scie égoïne","menuisier/scie-egoine"],["Scie à dos","menuisier/scie-a-dos"],["Perceuse",null],["Visseuse","menuisier/visseuse"],["Râpe","menuisier/rape"]],
+ outils:[["Mètre","carreleur/metre"],["Équerre","menuisier/equerre"],["Crayon","macon/crayon"],["Serre-joint",null],["Scie égoïne","menuisier/scie-egoine"],["Scie à dos","menuisier/scie-a-dos"],["Perceuse","macon/perceuse"],["Visseuse","menuisier/visseuse"],["Râpe","menuisier/rape"]],
  epi:["lunettes","chaussures","masque"],
  etapes:[
   {t:"Découvrir le projet et lire le plan",h:"1 h",obj:"Je comprends à quoi sert le nichoir et je lis son plan.",
