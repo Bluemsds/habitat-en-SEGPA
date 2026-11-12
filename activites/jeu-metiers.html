@@ -74,8 +74,11 @@ main{padding-block:28px 72px}
 .couv .titre{background:var(--trame),var(--jaune);display:grid;align-content:space-between;gap:18px;padding:44px 22px 22px}
 .couv h1{font-family:var(--f-bd);font-weight:400;font-size:clamp(3.4rem,10vw,6.6rem);letter-spacing:.03em;line-height:.9;color:#fff;-webkit-text-stroke:3px var(--encre);text-shadow:6px 6px 0 var(--encre);transform:rotate(-2deg)}
 .couv .sous{font-family:var(--f-titre);font-weight:800;font-size:clamp(1.2rem,3vw,1.6rem);max-width:22ch}
-.couv .perso{background:var(--trame),var(--nuit);display:grid;align-content:end;gap:14px;padding:44px 18px 0;overflow:hidden;min-height:300px}
-.couv .perso svg{width:100%;max-width:300px;height:auto;justify-self:center;display:block}
+.couv .perso{background:var(--trame),var(--nuit);display:grid;align-content:start;gap:14px;padding:44px 18px 18px;overflow:hidden;position:relative}
+.mosaique{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.mosaique img,.mq-q{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:top;border:3px solid var(--encre);border-radius:6px;background:#2a3346;display:block}
+.mq-q{display:grid;place-items:center;background:var(--jaune);font-family:var(--f-bd);font-size:clamp(2.4rem,6vw,3.6rem);color:var(--encre);transform:rotate(-3deg)}
+.mq-go{justify-self:center}
 .episodes{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:22px}
 .episodes > *{grid-column:span 2}
 .episodes > :nth-child(1),.episodes > :nth-child(2){grid-column:span 3}
@@ -246,10 +249,12 @@ accueil() {
       <p class="sous">Sept épisodes pour découvrir qui construit, protège, équipe et répare nos bâtiments.</p>
       <div class="row"><button class="btn main" data-go="episode" data-arg="gros">Lire l'épisode 2</button><button class="btn" data-go="devine">Jouer à « Qui suis-je ? »</button></div>
     </div>
-    <div class="case perso"><span class="cartouche">Le défi</span>
+    <button class="case case-btn perso" data-go="devine"><span class="cartouche">Le défi</span>
       <div class="bulle">Dix métiers, trois indices chacun. Tu fais combien sur 10 ?</div>
-      ${silhouette(false)}
-    </div>
+      <div class="mosaique">${IDS.slice().sort(() => Math.random() - .5).slice(0, 8).map((id, i) =>
+        (i === 4 ? `<span class="mq-q">?</span>` : "") + `<img src="${IMG_BASE + id}.jpg" alt="" onerror="this.style.visibility='hidden'">`).join("")}</div>
+      <span class="btn main mq-go">Relever le défi</span>
+    </button>
   </div>
   <div class="episodes">
     ${FAMILLES.map(f => { const L = IDS.filter(k => METIERS[k].f === f.k), n = L.filter(k => T[k]).length;

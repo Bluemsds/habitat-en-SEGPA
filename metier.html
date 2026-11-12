@@ -9,7 +9,7 @@
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=Caveat:wght@600&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=2026-11-12c">
+<link rel="stylesheet" href="assets/site.css?v=2026-11-13b">
 </head>
 <body>
 <header class="top">
@@ -22,6 +22,7 @@
       <li><a href="index.html#ressources">Ressources</a></li>
       <li><a href="index.html#metiers" aria-current="page" data-nav="metiers">Métiers</a></li>
       <li><a href="suivi.html">Mon suivi</a></li>
+      <li><a href="activites/jeu-metiers.html" class="nav-jeu"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16a8 8 0 0 1 16 0z" fill="#FFC928" stroke="#101828" stroke-width="2"/><rect x="2" y="16" width="20" height="3" rx="1.5" fill="#FFC928" stroke="#101828" stroke-width="2"/><rect x="10.5" y="6" width="3" height="5" fill="#101828"/></svg>Le jeu des métiers</a></li>
       <li><a href="metier.html?m=parcours" data-nav="parcours">Parcours Avenir</a></li>
       <li><a href="index.html#apropos">À propos</a></li>
     </ul>
@@ -55,8 +56,8 @@
 
 <footer><div class="wrap"><span>L'habitat en SEGPA · ressources pour l'atelier Habitat</span><span>Site réalisé par M. Dos Santos, PLP</span></div></footer>
 
-<script src="assets/site.js?v=2026-11-12c"></script>
-<script src="assets/compte.js?v=2026-11-12c"></script>
+<script src="assets/site.js?v=2026-11-13b"></script>
+<script src="assets/compte.js?v=2026-11-13b"></script>
 <script>
 const k=new URLSearchParams(location.search).get('m'), met=M.find(x=>x[0]===k);
 document.getElementById('mlist').innerHTML=cartesMetiers(k);
