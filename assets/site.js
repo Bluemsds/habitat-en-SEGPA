@@ -77,10 +77,19 @@ function carte(r,base="",num){
 function aVenir(L){
   return `<ul class="soon-list">${L.map(r=>`<li><span class="tg">${r.lv}</span><b>${esc(r.t)}</b><small>${esc(r.th)} · prévu : ${esc(r.prevu.toLowerCase())}</small></li>`).join("")}</ul>`;
 }
+/* Photo d'outil qui représente chaque métier (tuiles de l'accueil) */
+const PHOTO_M={carreleur:"carreleur/peigne",macon:"macon/truelle",peintre:"peintre/rouleau",plaquiste:"plaquiste/platoir",menuisier:"menuisier/rabot",
+ charpentier:"couvreur-charpentier/marteau-de-charpentier",couvreur:"couvreur-charpentier/marteau-de-couvreur",plombier:"plombier/cle-a-molette",electricien:"electricien/multimetre",metallier:"metallier/poste-a-souder"};
+/* Ressources d'un métier : celles rangées sous sa clé (m), plus l'étape du Tour du monde qui lui est consacrée
+   (repérée par le nom du métier dans le titre : « Étape 2 : Marrakech, le maçon » → macon) */
+const sansAccent=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+function ressourcesMetier(k){
+  return R.filter(r=>r.m===k||(r.m==="parcours"&&/^Tour du monde/.test(r.t)&&new RegExp("\\b(le |l')"+k+"\\b").test(sansAccent(r.t))));
+}
 /* Cartes métier : cliquables dès qu'il y a au moins une ressource, disponible ou en préparation */
 function cartesMetiers(courant){
   return M.map(([k,n])=>{
-    const L=R.filter(r=>r.m===k), ok=L.filter(dispo).length, av=L.length-ok;
+    const L=ressourcesMetier(k), ok=L.filter(dispo).length, av=L.length-ok;
     if(!L.length) return `<div class="metier">${esc(n)}<small>à venir</small></div>`;
     const txt=[ok?`${ok} disponible${ok>1?"s":""}`:"",av?`${av} en préparation`:""].filter(Boolean).join(" · ");
     return `<a class="metier${ok?" on":""}" href="metier.html?m=${k}"${k===courant?' aria-current="page"':""}><span>${esc(n)}</span><small>${txt}</small></a>`;

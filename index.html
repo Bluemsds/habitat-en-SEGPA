@@ -39,10 +39,10 @@
       </div>
       <span class="hand">Gratuit, sans compte élève, modifiable.</span>
     </div>
-    <aside class="now" aria-label="Ressources disponibles maintenant">
-      <div class="now-head">Disponible maintenant</div>
-      <ul class="now-list" id="now"></ul>
-      <span class="hand">un clic, et c'est au tableau</span>
+    <aside class="now" aria-label="Les métiers de l'habitat">
+      <div class="now-head">Les métiers de l'habitat</div>
+      <ul class="now-m" id="now"></ul>
+      <span class="hand">un clic, et on découvre le métier</span>
     </aside>
   </div>
 
@@ -140,7 +140,8 @@ function render(){
 document.querySelectorAll('[data-th]').forEach(b=>b.onclick=()=>{th=b.dataset.th;render()});
 document.querySelectorAll('[data-lv]').forEach(b=>b.onclick=()=>{lv=b.dataset.lv;render()});
 render();
-document.getElementById('now').innerHTML=R.filter(r=>r.url).map(r=>`<li><a href="${r.url}"><span class="tg lv">${r.lv}</span><b>${esc(r.t)}</b><small>${esc(r.type)} · ${esc(r.th)}</small><span class="arr" aria-hidden="true">→</span></a></li>`).join('');
+document.getElementById('now').innerHTML=M.filter(([k])=>PHOTO_M[k]).map(([k,n])=>{const L=ressourcesMetier(k),ok=L.filter(dispo).length;
+  return `<li><a href="metier.html?m=${k}"><img src="img/outils/${PHOTO_M[k]}.jpg" alt="" loading="lazy"><span><b>${esc(n)}</b><small${ok?' class="ok"':''}>${ok?`${ok} ressource${ok>1?"s":""}`:L.length?"en préparation":"bientôt"}</small></span></a></li>`}).join('');
 document.getElementById('mlist').innerHTML=cartesMetiers();
 </script>
 </body>
