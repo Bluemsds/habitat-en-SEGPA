@@ -23,11 +23,72 @@ $('facts').innerHTML=[["Classe",p.lv+(p.lvNote?` <small>(${esc(p.lvNote)})</smal
   .map(([a,b])=>`<div><dt>${a}</dt><dd>${b}</dd></div>`).join("");
 
 /* Schémas des ouvrages, un par projet (clé = p.schema, sinon p.id). Sans schéma : image p.ouvrage.img, ou rien. */
-const SCHEMAS={"mur-droit":mur};
+const SCHEMAS={"mur-droit":mur,"mur-angle":murAngle,"enduit":enduit,"panneau-carreleur":panneau,"nichoir":nichoir};
 function figOuvrage(){
   const f=SCHEMAS[p.schema||p.id];
   const art=f?f():(p.ouvrage.img?`<img src="${p.ouvrage.img}" alt="${esc(p.ouvrage.alt||p.t)}" loading="lazy">`:"");
   return art?`<figure class="plan">${art}<figcaption>${esc(p.ouvrage.dims)}</figcaption></figure>`:`<p class="plan-txt"><b>${esc(p.ouvrage.dims)}</b></p>`;
+}
+
+/* Mur d'angle : vue de dessus, poteau 20 × 20 dans l'angle, deux ailes de 1,22 m extérieur */
+function murAngle(){
+  const sc=3.6,P=20,e=15,A=101,j=1,T=(P+j+A)*sc;
+  const x0=0,y0=0;
+  return `<svg viewBox="-40 -30 ${T+90} ${T+80}" role="img" aria-label="Vue de dessus du mur d'angle : poteau dans l'angle, deux ailes à 90 degrés">
+   <rect x="${x0}" y="${y0}" width="${P*sc}" height="${P*sc}" class="demi" rx="2"/>
+   <text class="lg" x="${P*sc/2}" y="${P*sc/2+4}" style="font-size:11px;text-anchor:middle">poteau</text>
+   <rect x="${(P+j)*sc}" y="0" width="${50*sc}" height="${e*sc}" class="bloc" rx="2"/><rect x="${(P+j+51)*sc}" y="0" width="${50*sc}" height="${e*sc}" class="bloc" rx="2"/>
+   <rect x="0" y="${(P+j)*sc}" width="${e*sc}" height="${50*sc}" class="bloc" rx="2"/><rect x="0" y="${(P+j+51)*sc}" width="${e*sc}" height="${50*sc}" class="bloc" rx="2"/>
+   <g class="cote"><path d="M0 -14H${T}M0 -22v16M${T} -22v16"/><text x="${T/2}" y="-20">1,22 m</text></g>
+   <g class="cote"><path d="M-14 0V${T}M-22 0h16M-22 ${T}h16"/><text x="-24" y="${T/2}" transform="rotate(-90 -24 ${T/2})">1,22 m</text></g>
+   <path d="M${e*sc+18} ${e*sc+18}h26M${e*sc+18} ${e*sc+18}v26" stroke="#8E44C9" stroke-width="2" fill="none"/><text class="lg" x="${e*sc+50}" y="${e*sc+50}">90°</text>
+   <text class="lg" x="${(P+12)*sc}" y="${T*0.55}">Vue de dessus · rang 1</text>
+   <text class="lg" x="${(P+12)*sc}" y="${T*0.55+22}" style="font-size:13px">Rangs 2 et 4 : demi-bloc contre le poteau,</text>
+   <text class="lg" x="${(P+12)*sc}" y="${T*0.55+40}" style="font-size:13px">les joints sont croisés.</text></svg>`;
+}
+/* Enduit et chaperon : coupe verticale du haut du mur (schéma, épaisseurs exagérées) */
+function enduit(){
+  return `<svg viewBox="0 0 560 330" role="img" aria-label="Coupe du mur : enduit en deux couches sur une face, chaperon à deux pentes sur le dessus">
+   <rect x="160" y="110" width="90" height="180" class="bloc"/>
+   <rect x="250" y="110" width="16" height="180" fill="#E3C8F2" stroke="#5B5466" stroke-width="2"/>
+   <rect x="266" y="110" width="7" height="180" fill="#F7E7C9" stroke="#5B5466" stroke-width="2"/>
+   <rect x="160" y="100" width="90" height="10" fill="#C9C4CF" stroke="#5B5466" stroke-width="1.5"/>
+   <path d="M135 100 L205 62 L285 100 L285 108 L135 108 Z" fill="#9C93A8" stroke="#5B5466" stroke-width="2"/>
+   <path d="M143 108v8M277 108v8" stroke="#5B5466" stroke-width="3"/>
+   <g class="cote"><path d="M270 160H340"/><text x="348" y="166" style="text-anchor:start">finition 5 mm</text></g>
+   <g class="cote"><path d="M258 220H340"/><text x="348" y="226" style="text-anchor:start">corps d'enduit 15 mm</text></g>
+   <g class="cote"><path d="M285 104H340"/><text x="348" y="110" style="text-anchor:start">chaperon 2 pentes</text></g>
+   <g class="cote"><path d="M143 116 L100 150"/><text x="90" y="170">goutte d'eau</text></g>
+   <g class="cote"><path d="M160 105 H110"/><text x="70" y="98">lit 1 cm</text></g>
+   <g class="cote"><path d="M160 304H250M160 296v16M250 296v16"/><text x="205" y="326">mur 15 cm</text></g></svg>`;
+}
+/* Panneau 50 × 50 : calepinage depuis les deux axes, carreaux 10 × 10, joints 2 mm, coupes de 4,5 cm */
+function panneau(){
+  const sc=7,L=50;const pos=[[0,4.5],[4.7,10],[14.9,10],[25.1,10],[35.3,10],[45.5,4.5]];let r="";
+  pos.forEach(([x,w])=>pos.forEach(([y,h])=>{const cut=w<10||h<10;r+=`<rect x="${x*sc}" y="${y*sc}" width="${w*sc}" height="${h*sc}" class="${cut?'demi':'bloc'}" rx="1.5"/>`}));
+  const c=L/2*sc;
+  return `<svg viewBox="-30 -34 ${L*sc+70} ${L*sc+74}" role="img" aria-label="Calepinage du panneau 50 par 50 : 16 carreaux entiers au centre, coupes de 4,5 cm sur le pourtour">
+   <rect x="0" y="0" width="${L*sc}" height="${L*sc}" fill="#8A8193"/>${r}
+   <path d="M${c} -8V${L*sc+8}M-8 ${c}H${L*sc+8}" stroke="#E07A1F" stroke-width="2" stroke-dasharray="8 5"/>
+   <g class="cote"><path d="M0 -14H${L*sc}M0 -22v16M${L*sc} -22v16"/><text x="${c}" y="-20">50 cm</text></g>
+   <g class="cote"><path d="M${L*sc+16} 0V${4.5*sc}M${L*sc+8} 0h16M${L*sc+8} ${4.5*sc}h16"/><text x="${L*sc+28}" y="${2.25*sc+6}" style="text-anchor:start">4,5</text></g>
+   <text class="lg" x="0" y="${L*sc+28}">Axes en orange · gris : 16 entiers · mauve : coupes</text></svg>`;
+}
+/* Nichoir : vue de face cotée (mm) */
+function nichoir(){
+  const sc=1.1,W=145,F=220,D=330,ox=40,oy=30;
+  const fy=oy+D*sc-80*sc-F*sc+20;
+  return `<svg viewBox="0 0 ${W*sc+250} ${D*sc+130}" role="img" aria-label="Vue de face du nichoir : façade 145 par 220 mm, trou de 28 mm, dos qui dépasse en bas pour la fixation">
+   <rect x="${ox}" y="${fy+F*sc-250*sc}" width="${W*sc}" height="${330*sc}" fill="#E8D3B0" stroke="#5B5466" stroke-width="2"/>
+   <rect x="${ox}" y="${fy}" width="${W*sc}" height="${F*sc}" fill="#D9BC8C" stroke="#5B5466" stroke-width="2"/>
+   <rect x="${ox-6}" y="${fy-(30+18)*sc}" width="${W*sc+12}" height="${(30+18)*sc}" fill="#9C93A8" stroke="#5B5466" stroke-width="2"/><text class="lg" x="${ox+W*sc/2}" y="${fy-20*sc}" style="text-anchor:middle;fill:#fff;font-size:13px">toit (ouvrable)</text>
+   <circle cx="${ox+W*sc/2}" cy="${fy+F*sc-170*sc}" r="${14*sc}" fill="#2B2733"/>
+   <circle cx="${ox+W*sc/2}" cy="${fy+F*sc+40*sc}" r="4" fill="#5B5466"/>
+   <g class="cote"><path d="M${ox} ${fy+F*sc+96}H${ox+W*sc}M${ox} ${fy+F*sc+88}v16M${ox+W*sc} ${fy+F*sc+88}v16"/><text x="${ox+W*sc/2}" y="${fy+F*sc+118}">145</text></g>
+   <g class="cote"><path d="M${ox+W*sc+18} ${fy}V${fy+F*sc}M${ox+W*sc+10} ${fy}h16M${ox+W*sc+10} ${fy+F*sc}h16"/><text x="${ox+W*sc+30}" y="${fy+F*sc/2}" style="text-anchor:start">220</text></g>
+   <g class="cote"><path d="M${ox+W*sc/2+16*sc} ${fy+F*sc-170*sc}H${ox+W*sc+60}"/><text x="${ox+W*sc+68}" y="${fy+F*sc-170*sc+6}" style="text-anchor:start">Ø 28</text></g>
+   <g class="cote"><path d="M${ox+W*sc+18} ${fy+F*sc}V${fy+F*sc+80*sc}M${ox+W*sc+10} ${fy+F*sc+80*sc}h16"/><text x="${ox+W*sc+30}" y="${fy+F*sc+50}" style="text-anchor:start">dos : +80 pour fixer</text></g>
+   <text class="lg" x="${ox}" y="18">Vue de face · cotes en mm</text></svg>`;
 }
 /* Schéma du mur droit : élévation à l'échelle, rangs décalés d'un demi-bloc */
 function mur(){
