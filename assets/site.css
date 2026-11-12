@@ -202,6 +202,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
 .ouvr{display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:center}
 .plan{margin:0;background:#F4F2F8;border-radius:18px;padding:22px 18px 14px}
 .plan svg{width:100%;height:auto;display:block}
+.plan img{width:100%;height:auto;display:block;border-radius:8px;background:#fff}
 .plan .bloc{fill:#C9C4CF;stroke:#5B5466;stroke-width:2}
 .plan .demi{fill:#E3C8F2;stroke:#5B5466;stroke-width:2}
 .plan .cote path{stroke:#8E44C9;stroke-width:2;fill:none}
