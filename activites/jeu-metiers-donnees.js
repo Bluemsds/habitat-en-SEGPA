@@ -1,8 +1,9 @@
 /* Jeu des métiers du bâtiment : données.
    Textes écrits pour des élèves de SEGPA (5e à 3e) à partir des informations du « Carnet des métiers du bâtiment » (FFB, 2020),
    reformulées : aucune phrase du guide n'est recopiée.
-   Formations : uniquement CAP et bac pro préparés en Essonne, d'après les listes des portes ouvertes 2026 des lycées et CFA
-   de l'Essonne (académie de Versailles) et les fiches ONISEP. À revérifier chaque année sur orientation91.fr.
+   Formations : uniquement CAP et bac pro préparés en Essonne, vérifiés sur orientation91.fr le 13/11/2026 (données rentrée 2025,
+   fiches ONISEP). Les bacs pro du bâtiment commencent par une 2de commune (« famille de métiers ») : la spécialité indiquée
+   par lycée vient des portes ouvertes 2026. À revérifier chaque année sur orientation91.fr.
    Champs : n nom · f famille · s fiche du site · d phrase d'accroche · m missions · o où et avec qui · t outil ou matériau
    · a tu vas aimer · q qualités · dm demain · ch chemin · fo formations [diplôme, [lieux]] · fx phrase si rien en Essonne
    · v à vérifier · i indices du « Qui suis-je ? » (du plus vague au plus précis). */
@@ -13,9 +14,13 @@ const LIEU = {
   JPT:"Lycée Jean-Pierre-Timbaud, Brétigny-sur-Orge",
   EREA:"EREA Le Château du Lac, Ollainville",
   EREAM:"EREA Jean-Isoard, Montgeron",
-  CFA:"CFA du bâtiment, Brétigny-sur-Orge (apprentissage)",
+  CFA:"BTP CFA, Brétigny-sur-Orge (apprentissage)",
   FDM:"Faculté des métiers de l'Essonne, Évry (apprentissage)",
   PMF:"Lycée Pierre-Mendès-France, Ris-Orangis",
+  PMFA:"Lycée Pierre-Mendès-France, Ris-Orangis (apprentissage)",
+  DOISA:"Lycée Robert-Doisneau, Corbeil-Essonnes (apprentissage)",
+  TESLAA:"Lycée Nikola-Tesla, Dourdan (apprentissage)",
+  BRASS:"Lycée Georges-Brassens, Évry-Courcouronnes",
   ADER:"Lycée Clément-Ader, Athis-Mons",
   DOIS:"Lycée Robert-Doisneau, Corbeil-Essonnes",
   NADAR:"Lycée Nadar, Draveil",
@@ -155,7 +160,7 @@ engins:{n:"Conducteur d'engins",f:"gros",d:"Je creuse, je pousse et je nivelle a
  o:"Dehors, dans la cabine de sa pelleteuse ou de son bulldozer, avec l'équipe au sol.",
  t:"La pelleteuse",a:["Les grosses machines","Travailler dehors","Être autonome"],q:["Précis","Vigilant","Respecte la sécurité"],
  dm:"Les engins sont guidés par GPS et certaines machines fonctionnent à l'électricité.",
- ch:["3e","CAP conducteur d'engins","Permis et autorisations","Conducteur d'engins"],fo:[["Bac pro maintenance des matériels de construction",L_(["TESLA"])]],
+ ch:["3e","CAP conducteur d'engins","Permis et autorisations","Conducteur d'engins"],fo:[["Bac pro maintenance des matériels, option matériels de construction",L_(["TESLAA"])]],
  fx:"Pas de CAP conducteur d'engins repéré en Essonne. Le lycée de Dourdan forme à réparer ces engins.",
  i:["Je reste dans une cabine toute la journée.","Je creuse des tranchées.","Je conduis une pelleteuse ou un bulldozer."]},
 
@@ -217,7 +222,7 @@ plombier:{n:"Plombier-chauffagiste",f:"equip",s:"plombier",d:"J'amène l'eau et 
  t:"La clé à molette et le coupe-tube",a:["Bricoler","Dépanner","Rencontrer des clients"],q:["Logique","Adroit","Sérieux"],
  dm:"Pompes à chaleur, chauffe-eau solaires : le plombier devient un spécialiste des énergies renouvelables.",
  ch:["3e","CAP monteur en installations sanitaires","Bac pro chauffage","Chauffagiste"],
- fo:[["CAP monteur en installations sanitaires",L_(["GE","AP","CFA"])],["CAP monteur en installations thermiques",L_(["AP","CFA"])],["Bac pro installateur en chauffage, climatisation et énergies renouvelables",L_(["GE","PMF","CFA"])]],
+ fo:[["CAP monteur en installations sanitaires",L_(["GE","AP","CFA"])],["CAP monteur en installations thermiques",L_(["AP","CFA"])],["Bac pro installateur en chauffage, climatisation et énergies renouvelables",L_(["PMFA","CFA"])]],
  i:["Je répare souvent des fuites.","Je coupe et je raccorde des tuyaux.","J'installe les douches, les lavabos et le chauffage."]},
 electricien:{n:"Électricien",f:"equip",s:"electricien",d:"J'apporte le courant et la lumière partout.",
  m:["Je passe les câbles dans les murs et les plafonds.","Je pose les prises, les interrupteurs et les éclairages.","J'installe le tableau électrique et je vérifie que tout est sans danger."],
@@ -225,7 +230,7 @@ electricien:{n:"Électricien",f:"equip",s:"electricien",d:"J'apporte le courant 
  t:"Le multimètre et la pince à dénuder",a:["La technique","La logique","Le travail soigné"],q:["Rigoureux","Prudent","Logique"],
  dm:"Maisons connectées, bornes pour voitures électriques, panneaux solaires : le métier change vite et recrute.",
  ch:["3e","CAP électricien","Bac pro électricité","Électricien confirmé"],
- fo:[["CAP électricien",L_(["ADER","DOIS","NADAR","MAND","ESS","AMP","MOR","PMF","EREAM","CFA","FDM"])],["Bac pro métiers de l'électricité et de ses environnements connectés",L_(["ADER","DOIS","NADAR","MAND","ESS","AMP","MOR","PMF","VINCI","BELM","VILG","PERR","TESLA"])]],
+ fo:[["CAP électricien",L_(["ADER","DOIS","NADAR","MAND","ESS","AMP","MOR","PMF","EREAM","CFA","FDM"])],["Bac pro métiers des transitions numérique et énergétique (2de commune, puis spécialité électricité selon le lycée)",L_(["ADER","AP","BELM","BRASS","DOIS","ESS","GE","MAND","MOR","NADAR","AMP","PERR","PMF","TESLA","VILG","VINCI"])],["Bac pro électricité (MELEC) en apprentissage",L_(["DOISA","FDM"])]],
  i:["Je dois toujours couper le courant avant de travailler.","J'utilise un multimètre.","Je pose les prises, les câbles et le tableau électrique."]},
 
 /* ---------- 5. Rendre l'intérieur beau ---------- */
@@ -335,7 +340,7 @@ ferronnier:{n:"Ferronnier d'art",f:"patrimoine",d:"Je forge le fer comme un arti
  o:"À l'atelier de forge, puis sur les monuments.",
  t:"La forge et l'enclume",a:["Le feu et le métal","Créer des formes","Les métiers d'art"],q:["Créatif","Patient","Résistant"],
  dm:"Les monuments ont besoin de spécialistes rares : peu de ferronniers, beaucoup de travail.",
- ch:["3e","CAP métallier","CAP ferronnier d'art","Ferronnier"],fo:[["CAP serrurier métallier / métallier",L_(["EREA","CFA"])]],
+ ch:["3e","CAP ferronnier d'art","Entreprise ou atelier","Ferronnier"],fo:[["CAP ferronnier d'art",L_(["CFA"])],["CAP serrurier métallier / métallier",L_(["EREA","CFA"])]],
  fx:"Le CAP ferronnier d'art n'est pas en Essonne. On peut commencer par un CAP métallier.",
  i:["Je travaille près d'un feu.","Je tape sur une enclume.","Je forge des grilles et des rampes décorées."]},
 verrier:{n:"Maître verrier",f:"patrimoine",d:"Je fabrique et je répare les vitraux.",
