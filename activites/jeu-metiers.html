@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Les Bâtisseurs · L'habitat en SEGPA</title>
+<link rel="icon" href="../assets/favicon.svg">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bangers&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+/* « Les Bâtisseurs » : jeu des métiers du bâtiment en planches de BD.
+   Couleurs du site (style Atelier) : encre, bleu de travail, jaune signalétique, rouge ; trames de points façon BD imprimée.
+   Mise en page : chaque vue est une planche ; les cases se rangent en grille et passent en une colonne au téléphone. */
+:root{
+  --papier:#FFFFFF; --encre:#101828; --bleu:#1F4FD1; --jaune:#FFC928; --rouge:#E0442F; --vert:#1E9E5A;
+  --bleu-pale:#E8EEFF; --gris:#3E4A5C; --nuit:#141B2D;
+  --f-bd:"Bangers","Impact","Arial Black",sans-serif;
+  --f-titre:"Bricolage Grotesque","Arial Black",Arial,sans-serif;
+  --f-txt:"Atkinson Hyperlegible",Verdana,system-ui,sans-serif;
+  --trame:radial-gradient(circle,rgba(16,24,40,.16) 1.3px,transparent 1.6px) 0 0/9px 9px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--papier);color:var(--encre);font:400 18px/1.5 var(--f-txt)}
+h1,h2,h3{margin:0;font-family:var(--f-titre);font-weight:800;line-height:1.05;letter-spacing:-.02em;text-wrap:balance}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--bleu);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* Barre */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--papier);border-bottom:3px solid var(--encre)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:31;background:var(--papier)}
+.bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding-block:10px}
+.logo{display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;text-decoration:none}
+.logo b{font-family:var(--f-bd);font-weight:400;font-size:1.9rem;letter-spacing:.04em;line-height:1;background:var(--jaune);border:3px solid var(--encre);padding:2px 10px 0;transform:rotate(-2deg);box-shadow:3px 3px 0 var(--encre)}
+.logo small{font-weight:700;font-size:.8rem;color:var(--gris);max-width:11em;line-height:1.2}
+.bar nav{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
+.tab{border:3px solid var(--encre);border-radius:10px;background:var(--papier);padding:6px 14px;font-weight:700;box-shadow:3px 3px 0 var(--encre);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.tab[aria-current="page"]{background:var(--jaune)}
+.tab.site{border-style:dashed;box-shadow:none}
+.tab:active,.btn:active,.case-btn:active,.choix:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--encre)}
+.compteur{background:var(--rouge);color:#fff;border-radius:999px;padding:0 8px;font-size:.85rem}
+main{padding-block:28px 72px}
+
+/* Éléments de BD */
+.planche{display:grid;gap:16px}
+.case{position:relative;border:3px solid var(--encre);background:var(--papier);box-shadow:5px 5px 0 var(--encre);padding:34px 18px 18px;min-width:0}
+.case.trame{background:var(--trame),var(--c,var(--bleu-pale))}
+.cartouche{position:absolute;top:-3px;left:-3px;background:var(--jaune);border:3px solid var(--encre);padding:3px 10px;font-family:var(--f-titre);font-weight:800;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;max-width:calc(100% + 6px)}
+.cartouche.bleu{background:var(--bleu);color:#fff}
+.cartouche.rouge{background:var(--rouge);color:#fff}
+.bulle{position:relative;background:#fff;border:3px solid var(--encre);border-radius:22px;padding:12px 16px;font-weight:700;line-height:1.35}
+.bulle::after{content:"";position:absolute;width:18px;height:18px;background:#fff;border-right:3px solid var(--encre);border-bottom:3px solid var(--encre);bottom:-11px;left:30px;transform:rotate(45deg) skew(10deg,10deg)}
+.bulle.g::after{left:auto;right:30px}
+.bulle.h::after{bottom:auto;top:-11px;transform:rotate(225deg) skew(10deg,10deg)}
+.onomato{font-family:var(--f-bd);font-weight:400;letter-spacing:.04em;line-height:.95;color:var(--rouge);-webkit-text-stroke:1.5px var(--encre);text-shadow:3px 3px 0 var(--encre)}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 18px;border:3px solid var(--encre);border-radius:12px;background:var(--papier);font-weight:700;box-shadow:4px 4px 0 var(--encre);text-decoration:none}
+.btn.main{background:var(--bleu);color:#fff}
+.btn.jaune{background:var(--jaune)}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.note{font-size:.9rem;color:var(--gris)}
+
+/* Portrait : photo de David si elle existe, sinon silhouette tramée */
+.portrait{position:relative;aspect-ratio:4/5;max-width:100%;border:3px solid var(--encre);background:var(--trame),var(--c,var(--bleu-pale));overflow:hidden}
+.portrait svg{position:absolute;inset:auto 0 0 0;width:100%;height:88%}
+.portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+/* Couverture */
+.couv{display:grid;grid-template-columns:1.25fr 1fr;gap:16px}
+.couv > *{min-width:0}
+.couv .titre{background:var(--trame),var(--jaune);display:grid;align-content:space-between;gap:18px;padding:44px 22px 22px}
+.couv h1{font-family:var(--f-bd);font-weight:400;font-size:clamp(3.4rem,10vw,6.6rem);letter-spacing:.03em;line-height:.9;color:#fff;-webkit-text-stroke:3px var(--encre);text-shadow:6px 6px 0 var(--encre);transform:rotate(-2deg)}
+.couv .sous{font-family:var(--f-titre);font-weight:800;font-size:clamp(1.2rem,3vw,1.6rem);max-width:22ch}
+.couv .perso{background:var(--trame),var(--nuit);display:grid;align-content:end;gap:14px;padding:44px 18px 0;overflow:hidden;min-height:300px}
+.couv .perso svg{width:100%;max-width:300px;height:auto;justify-self:center;display:block}
+.episodes{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:22px}
+.episodes > *{grid-column:span 2}
+.episodes > :nth-child(1),.episodes > :nth-child(2){grid-column:span 3}
+.case-btn{display:grid;gap:10px;text-align:left;font:inherit;cursor:pointer}
+.case-btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--encre)}
+.case-btn h2{font-size:clamp(1.4rem,3vw,1.8rem)}
+.case-btn .noms{font-size:.85rem;color:var(--encre);opacity:.8}
+.ep{font-family:var(--f-bd);font-weight:400;font-size:1.3rem;letter-spacing:.06em}
+
+/* Épisode */
+.entete{display:grid;gap:10px;margin-bottom:22px;max-width:780px}
+.entete h1{font-size:clamp(2.2rem,6vw,3.6rem)}
+.metiers{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px}
+.metiers .case{padding:0}
+.metiers .case-btn{gap:0}
+.metiers .portrait{border:0;border-bottom:3px solid var(--encre)}
+.metiers .bas{padding:12px 14px 14px;display:grid;gap:6px}
+.metiers h3{font-size:1.2rem}
+.metiers .bas p{margin:0;font-size:.92rem}
+.tampon-mini{position:absolute;top:10px;right:10px;z-index:2;background:var(--rouge);color:#fff;font-family:var(--f-bd);font-size:1rem;letter-spacing:.05em;border:3px solid var(--encre);border-radius:50%;width:62px;height:62px;display:grid;place-items:center;transform:rotate(-12deg);text-align:center;line-height:.9}
+.badge-site{display:inline-block;font-size:.72rem;font-weight:700;border:2px solid var(--encre);border-radius:999px;padding:0 8px;background:var(--jaune);justify-self:start}
+
+/* Fiche métier en planche */
+.fiche{display:grid;grid-template-columns:320px 1fr 1fr;gap:16px}
+.fiche > *{min-width:0}
+.fiche .p1{grid-row:span 3;padding:0;display:grid;grid-template-rows:auto 1fr}
+.fiche .p1 .portrait{border:0;border-bottom:3px solid var(--encre)}
+.fiche .p1 .nom{padding:14px 16px 18px;display:grid;gap:12px;align-content:start}
+.fiche .p1 h1{font-size:clamp(1.9rem,4vw,2.5rem)}
+.fiche ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.fiche li.b{background:#fff;border:2px solid var(--encre);border-radius:14px;padding:8px 12px}
+.puces{display:flex;flex-wrap:wrap;gap:8px}
+.puce{border:2px solid var(--encre);border-radius:999px;padding:3px 12px;background:#fff;font-weight:700;font-size:.92rem}
+.outil{font-family:var(--f-titre);font-weight:800;font-size:1.5rem;line-height:1.15}
+.large{grid-column:span 2}
+.chemin{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 14px}
+.etape{border:3px solid var(--encre);background:var(--bleu-pale);padding:6px 12px;font-weight:700;border-radius:10px}
+.etape:last-child{background:var(--jaune)}
+.fleche{font-family:var(--f-bd);font-size:1.6rem;color:var(--bleu)}
+.form{display:grid;gap:10px}
+.form details{border:2px solid var(--encre);border-radius:12px;background:#fff;padding:8px 12px}
+.form summary{font-weight:700;cursor:pointer}
+.form summary small{font-weight:400;color:var(--gris)}
+.form ul{list-style:disc;padding-left:1.2em;margin-top:8px;gap:2px;font-size:.95rem}
+.verif{background:#FDE3DF;border:2px dashed var(--rouge);border-radius:12px;padding:8px 12px;font-size:.92rem}
+.verif b{color:var(--rouge)}
+
+/* Questions */
+.choix-grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:10px}
+.choix{border:3px solid var(--encre);border-radius:12px;background:#fff;padding:12px 14px;font-weight:700;box-shadow:3px 3px 0 var(--encre);text-align:left}
+.choix:hover{background:var(--bleu-pale)}
+.choix.bon{background:#DDF3E7;border-color:var(--vert)}
+.choix.faux{background:#FDE3DF;border-color:var(--rouge)}
+.choix:disabled{cursor:default}
+.q{display:grid;gap:4px;margin-top:16px}
+.q:first-of-type{margin-top:0}
+.verdict{margin-top:16px;display:grid;gap:12px;justify-items:start}
+
+/* Qui suis-je */
+.interro{display:grid;grid-template-columns:300px 1fr;gap:16px}
+.interro > *{min-width:0}
+.ombre{background:var(--trame),var(--nuit);color:#fff;display:grid;align-content:space-between;gap:12px;padding:44px 16px 0;overflow:hidden}
+.ombre svg{width:100%;height:auto;display:block}
+.points{display:flex;gap:6px;flex-wrap:wrap}
+.pt{width:22px;height:22px;border:2px solid #fff;border-radius:50%;display:grid;place-items:center;font-size:.7rem;font-weight:700}
+.pt.ok{background:var(--vert)}
+.pt.ko{background:var(--rouge)}
+.pt.ici{background:var(--jaune);color:var(--encre)}
+.indices{display:grid;gap:18px;margin:6px 0 20px}
+.indice.cache{background:repeating-linear-gradient(45deg,var(--encre) 0 10px,#2A3448 10px 20px);color:#fff;font-weight:400}
+.indice.cache::after{background:#2A3448}
+.note10{font-family:var(--f-bd);font-size:clamp(4rem,14vw,7rem);line-height:.9;color:#fff;-webkit-text-stroke:3px var(--encre);text-shadow:6px 6px 0 var(--encre)}
+.bilan{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.bilan li{display:flex;gap:10px;align-items:center;flex-wrap:wrap;border:2px solid var(--encre);border-radius:12px;padding:8px 12px;background:#fff}
+.bilan .ok{color:var(--vert);font-weight:700}
+.bilan .ko{color:var(--rouge);font-weight:700}
+
+/* Passeport */
+.fam-titre{margin:28px 0 12px;font-size:1.4rem;display:flex;align-items:center;gap:10px}
+.carre{width:18px;height:18px;border:3px solid var(--encre);background:var(--c)}
+.tampons{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
+.tamp{aspect-ratio:1;max-width:100%;border:3px dashed #8A94A3;border-radius:50%;display:grid;place-items:center;text-align:center;padding:12px;font-weight:700;font-size:.85rem;color:#5B6576;background:#fff;cursor:pointer}
+.tamp.ok{border:4px double var(--rouge);color:var(--rouge);transform:rotate(-8deg);background:#FFF5F3;font-family:var(--f-titre)}
+
+@media (max-width:900px){
+  .couv,.interro{grid-template-columns:1fr}
+  .episodes{grid-template-columns:1fr 1fr}
+  .episodes > *,.episodes > :nth-child(1),.episodes > :nth-child(2){grid-column:span 1}
+  .fiche{grid-template-columns:1fr 1fr}
+  .fiche .p1{grid-column:span 2;grid-row:auto;grid-template-columns:200px 1fr;grid-template-rows:auto}
+  .fiche .p1 .portrait{border-bottom:0;border-right:3px solid var(--encre)}
+  .ombre{grid-template-columns:140px 1fr;align-items:end;padding-bottom:12px}
+}
+@media (max-width:560px){
+  .episodes{grid-template-columns:1fr}
+  .fiche{grid-template-columns:1fr}
+  .fiche .p1,.large{grid-column:auto}
+  .fiche .p1{grid-template-columns:1fr}
+  .fiche .p1 .portrait{border-right:0;border-bottom:3px solid var(--encre);max-height:340px;aspect-ratio:auto;height:340px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.case-btn:hover{transform:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap bar">
+    <button class="logo" data-go="accueil" aria-label="Les Bâtisseurs, retour à la couverture"><b>LES BÂTISSEURS</b><small>Le jeu des métiers du bâtiment</small></button>
+    <nav aria-label="Menu du jeu">
+      <button class="tab" data-go="accueil">Les épisodes</button>
+      <button class="tab" data-go="devine">Qui suis-je ?</button>
+      <button class="tab" data-go="passeport">Mon passeport <span class="compteur" id="nbT">0</span></button>
+      <a class="tab site" href="../metier.html?m=parcours">Retour au site</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap" id="vue"></main>
+
+<script src="jeu-metiers-donnees.js?v=2026-11-12c"></script>
+<script>
+const IMG_BASE = "../img/jeu-metiers/";   // portraits déposés par David : <clé>.jpg
+const SITE = "../metier.html?m=";
+const IDS = Object.keys(METIERS);
+const fam = k => FAMILLES.find(f => f.k === k);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const melange = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const pris = (a, n) => melange(a).slice(0, n);
+/* Métiers trop proches pour servir de piège l'un à l'autre (même premier mot ou même savoir-faire) */
+const PROCHES = [["tailleur","sculpteur","marbrier"],["metallier","ferronnier","charpentemetal","monteur"],["macon","macpat","beton","facadier"],["chefequipe","chefchantier","conducteur","patron","affaires"],["metreur","etudes","bim"]];
+const proche = (a, b) => a.split(/[ -]/)[0] === b.split(/[ -]/)[0] || PROCHES.some(g => g.includes(a) && g.includes(b));
+const piege = (id, k) => k !== id && !proche(METIERS[id].n, METIERS[k].n) && !PROCHES.some(g => g.includes(id) && g.includes(k));
+
+/* Passeport : tampons gardés dans ce navigateur */
+let T = {};
+try { T = JSON.parse(localStorage.getItem("batisseurs-tampons") || "{}"); } catch (e) { T = {}; }
+function sauver() { try { localStorage.setItem("batisseurs-tampons", JSON.stringify(T)); } catch (e) {} document.getElementById("nbT").textContent = Object.keys(T).length; }
+
+/* Silhouettes (en attendant les portraits) */
+function silhouette(clair) {
+  const p = clair ? "#101828" : "#0A0F1C", h = clair ? "#101828" : "#FFC928";
+  return `<svg viewBox="0 0 200 220" aria-hidden="true" preserveAspectRatio="xMidYMax meet">
+    <path d="M18 220c4-48 30-74 82-74s78 26 82 74z" fill="${p}"/>
+    <path d="M64 168l36 30 36-30" fill="none" stroke="${clair ? "#FFC928" : "#E0442F"}" stroke-width="10"/>
+    <ellipse cx="100" cy="104" rx="36" ry="42" fill="${p}"/>
+    <path d="M56 92c0-30 20-48 44-48s44 18 44 48z" fill="${h}" stroke="#101828" stroke-width="4"/>
+    <rect x="48" y="88" width="104" height="12" rx="6" fill="${h}" stroke="#101828" stroke-width="4"/>
+    <rect x="94" y="40" width="12" height="20" rx="3" fill="${h}" stroke="#101828" stroke-width="4"/>
+  </svg>`;
+}
+function portrait(id, c) {
+  return `<div class="portrait" style="--c:${c}">${silhouette(true)}<img src="${IMG_BASE + id}.jpg" alt="" loading="lazy" onerror="this.remove()"></div>`;
+}
+
+const V = document.getElementById("vue");
+function aller(vue, arg) {
+  document.querySelectorAll(".tab[data-go]").forEach(b => b.dataset.go === vue ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current"));
+  VUES[vue](arg);
+  window.scrollTo({ top: 0 });
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-go]"); if (b) aller(b.dataset.go, b.dataset.arg); });
+
+const VUES = {
+/* ---------- Couverture ---------- */
+accueil() {
+  V.innerHTML = `
+  <div class="couv">
+    <div class="case titre"><span class="cartouche rouge">Saison 1 · ${IDS.length} métiers</span>
+      <h1>LES<br>BÂTISSEURS</h1>
+      <p class="sous">Sept épisodes pour découvrir qui construit, protège, équipe et répare nos bâtiments.</p>
+      <div class="row"><button class="btn main" data-go="episode" data-arg="gros">Lire l'épisode 2</button><button class="btn" data-go="devine">Jouer à « Qui suis-je ? »</button></div>
+    </div>
+    <div class="case perso"><span class="cartouche">Le défi</span>
+      <div class="bulle">Dix métiers, trois indices chacun. Tu fais combien sur 10 ?</div>
+      ${silhouette(false)}
+    </div>
+  </div>
+  <div class="episodes">
+    ${FAMILLES.map(f => { const L = IDS.filter(k => METIERS[k].f === f.k), n = L.filter(k => T[k]).length;
+      return `<button class="case case-btn trame" style="--c:${f.c}" data-go="episode" data-arg="${f.k}">
+        <span class="cartouche">${f.ep}</span>
+        <h2>${f.n}</h2>
+        <div class="bulle">${f.acc}</div>
+        <span class="noms">${L.map(k => esc(METIERS[k].n)).join(" · ")}</span>
+        <span class="note">${L.length} métiers${n ? ` · ${n} tamponné${n > 1 ? "s" : ""}` : ""}</span>
+      </button>`; }).join("")}
+  </div>`;
+},
+
+/* ---------- Un épisode ---------- */
+episode(k) {
+  const f = fam(k), L = IDS.filter(id => METIERS[id].f === k), i = FAMILLES.indexOf(f), suiv = FAMILLES[(i + 1) % FAMILLES.length];
+  V.innerHTML = `
+  <div class="entete"><span class="ep">${f.ep}</span><h1>${f.n}</h1><p>${f.acc} Clique sur un métier pour lire sa planche.</p></div>
+  <div class="metiers">
+    ${L.map(id => { const m = METIERS[id];
+      return `<button class="case case-btn" data-go="metier" data-arg="${id}">
+        ${T[id] ? `<span class="tampon-mini">VU !</span>` : ""}
+        ${portrait(id, f.c)}
+        <span class="bas"><h3>${esc(m.n)}</h3><p>« ${esc(m.d)} »</p>${m.s ? `<span class="badge-site">Fiche à l'atelier</span>` : ""}</span>
+      </button>`; }).join("")}
+  </div>
+  <div class="row" style="margin-top:26px"><button class="btn" data-go="accueil">Tous les épisodes</button><button class="btn jaune" data-go="episode" data-arg="${suiv.k}">${suiv.ep} : ${suiv.n}</button></div>`;
+},
+
+/* ---------- La planche d'un métier ---------- */
+metier(id) {
+  const m = METIERS[id], f = fam(m.f), L = IDS.filter(k => METIERS[k].f === m.f), pos = L.indexOf(id), suiv = L[(pos + 1) % L.length];
+  const forms = m.fo.length ? `<div class="form">${m.fo.map(([d, lieux]) => `<details><summary>${esc(d)} <small>· ${lieux.length} lieu${lieux.length > 1 ? "x" : ""}</small></summary><ul>${lieux.map(l => `<li>${esc(l)}</li>`).join("")}</ul></details>`).join("")}</div>` : "";
+  V.innerHTML = `
+  <div class="row" style="margin-bottom:18px"><button class="btn" data-go="episode" data-arg="${m.f}">${f.ep} : ${f.n}</button></div>
+  <div class="fiche">
+    <div class="case p1">
+      ${portrait(id, f.c)}
+      <div class="nom"><h1>${esc(m.n)}</h1><div class="bulle h">${esc(m.d)}</div>
+        ${T[id] ? `<span class="onomato" style="font-size:2rem">TAMPONNÉ !</span>` : ""}
+        ${m.s ? `<a class="btn jaune" href="${SITE + m.s}">Voir la fiche ${esc(m.n.toLowerCase())} de l'atelier</a>` : ""}</div>
+    </div>
+    <div class="case large"><span class="cartouche">Mon travail</span>
+      <ul>${m.m.map(x => `<li class="b">${esc(x)}</li>`).join("")}</ul></div>
+    <div class="case trame" style="--c:${f.c}"><span class="cartouche">Où et avec qui ?</span><p style="margin:0">${esc(m.o)}</p></div>
+    <div class="case trame" style="--c:#FFE07A"><span class="cartouche bleu">Mon outil</span><p class="outil" style="margin:0">${esc(m.t)}</p></div>
+    <div class="case"><span class="cartouche">Tu vas aimer si tu aimes…</span><div class="puces">${m.a.map(x => `<span class="puce">${esc(x)}</span>`).join("")}</div></div>
+    <div class="case"><span class="cartouche">Les qualités qu'il faut</span><div class="puces">${m.q.map(x => `<span class="puce">${esc(x)}</span>`).join("")}</div></div>
+    <div class="case large"><span class="cartouche rouge">Comment y arriver</span>
+      <div class="chemin">${m.ch.map((x, i) => `${i ? `<span class="fleche" aria-hidden="true">→</span>` : ""}<span class="etape">${esc(x)}</span>`).join("")}</div>
+      ${m.fx ? `<p style="margin:0 0 12px">${esc(m.fx)}</p>` : ""}
+      ${m.fo.length ? `<p style="margin:0 0 8px;font-weight:700">Où se former en Essonne ?</p>${forms}` : ""}
+      ${m.v ? `<p class="verif" style="margin:12px 0 0"><b>À vérifier.</b> ${esc(m.v)}</p>` : ""}
+    </div>
+    <div class="case trame" style="--c:#E8EEFF"><span class="cartouche bleu">Et demain ?</span><p style="margin:0">${esc(m.dm)}</p></div>
+    <div class="case" style="grid-column:1/-1" id="mission"><span class="cartouche rouge">Ta mission : 3 questions</span><div id="quiz"></div></div>
+  </div>
+  <div class="row" style="margin-top:26px"><button class="btn" data-go="episode" data-arg="${m.f}">Retour à l'épisode</button><button class="btn jaune" data-go="metier" data-arg="${suiv}">Métier suivant : ${esc(METIERS[suiv].n)}</button></div>`;
+  quiz(id);
+},
+
+/* ---------- Qui suis-je ? ---------- */
+devine() { nouvelleSerie(); },
+
+/* ---------- Passeport ---------- */
+passeport() {
+  const n = Object.keys(T).length;
+  V.innerHTML = `
+  <div class="entete"><span class="ep">Mon passeport</span><h1>${n} tampon${n > 1 ? "s" : ""} sur ${IDS.length}</h1>
+  <p>Réponds juste aux 3 questions d'un métier pour gagner son tampon. Clique sur un tampon pour ouvrir le métier. Les tampons restent dans cet ordinateur.</p></div>
+  ${FAMILLES.map(f => `<h2 class="fam-titre"><span class="carre" style="--c:${f.c}"></span>${f.ep} · ${f.n}</h2>
+    <div class="tampons">${IDS.filter(k => METIERS[k].f === f.k).map(k => `<button class="tamp ${T[k] ? "ok" : ""}" data-go="metier" data-arg="${k}">${esc(METIERS[k].n)}</button>`).join("")}</div>`).join("")}
+  <div class="row" style="margin-top:26px"><button class="btn" id="raz">Effacer mes tampons</button></div>`;
+  V.querySelector("#raz").onclick = e => { if (e.target.dataset.sur) { T = {}; sauver(); VUES.passeport(); } else { e.target.dataset.sur = 1; e.target.textContent = "Clique encore pour tout effacer"; } };
+}
+};
+
+/* Les 3 questions d'un métier, fabriquées à partir des données : qui fait ce travail, quel outil, quelle phrase */
+function quiz(id) {
+  const m = METIERS[id], autres = IDS.filter(k => piege(id, k) && METIERS[k].f !== m.f);
+  const Q = [
+    { q: `Qui fait ce travail : « ${pris(m.m, 1)[0]} »`, r: m.n, f: pris(autres, 2).map(k => METIERS[k].n) },
+    { q: `Quel est l'outil du ${m.n.toLowerCase()} ?`, r: m.t, f: pris(autres, 2).map(k => METIERS[k].t) },
+    { q: `Laquelle de ces phrases dit le ${m.n.toLowerCase()} ?`, r: m.d, f: pris(autres, 2).map(k => METIERS[k].d) }
+  ].map(x => ({ ...x, o: melange([x.r, ...x.f]) }));
+  const Z = document.getElementById("quiz"), rep = {};
+  Z.innerHTML = Q.map((x, i) => `<div class="q"><b>${i + 1}. ${esc(x.q)}</b><div class="choix-grille">${x.o.map((o, j) => `<button class="choix" data-q="${i}" data-j="${j}">${esc(o)}</button>`).join("")}</div></div>`).join("") + `<div class="verdict" id="verdict"></div>`;
+  Z.querySelectorAll(".choix").forEach(b => b.onclick = () => {
+    const i = +b.dataset.q, x = Q[i], ok = x.o[+b.dataset.j] === x.r;
+    rep[i] = ok;
+    Z.querySelectorAll(`.choix[data-q="${i}"]`).forEach(c => { c.disabled = true; if (x.o[+c.dataset.j] === x.r) c.classList.add("bon"); });
+    if (!ok) b.classList.add("faux");
+    if (Object.keys(rep).length === Q.length) {
+      const n = Object.values(rep).filter(Boolean).length, vd = document.getElementById("verdict");
+      if (n === 3) { T[id] = 1; sauver(); vd.innerHTML = `<span class="onomato" style="font-size:3rem">BRAVO !</span><p style="margin:0"><b>3 sur 3.</b> Le tampon « ${esc(m.n)} » est dans ton passeport.</p><button class="btn jaune" data-go="passeport">Voir mon passeport</button>`; }
+      else { vd.innerHTML = `<span class="onomato" style="font-size:3rem">PRESQUE…</span><p style="margin:0"><b>${n} sur 3.</b> Relis la planche et retente ta chance.</p><button class="btn main" id="rejouer">Nouvelles questions</button>`; vd.querySelector("#rejouer").onclick = () => quiz(id); }
+    }
+  });
+}
+
+/* « Qui suis-je ? » : série de 10 métiers tirés au hasard, 1 point par bonne réponse */
+let S;
+function nouvelleSerie() { S = { L: pris(IDS, 10), i: 0, res: [] }; question(); }
+function question() {
+  const id = S.L[S.i], m = METIERS[id];
+  const meme = IDS.filter(k => piege(id, k) && METIERS[k].f === m.f), autres = IDS.filter(k => piege(id, k) && METIERS[k].f !== m.f);
+  const pieges = [...pris(meme, Math.min(1, meme.length)), ...pris(autres, 3)].slice(0, 3);
+  const choix = melange([id, ...pieges]);
+  let vus = 1, fini = false;
+  V.innerHTML = `
+  <div class="interro">
+    <div class="case ombre"><span class="cartouche">Qui suis-je ?</span>
+      <div class="points" aria-label="Série de 10">${S.L.map((_, i) => `<span class="pt ${i < S.i ? (S.res[i].ok ? "ok" : "ko") : i === S.i ? "ici" : ""}">${i + 1}</span>`).join("")}</div>
+      ${silhouette(false)}
+    </div>
+    <div class="case"><span class="cartouche rouge">Métier ${S.i + 1} sur 10 · score ${S.res.filter(r => r.ok).length}</span>
+      <div class="indices">${m.i.map((x, k) => `<div class="bulle ${k % 2 ? "g" : ""} indice ${k ? "cache" : ""}" id="ind${k}">${k ? "Indice caché" : `Indice 1 : ${esc(x)}`}</div>`).join("")}</div>
+      <div class="row"><button class="btn" id="plus">Ouvrir un indice</button><span class="note">Tu peux répondre quand tu veux.</span></div>
+      <div class="choix-grille" style="margin-top:16px">${choix.map(k => `<button class="choix" data-k="${k}">${esc(METIERS[k].n)}</button>`).join("")}</div>
+      <div class="verdict" id="verdict"></div>
+    </div>
+  </div>`;
+  const plus = V.querySelector("#plus");
+  plus.onclick = () => { if (vus >= 3) return; const el = V.querySelector("#ind" + vus); el.classList.remove("cache"); el.textContent = `Indice ${vus + 1} : ${m.i[vus]}`; vus++; if (vus >= 3) plus.disabled = true; };
+  V.querySelectorAll(".choix").forEach(b => b.onclick = () => {
+    if (fini) return; fini = true;
+    const ok = b.dataset.k === id;
+    S.res.push({ id, ok, dit: b.dataset.k });
+    V.querySelectorAll(".choix").forEach(c => { c.disabled = true; if (c.dataset.k === id) c.classList.add("bon"); });
+    if (!ok) b.classList.add("faux");
+    for (let k = vus; k < 3; k++) { const el = V.querySelector("#ind" + k); el.classList.remove("cache"); el.textContent = `Indice ${k + 1} : ${m.i[k]}`; }
+    plus.disabled = true;
+    const der = S.i === 9;
+    V.querySelector("#verdict").innerHTML = `<span class="onomato" style="font-size:2.6rem">${ok ? "+1 POINT !" : "RATÉ !"}</span>
+      <p style="margin:0">${ok ? "Bien joué" : `C'était : <b>${esc(m.n)}</b>`}.</p>
+      <button class="btn main" id="suite">${der ? "Voir ma note" : "Métier suivant"}</button>`;
+    V.querySelector("#suite").onclick = () => { S.i++; der ? bilan() : question(); };
+  });
+}
+function bilan() {
+  const n = S.res.filter(r => r.ok).length;
+  try { const best = +localStorage.getItem("batisseurs-record") || 0; if (n > best) localStorage.setItem("batisseurs-record", n); } catch (e) {}
+  const msg = n >= 9 ? "Expert du bâtiment !" : n >= 7 ? "Très bien joué." : n >= 5 ? "Pas mal, continue." : "Relis quelques planches et retente.";
+  V.innerHTML = `
+  <div class="interro">
+    <div class="case ombre"><span class="cartouche">Ta note</span><div class="note10">${n}/10</div><div class="bulle" style="color:var(--encre);margin-bottom:18px">${msg}</div></div>
+    <div class="case"><span class="cartouche rouge">Le bilan</span>
+      <ul class="bilan">${S.res.map((r, i) => `<li><b>${i + 1}.</b> ${esc(METIERS[r.id].n)} ${r.ok ? `<span class="ok">juste</span>` : `<span class="ko">tu as dit ${esc(METIERS[r.dit].n)}</span>`}<button class="btn" style="min-height:36px;margin-left:auto" data-go="metier" data-arg="${r.id}">Lire la planche</button></li>`).join("")}</ul>
+      <div class="row" style="margin-top:18px"><button class="btn main" id="encore">Nouvelle série de 10</button><button class="btn" data-go="accueil">Les épisodes</button></div>
+    </div>
+  </div>`;
+  V.querySelector("#encore").onclick = nouvelleSerie;
+}
+
+sauver();
+aller("accueil");
+</script>
+</body>
+</html>
