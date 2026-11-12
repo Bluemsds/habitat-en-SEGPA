@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Le mur en parpaings</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout : diapositive 16:9 de 1280x720 mise à l'échelle de l'écran (TNI), barre de commande en bas, panneau notes prof repliable */
+:root{
+  --bg:#e9edf3; --slide:#ffffff; --ink:#14223a; --muted:#56637a; --line:#d6dce6;
+  --plan:#123a6b; --plan-ink:#eaf1fb; --accent:#e8711a; --accent-ink:#ffffff;
+  --gros:#8a5a2b; --gros-bg:#f5ebe0; --second:#1d6f8f; --second-bg:#e1f0f6;
+  --ok:#1f8a4c; --ok-bg:#e3f4ea; --ko:#b8322a; --ko-bg:#fbe7e5; --chip:#e7ecf3;
+  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Atkinson Hyperlegible",Verdana,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0b111c; --slide:#162133; --ink:#e7edf6; --muted:#9aa8bd; --line:#2a3850;
+  --plan:#0b2747; --plan-ink:#dce8f8; --accent:#f08a3a; --accent-ink:#1a0f05;
+  --gros:#e0a86c; --gros-bg:#33251a; --second:#6cc3e3; --second-bg:#132f3b;
+  --ok:#5fd193; --ok-bg:#12321f; --ko:#ff8a80; --ko-bg:#3a1714; --chip:#22314a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b111c; --slide:#162133; --ink:#e7edf6; --muted:#9aa8bd; --line:#2a3850;
+  --plan:#0b2747; --plan-ink:#dce8f8; --accent:#f08a3a; --accent-ink:#1a0f05;
+  --gros:#e0a86c; --gros-bg:#33251a; --second:#6cc3e3; --second-bg:#132f3b;
+  --ok:#5fd193; --ok-bg:#12321f; --ko:#ff8a80; --ko-bg:#3a1714; --chip:#22314a; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);margin:0;display:flex;flex-direction:column;overflow:hidden}
+button{font:inherit;cursor:pointer;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.02;text-wrap:balance}
+
+.viewport{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:12px max(12px,env(safe-area-inset-right,0px)) 8px max(12px,env(safe-area-inset-left,0px));position:relative}
+.stage{width:1280px;height:720px;flex:none;transform-origin:center center;position:relative}
+.slide{position:absolute;inset:0;background:var(--slide);border-radius:14px;box-shadow:0 10px 40px rgba(10,30,60,.18);padding:48px 64px;display:flex;flex-direction:column;overflow:hidden}
+.slide[hidden]{display:none!important}
+.eyebrow{font-size:20px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:10px}
+.slide h2{font-size:64px;text-transform:uppercase}
+.lead{font-size:30px;line-height:1.4;margin:18px 0 0;max-width:46ch}
+.foot{position:absolute;left:64px;right:64px;bottom:22px;display:flex;justify-content:space-between;font-size:16px;color:var(--muted)}
+
+/* Couverture */
+.cover{background:var(--plan);color:var(--plan-ink);background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);background-size:32px 32px;justify-content:center}
+.cover h1{font-size:118px;text-transform:uppercase;font-weight:800}
+.cover h1 span{color:var(--accent)}
+.cover .foot{color:var(--plan-ink);opacity:.8}
+.goals{margin-top:34px;display:flex;flex-direction:column;gap:10px;font-size:28px}
+.goals div{display:flex;gap:14px;align-items:center}
+.goals b{background:var(--accent);color:var(--accent-ink);font-family:var(--f-display);font-size:24px;padding:2px 12px;border-radius:4px}
+
+/* Accroche */
+.big-q{font-family:var(--f-display);font-size:96px;font-weight:800;text-transform:uppercase;line-height:1;margin-top:30px}
+.reveal-btn{align-self:flex-start;margin-top:36px;background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:16px 30px;font-size:30px;font-weight:700}
+.answer{margin-top:26px;font-size:34px;line-height:1.4;max-width:42ch}
+.answer strong{font-family:var(--f-display);font-size:56px;color:var(--accent);display:block}
+
+/* Maison */
+.house-wrap{display:grid;grid-template-columns:640px 1fr;gap:36px;margin-top:14px;flex:1;min-height:0}
+.house svg{width:640px;height:auto;display:block}
+.hot{cursor:pointer}
+.hot circle{fill:var(--accent);stroke:var(--slide);stroke-width:4}
+.hot text{fill:var(--accent-ink);font:700 22px var(--f-display);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.hot.found circle{fill:var(--ok)}
+.hot:focus{outline:none}
+.hot:focus-visible circle{stroke:var(--ink)}
+.info{display:flex;flex-direction:column;gap:14px;align-self:center}
+.info .card{background:var(--chip);border-radius:12px;padding:24px 26px;min-height:220px}
+.info .card h3{font-size:46px;text-transform:uppercase}
+.info .card p{font-size:26px;margin:10px 0 0;line-height:1.4}
+.info .card .metier{display:inline-block;margin-top:14px;font-family:var(--f-display);font-size:34px;font-weight:700;color:var(--accent-ink);background:var(--accent);padding:2px 14px;border-radius:6px}
+.counter{font-family:var(--f-display);font-size:30px;font-weight:700;color:var(--muted)}
+
+/* Définitions */
+.defs{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:28px;flex:1}
+.def{border-radius:14px;padding:30px 32px;display:flex;flex-direction:column;gap:14px}
+.def.g{background:var(--gros-bg);border:3px solid var(--gros)}
+.def.s{background:var(--second-bg);border:3px solid var(--second)}
+.def h3{font-size:58px;text-transform:uppercase}
+.def.g h3{color:var(--gros)} .def.s h3{color:var(--second)}
+.def p{font-size:28px;line-height:1.4;margin:0}
+.def ul{margin:0;padding-left:28px;font-size:26px;line-height:1.5}
+
+/* Tri */
+.sort{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:16px;flex:1;min-height:0}
+.col{border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;border:3px dashed;text-align:left;align-items:stretch;justify-content:flex-start}
+.col.g{border-color:var(--gros);background:var(--gros-bg)}
+.col.s{border-color:var(--second);background:var(--second-bg)}
+.col h3{font-size:40px;text-transform:uppercase}
+.col.g h3{color:var(--gros)} .col.s h3{color:var(--second)}
+.col .placed{display:flex;flex-wrap:wrap;gap:8px}
+.pool{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;min-height:62px}
+.tile{border:3px solid var(--line);background:var(--slide);border-radius:10px;padding:10px 20px;font-size:28px;font-weight:700}
+.tile[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent)}
+.tile.ok{border-color:var(--ok);background:var(--ok-bg);color:var(--ok);cursor:default;font-size:24px;padding:6px 14px}
+.tile.shake{border-color:var(--ko);background:var(--ko-bg);color:var(--ko)}
+@media (prefers-reduced-motion:no-preference){.tile.shake{animation:shake .4s}}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.hint{font-size:24px;color:var(--muted);margin-top:8px}
+
+/* Qui suis-je */
+.who{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:22px;flex:1}
+.flip{border:3px solid var(--line);border-radius:12px;background:var(--chip);padding:18px;text-align:left;display:flex;flex-direction:column;justify-content:space-between;gap:10px}
+.flip .clue{font-size:23px;line-height:1.35}
+.flip .ans{font-family:var(--f-display);font-size:38px;font-weight:800;text-transform:uppercase;color:var(--muted)}
+.flip[aria-pressed="true"]{border-color:var(--accent);background:var(--slide)}
+.flip[aria-pressed="true"] .ans{color:var(--accent)}
+
+/* Ordre */
+.order{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
+.step{position:relative;border:3px solid var(--line);border-radius:12px;background:var(--slide);padding:24px 22px 24px 92px;text-align:left;font-size:28px;font-weight:700;min-height:120px;display:flex;align-items:center}
+.step .n{position:absolute;left:20px;top:50%;transform:translateY(-50%);width:56px;height:56px;border-radius:50%;border:3px dashed var(--line);display:grid;place-items:center;font-family:var(--f-display);font-size:34px}
+.step.ok{border-color:var(--ok);background:var(--ok-bg)}
+.step.ok .n{border:0;background:var(--ok);color:var(--slide)}
+.step.shake{border-color:var(--ko);background:var(--ko-bg)}
+@media (prefers-reduced-motion:no-preference){.step.shake{animation:shake .4s}}
+.done-msg{margin-top:20px;font-size:30px;font-weight:700;color:var(--ok)}
+
+/* Trace écrite */
+.trace{margin-top:20px;border:3px solid var(--plan);border-radius:12px;padding:26px 32px;font-size:28px;line-height:1.55;background:repeating-linear-gradient(var(--slide) 0 45px,var(--line) 45px 46px)}
+.trace p{margin:0 0 10px}
+.trace .g{color:var(--gros);font-weight:700} .trace .s{color:var(--second);font-weight:700}
+
+/* Avenir */
+.avenir{display:grid;grid-template-columns:1.1fr 1fr;gap:34px;margin-top:20px;flex:1}
+.me{border:3px solid var(--accent);border-radius:14px;padding:26px 30px;font-size:30px;line-height:2}
+.me .blank{display:inline-block;min-width:260px;border-bottom:3px dotted var(--muted)}
+.caps h3{font-size:34px;text-transform:uppercase;margin-bottom:12px}
+.caps ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.caps li{background:var(--chip);border-radius:6px;padding:8px 14px;font-size:22px;font-weight:700}
+.caps p{font-size:22px;color:var(--muted);margin:14px 0 0}
+
+/* Barre de commande */
+.bar{flex:none;display:flex;align-items:center;gap:10px;padding:8px max(12px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));flex-wrap:wrap;justify-content:center}
+.bar button{background:var(--slide);border:1px solid var(--line);border-radius:8px;padding:10px 16px;font-weight:700;font-size:16px;display:inline-flex;gap:8px;align-items:center}
+.bar .nav{background:var(--plan);color:var(--plan-ink);border-color:var(--plan);font-size:20px;padding:10px 22px}
+.bar .pos{font-family:var(--f-display);font-size:22px;font-weight:700;min-width:70px;text-align:center;font-variant-numeric:tabular-nums}
+.bar button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.notes{flex:none;background:var(--slide);border-top:3px solid var(--accent);padding:14px max(16px,env(safe-area-inset-right,0px)) 14px max(16px,env(safe-area-inset-left,0px));font-size:16px;line-height:1.5;max-height:32vh;overflow:auto}
+.notes h4{margin:0 0 4px;font-family:var(--f-display);font-size:20px;text-transform:uppercase;color:var(--accent)}
+.notes p{margin:0;max-width:110ch}
+</style>
+
+<style>
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:20px;flex:1}
+.wall{border:3px solid var(--line);border-radius:14px;background:var(--slide);padding:18px;display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center}
+.wall svg{width:100%;height:auto}
+.wall b{font-family:var(--f-display);font-size:40px;text-transform:uppercase}
+.wall.ok{border-color:var(--ok);background:var(--ok-bg)} .wall.ko{border-color:var(--ko);background:var(--ko-bg)}
+.fb{font-size:28px;font-weight:700;margin-top:14px;min-height:1.4em}
+.fb.ok{color:var(--ok)} .fb.ko{color:var(--ko)}
+.blk{fill:#c9c4cf;stroke:#14223a;stroke-width:3} .dm{fill:#f5d9b8;stroke:#14223a;stroke-width:3}
+.facts2{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+.fact{background:var(--chip);border-radius:12px;padding:22px 24px}
+.fact b{display:block;font-family:var(--f-display);font-size:52px;color:var(--accent);line-height:1}
+.fact span{font-size:24px}
+.calc{display:grid;grid-template-columns:1.2fr 1fr;gap:30px;margin-top:16px;flex:1;align-items:center}
+.calc table{border-collapse:collapse;font-size:28px;width:100%}
+.calc th,.calc td{border:2px solid var(--line);padding:10px 14px;text-align:center}
+.calc th{background:var(--chip)}
+.calc td.r button{background:var(--accent);color:var(--accent-ink);border:0;border-radius:8px;padding:4px 14px;font-size:24px;font-weight:700}
+.epis{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:24px}
+.epis div{background:var(--chip);border-radius:12px;padding:14px;text-align:center;font-size:24px;font-weight:700}
+.epis img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;background:#fff}
+.warn{margin-top:22px;border:3px solid var(--accent);border-radius:12px;padding:18px 24px;font-size:27px;line-height:1.4}
+.mix{display:flex;gap:18px;align-items:center;margin-top:30px;font-family:var(--f-display);font-size:46px;font-weight:700;flex-wrap:wrap}
+.mix .q{background:var(--chip);border-radius:12px;padding:16px 26px}
+.mix .q small{display:block;font-family:var(--f-body);font-size:20px;font-weight:400;color:var(--muted)}
+</style>
+<div class="viewport" id="vp">
+<div class="stage" id="stage">
+
+<section class="slide cover" data-title="Couverture"
+ data-say="Le mur en parpaings. Aujourd'hui, je découvre le mur que je vais construire avec mon binôme."
+ data-notes="Séance 1 du projet « Monter un mur droit », 1 h. Matériel : TNI, dossier élève pages 1 et 2, plan coté imprimé. Lire les objectifs avec les élèves.">
+  <div class="eyebrow" style="color:var(--accent)">3e SEGPA · Parcours maçonnerie · Projet 1</div>
+  <h1>Le mur en<br><span>parpaings</span></h1>
+  <div class="goals">
+    <div><b>1</b>Je découvre le bloc, le mortier et les joints croisés.</div>
+    <div><b>2</b>Je lis le plan du mur.</div>
+    <div><b>3</b>Je calcule le nombre de blocs.</div>
+  </div>
+  <div class="foot"><span>L'habitat en SEGPA</span><span>Séance 1 · Découvrir le projet</span></div>
+</section>
+
+<section class="slide" data-title="Accroche" hidden
+ data-say="Un mur en parpaings ne tombe pas, même quand on pousse dessus. Pourquoi ?"
+ data-notes="5 min. Recueillir les idées à l'oral (le mortier colle, les blocs sont lourds…). Puis cliquer sur « Voir la réponse ».">
+  <div class="eyebrow">Je réfléchis</div>
+  <div class="big-q">Pourquoi un mur<br>ne s'écroule pas ?</div>
+  <button class="reveal-btn" data-reveal="ans2">Voir la réponse</button>
+  <div class="answer" id="ans2" hidden><strong>Les blocs se croisent.</strong>Chaque bloc repose sur deux blocs du rang d'en dessous, et le mortier les tient ensemble.</div>
+</section>
+
+<section class="slide" data-title="Le bloc" hidden
+ data-say="Le parpaing creux mesure 50 centimètres de long, 20 de haut et 15 d'épaisseur. Il pèse environ 15 kilos."
+ data-notes="5 min. Faire passer un vrai bloc si possible : le soulever correctement (dos droit, jambes fléchies). Les alvéoles le rendent plus léger et isolent un peu.">
+  <div class="eyebrow">Je découvre</div>
+  <h2>Le parpaing creux</h2>
+  <div class="facts2">
+    <div class="fact"><b>50 cm</b><span>de long</span></div>
+    <div class="fact"><b>20 cm</b><span>de haut</span></div>
+    <div class="fact"><b>15 cm</b><span>d'épaisseur</span></div>
+  </div>
+  <div class="warn"><b>≈ 15 kg</b> : je le porte près du corps, le dos droit, les jambes fléchies. Les trous (alvéoles) le rendent plus léger.</div>
+</section>
+
+<section class="slide" data-title="Les joints croisés" hidden
+ data-say="Regarde les deux murs. Lequel est le plus solide ? Touche-le."
+ data-notes="10 min. Faire voter la classe à main levée avant de toucher. Montrer avec le doigt la fissure qui descend tout droit le long des joints alignés du mur A.">
+  <div class="eyebrow">Je compare</div>
+  <h2>Quel mur est le plus solide ?</h2>
+  <div class="cmp" id="cmp">
+    <button class="wall" data-w="a"><svg viewBox="0 0 324 216" aria-hidden="true"><rect x="10" y="170" width="100" height="40" rx="3" class="blk"/><rect x="112" y="170" width="100" height="40" rx="3" class="blk"/><rect x="214" y="170" width="100" height="40" rx="3" class="blk"/><rect x="10" y="128" width="100" height="40" rx="3" class="blk"/><rect x="112" y="128" width="100" height="40" rx="3" class="blk"/><rect x="214" y="128" width="100" height="40" rx="3" class="blk"/><rect x="10" y="86" width="100" height="40" rx="3" class="blk"/><rect x="112" y="86" width="100" height="40" rx="3" class="blk"/><rect x="214" y="86" width="100" height="40" rx="3" class="blk"/><rect x="10" y="44" width="100" height="40" rx="3" class="blk"/><rect x="112" y="44" width="100" height="40" rx="3" class="blk"/><rect x="214" y="44" width="100" height="40" rx="3" class="blk"/></svg><b>Mur A</b></button>
+    <button class="wall" data-w="b"><svg viewBox="0 0 324 216" aria-hidden="true"><rect x="10" y="170" width="100" height="40" rx="3" class="blk"/><rect x="112" y="170" width="100" height="40" rx="3" class="blk"/><rect x="214" y="170" width="100" height="40" rx="3" class="blk"/><rect x="10" y="128" width="49" height="40" rx="3" class="dm"/><rect x="61" y="128" width="100" height="40" rx="3" class="blk"/><rect x="163" y="128" width="100" height="40" rx="3" class="blk"/><rect x="265" y="128" width="49" height="40" rx="3" class="dm"/><rect x="10" y="86" width="100" height="40" rx="3" class="blk"/><rect x="112" y="86" width="100" height="40" rx="3" class="blk"/><rect x="214" y="86" width="100" height="40" rx="3" class="blk"/><rect x="10" y="44" width="49" height="40" rx="3" class="dm"/><rect x="61" y="44" width="100" height="40" rx="3" class="blk"/><rect x="163" y="44" width="100" height="40" rx="3" class="blk"/><rect x="265" y="44" width="49" height="40" rx="3" class="dm"/></svg><b>Mur B</b></button>
+  </div>
+  <div class="fb" id="cmpfb"></div>
+</section>
+
+<section class="slide" data-title="Le mortier" hidden
+ data-say="Le mortier, c'est 1 seau de chaux, 3 seaux de sable, et de l'eau petit à petit."
+ data-notes="5 min. On utilise de la chaux plutôt que du ciment : le mur se démonte en fin de projet et les blocs resservent. Rappel sécurité : gants et lunettes pendant le gâchage.">
+  <div class="eyebrow">Je découvre</div>
+  <h2>Le mortier de chaux</h2>
+  <div class="mix"><span class="q">1 seau<small>de chaux</small></span>+<span class="q">3 seaux<small>de sable 0/4</small></span>+<span class="q">eau<small>petit à petit</small></span></div>
+  <button class="reveal-btn" data-reveal="ans5">Comment je sais qu'il est bon ?</button>
+  <div class="answer" id="ans5" hidden><strong>Il tient sur la truelle retournée.</strong>Trop d'eau : il coule. Pas assez : il ne colle pas.</div>
+</section>
+
+<section class="slide" data-title="Le plan" hidden
+ data-say="Voici le plan de mon mur. Il mesure 1 mètre 52 de long et 84 centimètres de haut."
+ data-notes="10 min. Faire lire les cotes au tableau, puis sur le plan imprimé (dossier page 1). Question : pourquoi 84 cm et pas 80 ? Réponse : 4 rangs de 20 cm + 4 joints de 1 cm.">
+  <div class="eyebrow">Je lis le plan</div>
+  <h2>Mon mur : vue de face</h2>
+  <svg viewBox="0 0 700 250" style="width:1000px;margin-top:6px" role="img" aria-label="Mur de 4 rangs, 1,52 m de long, 0,84 m de haut">
+    <g transform="translate(40,20)"><g transform="translate(0,126)"><rect x="0" y="0" width="100" height="40" rx="3" class="blk"/><rect x="102" y="0" width="100" height="40" rx="3" class="blk"/><rect x="204" y="0" width="100" height="40" rx="3" class="blk"/></g><g transform="translate(0,84)"><rect x="0" y="0" width="49" height="40" rx="3" class="dm"/><rect x="51" y="0" width="100" height="40" rx="3" class="blk"/><rect x="153" y="0" width="100" height="40" rx="3" class="blk"/><rect x="255" y="0" width="49" height="40" rx="3" class="dm"/></g><g transform="translate(0,42)"><rect x="0" y="0" width="100" height="40" rx="3" class="blk"/><rect x="102" y="0" width="100" height="40" rx="3" class="blk"/><rect x="204" y="0" width="100" height="40" rx="3" class="blk"/></g><g transform="translate(0,0)"><rect x="0" y="0" width="49" height="40" rx="3" class="dm"/><rect x="51" y="0" width="100" height="40" rx="3" class="blk"/><rect x="153" y="0" width="100" height="40" rx="3" class="blk"/><rect x="255" y="0" width="49" height="40" rx="3" class="dm"/></g>
+    <path d="M0 186H304M0 178v16M304 178v16" stroke="var(--accent)" stroke-width="3"/><text x="152" y="222" text-anchor="middle" font-size="30" font-weight="700" fill="var(--ink)">1,52 m</text>
+    <path d="M330 0V166M322 0h16M322 166h16" stroke="var(--accent)" stroke-width="3"/><text x="350" y="92" font-size="30" font-weight="700" fill="var(--ink)">0,84 m</text>
+    <text x="470" y="40" font-size="26" fill="var(--muted)">4 rangs</text><text x="470" y="80" font-size="26" fill="var(--muted)">joints de 1 cm</text><text x="470" y="120" font-size="26" fill="var(--muted)">épaisseur 15 cm</text></g>
+  </svg>
+  <button class="reveal-btn" data-reveal="ans6" style="margin-top:4px">Pourquoi 84 cm ?</button>
+  <div class="answer" id="ans6" hidden>4 rangs de 20 cm + 4 joints de 1 cm = <b>84 cm</b>.</div>
+</section>
+
+<section class="slide" data-title="Je calcule les blocs" hidden
+ data-say="Combien de blocs pour chaque rang ? Touche les cases pour vérifier."
+ data-notes="10 min. Faire chercher sur le dossier page 2 avant de dévoiler. Point clé : 4 demi-blocs = 2 blocs coupés, donc 12 blocs à aller chercher.">
+  <div class="eyebrow">Je calcule</div>
+  <h2>Combien de blocs ?</h2>
+  <div class="calc">
+    <table><tr><th></th><th>Entiers</th><th>Demis</th></tr>
+      <tr><th>Rang 1</th><td class="r"><button data-v="3">?</button></td><td class="r"><button data-v="0">?</button></td></tr>
+      <tr><th>Rang 2</th><td class="r"><button data-v="2">?</button></td><td class="r"><button data-v="2">?</button></td></tr>
+      <tr><th>Rang 3</th><td class="r"><button data-v="3">?</button></td><td class="r"><button data-v="0">?</button></td></tr>
+      <tr><th>Rang 4</th><td class="r"><button data-v="2">?</button></td><td class="r"><button data-v="2">?</button></td></tr>
+      <tr><th>Total</th><td class="r"><button data-v="10">?</button></td><td class="r"><button data-v="4">?</button></td></tr></table>
+    <div><button class="reveal-btn" data-reveal="ans7" style="margin-top:0">Combien de blocs je vais chercher ?</button>
+    <div class="answer" id="ans7" hidden><strong>12 blocs</strong>10 entiers + 2 blocs que je coupe en deux pour faire les 4 demis.</div></div>
+  </div>
+</section>
+
+<section class="slide" data-title="L'ordre du travail" hidden
+ data-say="Dans quel ordre je construis mon mur ? Touche les étapes de la première à la dernière."
+ data-notes="5 min. Faire justifier : pourquoi on ne gâche pas le mortier avant d'avoir tracé ? (il durcit pendant qu'on attend).">
+  <div class="eyebrow">Je réfléchis</div>
+  <h2>L'ordre du travail</h2>
+  <p class="lead" style="font-size:26px;margin-top:8px">Touche les étapes dans l'ordre, de la première à la dernière.</p>
+  <div class="order" id="order"></div>
+  <div class="done-msg" id="orderdone" hidden>Bravo ! C'est l'ordre du dossier élève.</div>
+</section>
+
+<section class="slide" data-title="Je me protège" hidden
+ data-say="Pour construire mon mur, je porte mes chaussures de sécurité, mes gants, mes lunettes et ma tenue de travail."
+ data-notes="5 min. Rappeler : la chaux brûle la peau et les yeux. Pour couper un bloc au burin, personne dans l'axe des éclats.">
+  <div class="eyebrow">Sécurité</div>
+  <h2>Mes équipements de protection</h2>
+  <div class="epis"><div><img src="../img/epi/chaussures.jpg" alt="">Chaussures de sécurité</div><div><img src="../img/epi/gants.jpg" alt="">Gants</div><div><img src="../img/epi/lunettes.jpg" alt="">Lunettes</div><div><img src="../img/epi/combinaison.jpg" alt="">Tenue de travail</div></div>
+</section>
+
+<section class="slide" data-title="Trace écrite" hidden
+ data-say="Je recopie ou je colle la trace écrite dans mon dossier."
+ data-notes="5 min. À recopier ou à coller. Texte à trous possible pour les élèves en difficulté d'écriture.">
+  <div class="eyebrow">J'écris</div>
+  <h2>Ce que j'ai appris</h2>
+  <div class="trace">
+    <p>Mon mur mesure 1,52 m de long et 0,84 m de haut : 4 rangs de parpaings 50 × 20 × 15 cm.</p>
+    <p>Les <span class="g">joints sont croisés</span> : chaque bloc repose sur deux blocs. C'est ce qui rend le mur solide.</p>
+    <p>Le <span class="s">mortier de chaux</span> : 1 chaux, 3 sable, de l'eau petit à petit.</p>
+  </div>
+</section>
+
+</div>
+</div>
+<div class="notes" id="notes" hidden><h4 id="ntitle"></h4><p id="ntext"></p></div>
+<div class="bar">
+  <a href="../projet.html?p=mur-droit" style="margin-right:auto;font-weight:700;color:inherit;text-decoration:none;padding:8px 12px">← Projet mur droit</a>
+  <button class="nav" id="prev" aria-label="Diapositive précédente">←</button>
+  <span class="pos" id="pos">1 / 10</span>
+  <button class="nav" id="next" aria-label="Diapositive suivante">→</button>
+  <button id="say"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 7h3l4-4v12l-4-4H2z" fill="currentColor"/><path d="M12 6a4 4 0 0 1 0 6M14 3.5a7 7 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Lire la consigne</button>
+  <button id="ntoggle" aria-pressed="false">Notes prof</button>
+  <button id="fs">Plein écran</button>
+  <button id="restart">Recommencer les activités</button>
+</div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];let cur=0;
+const stage=document.getElementById('stage'),vp=document.getElementById('vp');
+function fit(){const r=vp.getBoundingClientRect();const s=Math.min((r.width-24)/1280,(r.height-20)/720);stage.style.transform=`scale(${Math.max(s,.1)})`}
+new ResizeObserver(fit).observe(vp);
+function show(i){
+  cur=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach((s,k)=>s.hidden=k!==cur);
+  document.getElementById('pos').textContent=(cur+1)+" / "+slides.length;
+  document.getElementById('ntitle').textContent=(cur+1)+". "+slides[cur].dataset.title;
+  document.getElementById('ntext').textContent=slides[cur].dataset.notes;
+  try{speechSynthesis.cancel()}catch(e){}
+  if(location.hash!=='#d'+(cur+1))history.replaceState(null,'','#d'+(cur+1));
+  requestAnimationFrame(fit);
+}
+document.getElementById('prev').onclick=()=>show(cur-1);
+document.getElementById('next').onclick=()=>show(cur+1);
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='PageDown')show(cur+1);
+  if(e.key==='ArrowLeft'||e.key==='PageUp')show(cur-1);
+  if(e.key==='n'||e.key==='N')toggleNotes();
+});
+function toggleNotes(){const n=document.getElementById('notes');n.hidden=!n.hidden;document.getElementById('ntoggle').setAttribute('aria-pressed',!n.hidden);requestAnimationFrame(fit)}
+document.getElementById('ntoggle').onclick=toggleNotes;
+document.getElementById('fs').onclick=()=>{try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{})}catch(e){}};
+document.getElementById('say').onclick=()=>{try{const u=new SpeechSynthesisUtterance(slides[cur].dataset.say);u.lang='fr-FR';u.rate=.95;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}};
+
+/* Révéler */
+document.querySelectorAll('[data-reveal]').forEach(b=>b.onclick=()=>{document.getElementById(b.dataset.reveal).hidden=false;b.hidden=true});
+
+/* Joints croisés */
+document.getElementById('cmp').onclick=e=>{const b=e.target.closest('.wall');if(!b)return;const fb=document.getElementById('cmpfb');
+  document.querySelectorAll('.wall').forEach(w=>w.classList.remove('ok','ko'));
+  if(b.dataset.w==='b'){b.classList.add('ok');fb.className='fb ok';fb.textContent="Oui ! Dans le mur B, les joints sont croisés : chaque bloc s'appuie sur deux blocs."}
+  else{b.classList.add('ko');fb.className='fb ko';fb.textContent="Non : dans le mur A, les joints sont alignés. Une fissure descend tout droit et le mur se coupe en morceaux."}};
+/* Calcul */
+document.querySelectorAll('.calc td.r button').forEach(b=>b.onclick=()=>{b.textContent=b.dataset.v;b.style.background='var(--ok)'});
+/* Ordre */
+const O=["Je lis le plan","Je prépare mon poste","Je trace le mur au sol","Je gâche le mortier","Je pose le 1er rang","Je monte les rangs","Je finis et je range","Je contrôle mon mur"];
+const OS=[3,0,6,2,5,1,7,4];let next=0;
+function drawOrder(){document.getElementById('order').innerHTML=OS.map(i=>`<button class="step${i<next?' ok':''}" data-o="${i}"><span class="n">${i<next?i+1:''}</span>${O[i]}</button>`).join('');document.getElementById('orderdone').hidden=next<O.length}
+document.getElementById('order').onclick=e=>{const b=e.target.closest('.step');if(!b)return;const i=+b.dataset.o;if(i<next)return;
+  if(i===next){next++;drawOrder()}else{b.classList.add('shake');setTimeout(()=>b.classList.remove('shake'),450)}};
+function resetAll(){
+  document.querySelectorAll('.answer').forEach(a=>a.hidden=true);document.querySelectorAll('[data-reveal]').forEach(b=>b.hidden=false);
+  document.querySelectorAll('.wall').forEach(w=>w.classList.remove('ok','ko'));document.getElementById('cmpfb').textContent='';
+  document.querySelectorAll('.calc td.r button').forEach(b=>{b.textContent='?';b.style.background=''});next=0;drawOrder();
+}
+document.getElementById('restart').onclick=resetAll;
+
+resetAll();
+const h=parseInt((location.hash.match(/^#d(\d+)$/)||[])[1]);show(h?h-1:0);fit();
+</script>
+
+</body>
+</html>
