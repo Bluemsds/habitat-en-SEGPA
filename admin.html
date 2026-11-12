@@ -6,17 +6,17 @@
 <title>Statistiques · L'habitat en SEGPA</title>
 <meta name="description" content="Séances d'atelier prêtes à l'emploi pour les PLP Habitat en SEGPA : activités interactives pour le TNI, fiches élève et prof modifiables, suivi des compétences. De la 5e à la 3e.">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#0B0A12">
+<meta name="theme-color" content="#F4F6F9">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Fredoka:wght@600&family=Caveat:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=Caveat:wght@600&display=swap">
 <link rel="stylesheet" href="assets/site.css">
 <body>
 <body>
 <header class="top">
   <div class="wrap nav">
     <a class="logo" href="index.html" aria-label="L'habitat en SEGPA, accueil">
-      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M3 15 15 4l12 11" fill="none" stroke="#C06BE0" stroke-width="3" stroke-linejoin="round"/><rect x="7" y="14" width="7" height="5" fill="#8A8290"/><rect x="16" y="14" width="7" height="5" fill="#8A8290"/><rect x="7" y="21" width="4" height="4" fill="#C06BE0"/><rect x="12" y="21" width="4" height="4" fill="#E3C8F2"/><rect x="17" y="21" width="6" height="4" fill="#8E44C9"/></svg>
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M3 15 15 4l12 11" fill="none" stroke="#1F4FD1" stroke-width="3" stroke-linejoin="round"/><rect x="7" y="14" width="7" height="5" fill="#101828"/><rect x="16" y="14" width="7" height="5" fill="#101828"/><rect x="7" y="21" width="4" height="4" fill="#E0442F"/><rect x="12" y="21" width="4" height="4" fill="#FFC928"/><rect x="17" y="21" width="6" height="4" fill="#E0442F"/></svg>
       <span>L'habitat <em>en SEGPA</em></span>
     </a>
     <ul>
@@ -78,7 +78,8 @@ const c=await Compte.charger(); const u=await Compte.utilisateur();
 if(!u){location.href="compte.html?retour="+encodeURIComponent(location.href);return}
 const {data:s,error}=await c.rpc("stats");
 if(error){$("etat").textContent="Cette page est réservée à l'administrateur du site.";return}
-$("etat").textContent="Les chiffres des comptes sont à jour à l'ouverture de la page.";
+try{localStorage.setItem("skipgc","t")}catch(e){}
+$("etat").textContent="Les chiffres sont à jour à l'ouverture de la page. Vos propres visites, inscription et téléchargements ne sont pas comptés (visites : sur chaque appareil où vous avez ouvert cette page).";
 $("kpi").hidden=false;$("details").hidden=false;
 $("k-inscrits").textContent=s.inscrits;$("k-30").textContent=s.inscrits_30j;$("k-tel").textContent=s.telechargements;$("k-rec").textContent=s.recontact;
 const d=x=>new Date(x).toLocaleDateString("fr-FR");

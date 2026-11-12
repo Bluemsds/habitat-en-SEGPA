@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Espace prof · L'habitat en SEGPA</title>
 <meta name="description" content="Séances d'atelier prêtes à l'emploi pour les PLP Habitat en SEGPA : activités interactives pour le TNI, fiches élève et prof modifiables, suivi des compétences. De la 5e à la 3e.">
-<meta name="theme-color" content="#0B0A12">
+<meta name="theme-color" content="#F4F6F9">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Fredoka:wght@600&family=Caveat:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=Caveat:wght@600&display=swap">
 <link rel="stylesheet" href="assets/site.css">
 <body>
 <body>
 <header class="top">
   <div class="wrap nav">
     <a class="logo" href="index.html" aria-label="L'habitat en SEGPA, accueil">
-      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M3 15 15 4l12 11" fill="none" stroke="#C06BE0" stroke-width="3" stroke-linejoin="round"/><rect x="7" y="14" width="7" height="5" fill="#8A8290"/><rect x="16" y="14" width="7" height="5" fill="#8A8290"/><rect x="7" y="21" width="4" height="4" fill="#C06BE0"/><rect x="12" y="21" width="4" height="4" fill="#E3C8F2"/><rect x="17" y="21" width="6" height="4" fill="#8E44C9"/></svg>
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M3 15 15 4l12 11" fill="none" stroke="#1F4FD1" stroke-width="3" stroke-linejoin="round"/><rect x="7" y="14" width="7" height="5" fill="#101828"/><rect x="16" y="14" width="7" height="5" fill="#101828"/><rect x="7" y="21" width="4" height="4" fill="#E0442F"/><rect x="12" y="21" width="4" height="4" fill="#FFC928"/><rect x="17" y="21" width="6" height="4" fill="#E0442F"/></svg>
       <span>L'habitat <em>en SEGPA</em></span>
     </a>
     <ul>
@@ -32,17 +32,17 @@
 .acc{max-width:520px}
 .onglets{display:flex;gap:6px;margin:26px 0 18px;flex-wrap:wrap}
 .onglets button{font:inherit;color:var(--lilas);background:var(--nuit-2);border:1px solid var(--trait);border-radius:999px;padding:8px 16px;cursor:pointer}
-.onglets button[aria-pressed=true]{background:var(--mauve);color:#140A1C;border-color:var(--mauve)}
+.onglets button[aria-pressed=true]{background:var(--mauve);color:#fff;border-color:var(--mauve)}
 .f{display:grid;gap:14px}
 .f label{display:grid;gap:6px;font-weight:500}
 .f input[type=email],.f input[type=password]{font:inherit;color:var(--craie);background:var(--nuit-2);border:1px solid var(--trait);border-radius:12px;padding:12px 14px;min-height:48px}
 .f input:focus{outline:2px solid var(--mauve);outline-offset:1px}
-.f .coche{display:flex;gap:10px;align-items:flex-start;font-weight:400;color:#DAD6E4}
+.f .coche{display:flex;gap:10px;align-items:flex-start;font-weight:400;color:#2C3A50}
 .f .coche input{margin-top:4px;width:18px;height:18px;accent-color:var(--mauve);flex:none}
 .f button.btn{cursor:pointer;justify-content:center;font:inherit;font-weight:500}
 .f small{color:var(--gris);font-weight:400}
 .msg{border-radius:12px;padding:12px 14px;margin-top:14px;display:none}
-.msg.on{display:block}.msg.ok{background:#12321f;color:#5fd193}.msg.ko{background:#3a1714;color:#ff8a80}
+.msg.on{display:block}.msg.ok{background:#dcf3e5;color:#1e6b3f}.msg.ko{background:#fde2df;color:#b3261e}
 .msg.info{background:var(--nuit-3);color:var(--lilas)}
 .f[hidden]{display:none}
 </style>
@@ -93,7 +93,7 @@
       <label class="coche"><input type="checkbox" id="recontact"><span>J'accepte d'être recontacté par mail (nouveautés, communauté).</span></label>
       <a class="btn btn-ghost" id="admin" href="admin.html" hidden>Statistiques du site</a>
       <button class="btn btn-ghost" id="deco" type="button">Se déconnecter</button>
-      <button class="btn btn-ghost" id="suppr" type="button" style="color:#ff8a80">Supprimer mon compte</button>
+      <button class="btn btn-ghost" id="suppr" type="button" style="color:#b3261e">Supprimer mon compte</button>
     </div>
   </div>
   <div id="msg" class="msg" role="status" aria-live="polite"></div>
@@ -129,7 +129,7 @@ async function afficher(){
   $("moi").textContent=u.email;
   const p=await c.from("profils").select("recontact").eq("id",u.id).maybeSingle();
   $("recontact").checked=!!(p.data&&p.data.recontact);
-  c.rpc("stats").then(r=>{if(!r.error)$("admin").hidden=false});
+  c.rpc("stats").then(r=>{if(!r.error){$("admin").hidden=false;try{localStorage.setItem("skipgc","t")}catch(e){}}});
 }
 c.auth.onAuthStateChange(ev=>{if(ev==="PASSWORD_RECOVERY"){$("invite").hidden=true;$("connecte").hidden=true;$("nouveau").hidden=false;$("titre").textContent="Nouveau mot de passe"}});
 
