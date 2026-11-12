@@ -45,6 +45,18 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .hero h1 .px{background:conic-gradient(var(--mauve) 25%,var(--lilas) 0 50%,var(--mauve) 0 75%,var(--mauve-f) 0) 0 0/.16em .16em;-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero p.lead{font-size:1.15rem;color:#DAD6E4;max-width:52ch;margin:18px 0 24px}
 .hero .hand{font-size:1.7rem;display:block;margin-top:14px;transform:rotate(-2deg)}
+/* Panneau « Les métiers » de l'accueil : grille fixe, une tuile par métier (ne s'allonge pas quand on ajoute des ressources) */
+.now-m{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;list-style:none;margin:0;padding:0}
+.now-m a{display:flex;align-items:center;gap:10px;padding:8px;border-radius:14px;background:var(--nuit);border:1px solid var(--trait);text-decoration:none;color:inherit;transition:border-color .15s,transform .15s;min-width:0}
+.now-m a:hover{border-color:var(--mauve);transform:translateY(-2px)}
+.now-m img{width:48px;height:48px;border-radius:10px;object-fit:cover;flex:none;background:#fff}
+.now-m b{display:block;font-weight:500;font-size:1rem;line-height:1.2}
+.now-m small{display:block;color:var(--gris);font-size:.8rem}
+.now-m small.ok{color:var(--ok)}
+.now-m .pa{grid-column:1/-1}
+.now-m .pa a{border-color:var(--mauve);background:linear-gradient(90deg,rgba(192,107,224,.18),var(--nuit))}
+.now-m .pa-ic{width:48px;height:48px;border-radius:10px;flex:none;display:grid;place-items:center;background:var(--mauve);color:var(--nuit);font-size:1.2rem}
+@media (max-width:420px){.now-m{grid-template-columns:1fr}}
 /* Panneau « Disponible maintenant » : remplace la fausse capture d'écran, chaque ligne ouvre une vraie ressource */
 .now{background:var(--nuit-2);border:1px solid var(--trait);border-radius:20px;padding:20px;box-shadow:0 30px 80px -30px rgba(192,107,224,.45)}
 .now-head{display:flex;align-items:center;gap:10px;font-weight:500;font-size:.78rem;text-transform:uppercase;letter-spacing:.16em;color:var(--gris);margin-bottom:12px}
