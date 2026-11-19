@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Le menuisier · Fiche métier au TNI</title>
+<meta name="description" content="La fiche métier du menuisier à projeter au TNI : une question à la classe, puis les réponses apparaissent une par une.">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Diapo TNI « ping-pong » : chaque rubrique pose une question à la classe ; les réponses sont des cartes « ? »
+   qu'on dévoile une par une (Espace, flèche, clic sur la carte ou bouton Suivant). Scène 1280x720 mise à l'échelle.
+   Style « Atelier » du site : blanc, encre #101828, bleu #1F4FD1, jaune #FFC928, rouge #E0442F, traits 3px, ombres décalées. */
+:root{
+  --fond:#F4F6F9; --blanc:#FFFFFF; --encre:#101828; --gris:#3E4A5C; --bleu:#1F4FD1; --bleu-clair:#E8EEFF;
+  --jaune:#FFC928; --rouge:#E0442F; --vert:#1E9E5A; --bois:#E7C08C; --bois-f:#B98A50;
+  --f-titre:"Bricolage Grotesque","Arial Black",Arial,sans-serif;
+  --f-txt:"Atkinson Hyperlegible",Verdana,Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--fond);color:var(--encre);font-family:var(--f-txt);display:flex;flex-direction:column;overflow:hidden}
+button,a{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--bleu);outline-offset:3px}
+h1,h2,h3{font-family:var(--f-titre);font-weight:800;letter-spacing:-.02em;line-height:1.02;margin:0;text-wrap:balance}
+
+.vue{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:10px;position:relative}
+.scene{width:1280px;height:720px;flex:none;transform-origin:center center;position:relative}
+.diapo{position:absolute;inset:0;background:var(--blanc);border:3px solid var(--encre);border-radius:18px;box-shadow:10px 10px 0 var(--encre);padding:34px 48px 30px;display:flex;flex-direction:column;overflow:hidden}
+.diapo[hidden]{display:none}
+
+/* En-tête de rubrique */
+.rub{display:flex;align-items:center;gap:14px;font-family:var(--f-titre);font-weight:800;font-size:24px;text-transform:uppercase;letter-spacing:.04em;color:var(--bleu)}
+.rub b{display:grid;place-items:center;width:44px;height:44px;border-radius:10px;background:var(--bleu);color:#fff;font-size:26px;border:3px solid var(--encre);box-shadow:3px 3px 0 var(--encre)}
+.question{margin-top:14px;display:flex;align-items:flex-start;gap:16px;background:var(--jaune);border:3px solid var(--encre);border-radius:16px;box-shadow:6px 6px 0 var(--encre);padding:14px 22px}
+.question .bulle{flex:none;width:52px;height:52px;border-radius:50%;background:var(--encre);color:var(--jaune);display:grid;place-items:center;font-family:var(--f-titre);font-weight:800;font-size:36px}
+.question h2{flex:1;text-wrap:pretty;font-size:38px;line-height:1.12;padding-top:4px}
+.question small{display:block;font-family:var(--f-txt);font-weight:400;font-size:22px;letter-spacing:0;margin-top:4px;color:var(--encre)}
+
+/* Cartes réponses : cachées = « ? » cliquable */
+.rep{position:relative;border:3px solid var(--encre);border-radius:16px;background:var(--blanc);box-shadow:5px 5px 0 var(--encre);overflow:hidden}
+.rep .cache{position:absolute;inset:0;display:grid;place-items:center;background:var(--bleu-clair);border:0;border-radius:0;font-family:var(--f-titre);font-weight:800;font-size:72px;color:var(--bleu);width:100%;transition:opacity .35s}
+.rep .cache span{font-size:22px;font-family:var(--f-txt);font-weight:700;color:var(--gris);position:absolute;bottom:12px}
+.rep .cache:hover{background:#D9E3FF}
+.rep.vu .cache{opacity:0;pointer-events:none}
+.rep .contenu{opacity:0;transform:translateY(14px) scale(.98);transition:opacity .4s, transform .4s}
+.rep.vu .contenu{opacity:1;transform:none}
+.rep.vu{animation:pop .5s}
+@keyframes pop{0%{box-shadow:5px 5px 0 var(--encre)}40%{box-shadow:5px 5px 0 var(--encre),0 0 0 8px var(--jaune)}100%{box-shadow:5px 5px 0 var(--encre)}}
+
+/* Couverture et fin */
+.couv{background:var(--bleu);color:#fff;justify-content:center;background-image:linear-gradient(rgba(255,255,255,.08) 2px,transparent 2px),linear-gradient(90deg,rgba(255,255,255,.08) 2px,transparent 2px);background-size:40px 40px}
+.couv .tag{align-self:flex-start;background:var(--jaune);color:var(--encre);border:3px solid var(--encre);border-radius:10px;padding:6px 16px;font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:.06em;box-shadow:4px 4px 0 var(--encre)}
+.couv h1{font-size:150px;color:#fff;margin-top:22px;letter-spacing:-.04em}
+.couv p{font-size:34px;max-width:24ch;margin:14px 0 0;line-height:1.3}
+.couv .photo{position:absolute;right:60px;top:50%;transform:translateY(-50%) rotate(-4deg);width:380px;height:380px;border:3px solid var(--encre);border-radius:20px;box-shadow:10px 10px 0 var(--encre);background:#fff;overflow:hidden}
+.couv .photo img{width:100%;height:100%;object-fit:cover;display:block}
+.couv .aide{position:absolute;left:48px;bottom:30px;font-size:22px;opacity:.9}
+.couv .aide kbd,.fin kbd{background:#fff;color:var(--encre);border:2px solid var(--encre);border-radius:6px;padding:0 8px;font-family:var(--f-txt);font-weight:700}
+
+/* 1. Le métier en une phrase */
+.objets{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:26px;flex:1;max-height:300px}
+.objets .contenu{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:14px}
+.objets svg{width:130px;height:130px}
+.objets h3{font-size:40px}
+.phrase{margin-top:22px;min-height:120px}
+.phrase .contenu{padding:16px 24px;font-size:34px;line-height:1.3}
+.phrase .contenu small{display:block;font-size:24px;color:var(--gris);margin-top:6px}
+.phrase .contenu b{background:var(--jaune);padding:0 6px;border-radius:6px}
+
+/* 2. Étapes */
+.etapes{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;gap:18px;margin-top:18px;flex:1;min-height:0}
+.etape .contenu{height:100%;display:grid;grid-template-columns:110px 1fr;grid-template-rows:auto 1fr auto;gap:8px 14px;padding:12px 14px;align-items:center}
+.etape .num{grid-column:1/3;display:flex;align-items:center;gap:10px;font-family:var(--f-titre);font-weight:800;font-size:27px;line-height:1.05}
+.etape .num b{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--bleu);color:#fff;font-size:22px}
+.etape img{width:110px;height:110px;object-fit:cover;border:2px solid var(--encre);border-radius:10px;background:#eee}
+.etape p{margin:0;font-size:24px;line-height:1.2}
+.etape p.outil{grid-column:1/3;font-size:21px;line-height:1.2;color:var(--gris);border-top:2px dashed #C9D1DD;padding-top:6px}
+.etape .outil b{color:var(--encre);background:var(--jaune);padding:0 5px;border-radius:5px}
+
+/* 3. Les mots : tenon et mortaise */
+.mots{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:22px;flex:1;min-height:0}
+.mot .contenu{height:100%;display:flex;flex-direction:column;justify-content:center;padding:16px 18px;gap:10px}
+.mot svg{width:100%;height:190px}
+.mot h3{font-size:42px;color:var(--bleu)}
+.mot p{margin:0;font-size:27px;line-height:1.25}
+
+/* Listes de réponses (où, comment, qualités, formation) */
+.liste{display:grid;gap:18px;margin-top:22px;flex:1;min-height:0}
+.liste.c2{grid-template-columns:1fr 1fr}
+.item .contenu{height:100%;display:flex;align-items:center;gap:20px;padding:14px 22px}
+.item .ico{flex:none;width:92px;height:92px;border-radius:16px;background:var(--bleu-clair);border:3px solid var(--encre);display:grid;place-items:center;color:var(--bleu)}
+.item .ico svg{width:62px;height:62px}
+.item h3{font-size:38px}
+.item p{margin:4px 0 0;font-size:26px;line-height:1.25}
+.item.attention .ico{background:#FDE6E2;color:var(--rouge)}
+
+/* EPI */
+.epi{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;gap:18px;margin-top:18px;flex:1;min-height:0}
+.epi .contenu{height:100%;display:flex;align-items:center;gap:14px;padding:12px 14px}
+.epi img{flex:none;width:120px;height:120px;object-fit:cover;border:2px solid var(--encre);border-radius:12px}
+.epi h3{font-size:32px}
+.epi p{margin:4px 0 0;font-size:22px;line-height:1.2}
+.epi .danger p{color:var(--rouge);font-weight:700}
+
+/* Fin */
+.fin{justify-content:center;align-items:flex-start;background:var(--jaune)}
+.fin h1{font-size:96px}
+.fin p{font-size:34px;line-height:1.35;max-width:30ch;margin:18px 0 0}
+
+/* Barre du bas (hors scène) */
+.barre{flex:none;display:flex;align-items:center;gap:10px;padding:8px 14px calc(8px + env(safe-area-inset-bottom,0px));background:var(--blanc);border-top:3px solid var(--encre)}
+.barre .b{display:inline-flex;align-items:center;gap:8px;min-height:50px;padding:0 18px;border:3px solid var(--encre);border-radius:12px;background:var(--blanc);font-weight:700;font-size:18px;text-decoration:none;box-shadow:3px 3px 0 var(--encre)}
+.barre .b:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--encre)}
+.barre .b.suiv{background:var(--bleu);color:#fff;font-size:22px;padding:0 30px}
+.barre .b.prec{font-size:22px}
+.barre .vide{flex:1}
+.barre .pos{font-family:var(--f-titre);font-weight:800;font-size:22px;min-width:84px;text-align:center}
+.points{display:flex;gap:6px}
+.points i{width:14px;height:14px;border-radius:50%;border:2px solid var(--encre);background:var(--blanc)}
+.points i.ok{background:var(--bleu)}
+.points i.ici{background:var(--jaune);transform:scale(1.25)}
+@media (max-width:760px){.barre .opt,.points{display:none}}
+</style>
+</head>
+<body>
+<main class="vue" id="vue"><div class="scene" id="scene">
+
+<!-- 0. Couverture -->
+<section class="diapo couv">
+  <span class="tag">Fiche métier · Habitat</span>
+  <h1>Le menuisier</h1>
+  <p>Il travaille le bois. Que savez-vous de son métier ?</p>
+  <div class="photo"><img src="../img/outils/menuisier/rabot.jpg" alt="Un rabot de menuisier"></div>
+  <div class="aide">Avancer : <kbd>Espace</kbd> <kbd>→</kbd> ou le bouton Suivant. Toucher un « ? » le dévoile.</div>
+</section>
+
+<!-- 1. Le métier en une phrase -->
+<section class="diapo">
+  <div class="rub"><b>1</b>Le métier en une phrase</div>
+  <div class="question"><div class="bulle">?</div><h2>D'après vous, que fabrique un menuisier ?<small>Que trouve-t-on en bois dans une maison ?</small></h2></div>
+  <div class="objets">
+    <div class="rep"><div class="contenu"><svg viewBox="0 0 64 64" fill="none" stroke="#101828" stroke-width="3" stroke-linejoin="round"><rect x="16" y="6" width="32" height="54" rx="2" fill="#E7C08C"/><rect x="21" y="12" width="22" height="18" fill="#F3D9B4"/><rect x="21" y="35" width="22" height="18" fill="#F3D9B4"/><circle cx="41" cy="33" r="2.5" fill="#101828"/></svg><h3>Les portes</h3></div><button class="cache" aria-label="Dévoiler">?</button></div>
+    <div class="rep"><div class="contenu"><svg viewBox="0 0 64 64" fill="none" stroke="#101828" stroke-width="3" stroke-linejoin="round"><rect x="8" y="8" width="48" height="48" rx="2" fill="#E7C08C"/><rect x="14" y="14" width="16" height="36" fill="#CFE0FF"/><rect x="34" y="14" width="16" height="36" fill="#CFE0FF"/><path d="M14 32h16M34 32h16"/></svg><h3>Les fenêtres</h3></div><button class="cache" aria-label="Dévoiler">?</button></div>
+    <div class="rep"><div class="contenu"><svg viewBox="0 0 64 64" fill="none" stroke="#101828" stroke-width="3" stroke-linejoin="round"><rect x="8" y="6" width="48" height="54" rx="2" fill="#E7C08C"/><path d="M32 6v54M8 20h48"/><path d="M27 36v8M37 36v8"/></svg><h3>Les placards</h3></div><button class="cache" aria-label="Dévoiler">?</button></div>
+    <div class="rep"><div class="contenu"><svg viewBox="0 0 64 64" fill="none" stroke="#101828" stroke-width="3" stroke-linejoin="round"><path d="M6 58V48h12V38h12V28h12V18h12V8h4v50z" fill="#E7C08C"/></svg><h3>Les escaliers</h3></div><button class="cache" aria-label="Dévoiler">?</button></div>
+  </div>
+  <div class="rep phrase"><div class="contenu">Le menuisier <b>fabrique</b> et <b>pose</b> les portes, les fenêtres, les placards et les escaliers.<small>Famille de métiers : le second œuvre (les aménagements en bois).</small></div><button class="cache" aria-label="Dévoiler la phrase">?<span>La phrase à retenir</span></button></div>
+</section>
+
+<!-- 2. Étapes -->
+<section class="diapo">
+  <div class="rub"><b>2</b>Ce qu'il fait, étape par étape</div>
+  <div class="question"><div class="bulle">?</div><h2>Votre support téléphone : par quoi avez-vous commencé ? Et ensuite ?</h2></div>
+  <div class="etapes">
+    <div class="rep etape"><div class="contenu"><div class="num"><b>1</b>Il prend les mesures</div><img src="../img/outils/menuisier/equerre.jpg" alt="Équerre"><p>Il mesure chez le client et dessine le plan.</p><p class="outil"><b>L'équerre</b> vérifie l'angle droit.</p></div><button class="cache" aria-label="Dévoiler l'étape 1">1</button></div>
+    <div class="rep etape"><div class="contenu"><div class="num"><b>2</b>Il trace</div><img src="../img/outils/menuisier/trusquin.jpg" alt="Trusquin"><p>Il reporte les <b>cotes</b> sur le bois.</p><p class="outil"><b>Le trusquin</b> trace le long du bord.</p></div><button class="cache" aria-label="Dévoiler l'étape 2">2</button></div>
+    <div class="rep etape"><div class="contenu"><div class="num"><b>3</b>Il coupe</div><img src="../img/outils/menuisier/scie-a-dos.jpg" alt="Scie à dos"><p>Il scie les pièces à la bonne longueur.</p><p class="outil"><b>La scie à dos</b> coupe droit et précis.</p></div><button class="cache" aria-label="Dévoiler l'étape 3">3</button></div>
+    <div class="rep etape"><div class="contenu"><div class="num"><b>4</b>Il fait les assemblages</div><img src="../img/outils/menuisier/ciseau-a-bois.jpg" alt="Ciseau à bois"><p>Il taille les <b>tenons</b> et les <b>mortaises</b>.</p><p class="outil"><b>Le ciseau à bois</b> creuse le bois.</p></div><button class="cache" aria-label="Dévoiler l'étape 4">4</button></div>
+    <div class="rep etape"><div class="contenu"><div class="num"><b>5</b>Il rabote et il ponce</div><img src="../img/outils/menuisier/rabot.jpg" alt="Rabot"><p>Il rend les pièces lisses et droites.</p><p class="outil"><b>Le rabot</b> enlève de fins copeaux.</p></div><button class="cache" aria-label="Dévoiler l'étape 5">5</button></div>
+    <div class="rep etape"><div class="contenu"><div class="num"><b>6</b>Il assemble et il pose</div><img src="../img/outils/menuisier/visseuse.jpg" alt="Visseuse"><p>Il monte l'ouvrage et le fixe chez le client.</p><p class="outil"><b>La visseuse</b> perce et visse.</p></div><button class="cache" aria-label="Dévoiler l'étape 6">6</button></div>
+  </div>
+</section>
+
+<!-- 3. Les mots du menuisier -->
+<section class="diapo">
+  <div class="rub"><b>2</b>Les mots du menuisier</div>
+  <div class="question"><div class="bulle">?</div><h2>« Il taille les tenons et les mortaises. » Qui sait ce que c'est ?</h2></div>
+  <div class="mots">
+    <div class="rep mot"><div class="contenu">
+      <svg viewBox="0 0 320 190" aria-hidden="true"><rect x="20" y="65" width="200" height="70" fill="#E7C08C" stroke="#101828" stroke-width="4"/><path d="M40 85h160M40 115h150" stroke="#B98A50" stroke-width="3"/><rect x="220" y="80" width="80" height="40" fill="#FFC928" stroke="#101828" stroke-width="4"/><path d="M260 60v12" stroke="#101828" stroke-width="3"/><path d="M252 66l8 10 8-10" fill="none" stroke="#101828" stroke-width="3"/></svg>
+      <h3>Le tenon</h3><p>Le bout de la pièce, taillé plus fin. Il <b>dépasse</b>.</p></div><button class="cache" aria-label="Dévoiler le tenon">?<span>Le tenon</span></button></div>
+    <div class="rep mot"><div class="contenu">
+      <svg viewBox="0 0 320 190" aria-hidden="true"><rect x="115" y="8" width="90" height="174" fill="#E7C08C" stroke="#101828" stroke-width="4"/><path d="M135 20v150M185 20v150" stroke="#B98A50" stroke-width="3"/><rect x="140" y="75" width="40" height="40" fill="#101828"/><path d="M230 95h-36" stroke="#E0442F" stroke-width="4"/><path d="M204 86l-10 9 10 9" fill="none" stroke="#E0442F" stroke-width="4"/></svg>
+      <h3>La mortaise</h3><p>Le <b>trou</b> creusé dans l'autre pièce.</p></div><button class="cache" aria-label="Dévoiler la mortaise">?<span>La mortaise</span></button></div>
+    <div class="rep mot"><div class="contenu">
+      <svg viewBox="0 0 320 190" aria-hidden="true"><rect x="20" y="65" width="170" height="70" fill="#E7C08C" stroke="#101828" stroke-width="4"/><path d="M40 85h130M40 115h120" stroke="#B98A50" stroke-width="3"/><rect x="190" y="8" width="90" height="174" fill="#E7C08C" stroke="#101828" stroke-width="4"/><rect x="190" y="80" width="60" height="40" fill="#FFC928" stroke="#101828" stroke-width="3" stroke-dasharray="8 6"/></svg>
+      <h3>L'assemblage</h3><p>Le tenon <b>entre</b> dans la mortaise : les 2 pièces tiennent.</p></div><button class="cache" aria-label="Dévoiler l'assemblage">?<span>Les deux ensemble</span></button></div>
+  </div>
+</section>
+
+<!-- 4. Où travaille-t-il ? -->
+<section class="diapo">
+  <div class="rub"><b>3</b>Où travaille-t-il ?</div>
+  <div class="question"><div class="bulle">?</div><h2>Où travaille le menuisier ?<small>Il y a 4 réponses.</small></h2></div>
+  <div class="liste c2">
+    <div class="rep item"><div class="contenu"><div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"><path d="M4 42V20l12 8V20l12 8V12h16v30z"/><path d="M34 20h4M34 28h4"/></svg></div><div><h3>À l'atelier</h3><p>Avec les machines à bois.</p></div></div><button class="cache" aria-label="Dévoiler">?</button></div>
+    <div class="rep item"><div class="contenu"><div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"><path d="M6 22 24 7l18 15"/><path d="M11 19v23h26V19"/><path d="M20 42V30h8v12"/></svg></div><div><h3>Chez le client</h3><p>Pour poser ce qu'il a fabriqué.</p></div></div><button class="cache" aria-label="Dévoiler">?</button></div>
+    <div class="rep item"><div class="contenu"><div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"><path d="M4 42h40"/><path d="M8 42V24h14v18"/><path d="M28 42V14h14v28" stroke-dasharray="4 3"/><path d="M8 24l7-7 7 7"/></svg></div><div><h3>Neuf ou rénovation</h3><p>Dans une maison neuve ou une maison à refaire.</p></div></div><button class="cache" aria-label="Dévoiler">?</button></div>
+    <div class="rep item"><div class="contenu"><div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"><path d="M6 18 9 6h30l3 12z"/><path d="M6 18c0 3 3 5 6 5s6-2 6-5c0 3 3 5 6 5s6-2 6-5c0 3 3 5 6 5s6-2 6-5"/><path d="M9 23v19h30V23"/><path d="M20 42V32h8v10"/></svg></div><div><h3>Dans les magasins</h3><p>Il fabrique les comptoirs et les rayons (l'agencement).</p></div></div><button class="cache" aria-label="Dévoiler">?</button></div>
+  </div>
+</section>
+
+<!-- 5. Comment travaille-t-il ? -->
+<section class="diapo">
+  <div class="rub"><b>3</b>Comment travaille-t-il ?</div>
+  <div class="question"><div class="bulle">?</div><h2>Seul ou à plusieurs ? Avec quoi ?<small>Pensez à l'atelier du collège.</small></h2></div>
+  <div class="liste">
+    <div class="rep item"><div class="contenu"><div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"><circle cx="16" cy="15" r="6"/><circle cx="33" cy="15" r="6"/><path d="M5 40c0-7 5-12 11-12s11 5 11 12M22 40c0-7 5-12 11-12s11 5 11 12"/></svg></div><div><h3>Seul ou en petite équipe</h3><p>Il s'organise avec ses collègues.</p></div></div><button class="cache" aria-label="Dévoiler">?</button></div>
+    <div class="rep item attention"><div class="contenu"><div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"><path d="M24 4 42 11v12c0 11-8 18-18 21C14 41 6 34 6 23V11z"/><path d="M16 24l6 6 11-12"/></svg></div><div><h3>Avec des machines</h3><p>Il respecte les règles de sécurité.</p></div></div><button class="cache" aria-label="Dévoiler">?</button></div>
+    <div class="rep item"><div class="contenu"><div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16h32"/><path d="M30 8l8 8-8 8"/><path d="M42 34H10"/><path d="M18 26l-8 8 8 8"/></svg></div><div><h3>Atelier et chantier</h3><p>Il partage son temps entre les deux.</p></div></div><button class="cache" aria-label="Dévoiler">?</button></div>
+  </div>
+</section>
+
+<!-- 6. Qualités -->
+<section class="diapo">
+  <div class="rub"><b>4</b>Les qualités qu'il faut</div>
+  <div class="question"><div class="bulle">?</div><h2>Pour vous, quelles qualités faut-il pour être menuisier ?<small>Qu'est-ce qui a compté pour réussir votre support téléphone ?</small></h2></div>
+  <div class="liste c2">
+    <div class="rep item"><div class="contenu"><div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"><rect x="4" y="16" width="40" height="16" rx="2"/><path d="M10 16v7M16 16v4M22 16v7M28 16v4M34 16v7M40 16v4"/></svg></div><div><h3>Précis</h3><p>Au millimètre près, sinon la porte ferme mal.</p></div></div><button class="cache" aria-label="Dévoiler">?</button></div>
+    <div class="rep item"><div class="contenu"><div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 26V10a3 3 0 0 1 6 0v12V7a3 3 0 0 1 6 0v15V9a3 3 0 0 1 6 0v14-8a3 3 0 0 1 6 0v13c0 9-6 15-14 15-6 0-9-3-12-8l-5-9a3 3 0 0 1 5-3z"/></svg></div><div><h3>Habile de ses mains</h3><p>Il travaille le bois avec des outils fins.</p></div></div><button class="cache" aria-label="Dévoiler">?</button></div>
+    <div class="rep item"><div class="contenu"><div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"><rect x="5" y="7" width="38" height="34" rx="2"/><path d="M13 31V17h22v14z"/><path d="M13 36h22M13 34v4M35 34v4"/></svg></div><div><h3>À l'aise avec les plans</h3><p>Il lit et dessine des plans cotés.</p></div></div><button class="cache" aria-label="Dévoiler">?</button></div>
+    <div class="rep item attention"><div class="contenu"><div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"><path d="M24 5 45 42H3z"/><path d="M24 18v12"/><circle cx="24" cy="35" r="1.5" fill="currentColor"/></svg></div><div><h3>Prudent</h3><p>Les machines à bois sont dangereuses.</p></div></div><button class="cache" aria-label="Dévoiler">?</button></div>
+  </div>
+</section>
+
+<!-- 7. EPI -->
+<section class="diapo">
+  <div class="rub"><b>5</b>Sa sécurité : les EPI</div>
+  <div class="question"><div class="bulle">?</div><h2>Comment le menuisier se protège-t-il ? Contre quoi ?</h2></div>
+  <div class="epi">
+    <div class="rep"><div class="contenu"><img src="../img/epi/lunettes.jpg" alt=""><div><h3>Lunettes</h3><p>Contre les copeaux et les éclats.</p></div></div><button class="cache" aria-label="Dévoiler">?</button></div>
+    <div class="rep"><div class="contenu"><img src="../img/epi/antibruit.jpg" alt=""><div><h3>Anti-bruit</h3><p>Les machines sont bruyantes.</p></div></div><button class="cache" aria-label="Dévoiler">?</button></div>
+    <div class="rep"><div class="contenu"><img src="../img/epi/masque.jpg" alt=""><div><h3>Masque</h3><p>Contre la poussière de bois.</p></div></div><button class="cache" aria-label="Dévoiler">?</button></div>
+    <div class="rep"><div class="contenu"><img src="../img/epi/chaussures.jpg" alt=""><div><h3>Chaussures de sécurité</h3><p>Contre la chute de pièces lourdes.</p></div></div><button class="cache" aria-label="Dévoiler">?</button></div>
+    <div class="rep"><div class="contenu"><img src="../img/epi/combinaison.jpg" alt=""><div><h3>Tenue de travail</h3><p>Rien qui flotte près des machines.</p></div></div><button class="cache" aria-label="Dévoiler">?</button></div>
+    <div class="rep"><div class="contenu danger"><img src="../img/epi/gants.jpg" alt=""><div><h3>Gants</h3><p>Pour porter le bois. JAMAIS à la machine.</p></div></div><button class="cache" aria-label="Dévoiler">?</button></div>
+  </div>
+</section>
+
+<!-- 8. Formation -->
+<section class="diapo">
+  <div class="rub"><b>6</b>Comment apprendre ce métier ?</div>
+  <div class="question"><div class="bulle">?</div><h2>Après la 3e, que faire pour devenir menuisier ?</h2></div>
+  <div class="liste">
+    <div class="rep item"><div class="contenu"><div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"><path d="M2 18 24 8l22 10-22 10z"/><path d="M11 22v11c0 4 6 7 13 7s13-3 13-7V22"/><path d="M44 19v13"/></svg></div><div><h3>Après la 3e : CAP Menuisier fabricant</h3><p>2 ans, au lycée professionnel ou en apprentissage (CFA). Il existe aussi le CAP Menuisier installateur.</p></div></div><button class="cache" aria-label="Dévoiler">?<span>Après la 3e</span></button></div>
+    <div class="rep item"><div class="contenu"><div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 40h10V30h10V20h10V10h6"/><path d="M36 4l6 6-6 6"/></svg></div><div><h3>Après le CAP : je travaille… ou je continue</h3><p>Par exemple un BP Menuisier ou un Bac pro Technicien menuisier agenceur.</p></div></div><button class="cache" aria-label="Dévoiler">?<span>Après le CAP</span></button></div>
+  </div>
+</section>
+
+<!-- 9. Fin -->
+<section class="diapo fin">
+  <h1>À vous !</h1>
+  <p>Sur votre fiche, faites la partie <b>7 · Je vérifie que j'ai compris</b>, puis la partie <b>8 · Et moi ?</b></p>
+  <p style="font-size:26px">Indice : un tenon entre-t-il dans une mortaise ?</p>
+</section>
+
+</div></main>
+
+<nav class="barre" aria-label="Commandes">
+  <a class="b opt" href="../metier.html?m=menuisier" title="Retour à la page du menuisier">← Site</a>
+  <button class="b opt" id="tout" type="button" title="Dévoiler toutes les réponses de la diapo">Tout montrer</button>
+  <button class="b opt" id="plein" type="button" title="Plein écran (touche F)">⛶ Plein écran</button>
+  <span class="vide"></span>
+  <div class="points" id="points"></div>
+  <span class="pos" id="pos">1 / 10</span>
+  <button class="b prec" id="prec" type="button" aria-label="Retour">◀</button>
+  <button class="b suiv" id="suiv" type="button">Suivant ▶</button>
+</nav>
+
+<script>
+(function(){
+  const scene=document.getElementById('scene'), vue=document.getElementById('vue');
+  const diapos=[...scene.querySelectorAll('.diapo')];
+  let i=0; const ordre=diapos.map(()=>[]); // pile des réponses dévoilées, par diapo (pour le retour)
+  const reps=d=>[...d.querySelectorAll('.rep')];
+
+  function echelle(){const r=vue.getBoundingClientRect();const s=Math.min((r.width-20)/1280,(r.height-20)/720);scene.style.transform='scale('+s+')'}
+  addEventListener('resize',echelle);
+
+  const pts=document.getElementById('points');
+  diapos.forEach((_,k)=>{const p=document.createElement('i');pts.appendChild(p)});
+
+  function maj(){
+    diapos.forEach((d,k)=>d.hidden=k!==i);
+    [...pts.children].forEach((p,k)=>{p.className=k<i?'ok':k===i?'ici':''});
+    document.getElementById('pos').textContent=(i+1)+' / '+diapos.length;
+    const reste=reps(diapos[i]).some(r=>!r.classList.contains('vu'));
+    document.getElementById('suiv').textContent=reste?'Réponse suivante ▶':(i<diapos.length-1?'Diapo suivante ▶':'Fin');
+    try{history.replaceState(null,'','#'+(i+1))}catch(e){}
+  }
+  function devoiler(r){if(r.classList.contains('vu'))return;r.classList.add('vu');ordre[i].push(r);maj()}
+  function suivant(){
+    const cachee=reps(diapos[i]).find(r=>!r.classList.contains('vu'));
+    if(cachee)return devoiler(cachee);
+    if(i<diapos.length-1){i++;maj()}
+  }
+  function precedent(){
+    const pile=ordre[i];
+    if(pile.length){pile.pop().classList.remove('vu');return maj()}
+    if(i>0){i--;maj()}
+  }
+  scene.addEventListener('click',e=>{const c=e.target.closest('.cache');if(c)devoiler(c.closest('.rep'))});
+  document.getElementById('suiv').onclick=suivant;
+  document.getElementById('prec').onclick=precedent;
+  document.getElementById('tout').onclick=()=>reps(diapos[i]).forEach(devoiler);
+  const plein=()=>{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen().catch(()=>{})};
+  document.getElementById('plein').onclick=plein;
+  document.addEventListener('fullscreenchange',()=>setTimeout(echelle,50));
+  addEventListener('keydown',e=>{
+    if([' ','ArrowRight','PageDown','Enter','ArrowDown'].includes(e.key)){e.preventDefault();suivant()}
+    else if(['ArrowLeft','PageUp','Backspace','ArrowUp'].includes(e.key)){e.preventDefault();precedent()}
+    else if(e.key==='f'||e.key==='F')plein();
+    else if(e.key==='Home'){i=0;maj()}
+  });
+  const h=parseInt(location.hash.slice(1),10); if(h>=1&&h<=diapos.length)i=h-1;
+  echelle(); maj();
+})();
+</script>
+</body>
+</html>
