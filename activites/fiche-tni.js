@@ -13,7 +13,7 @@ function composer(F){
   const COL=['c-bleu','c-jaune','c-encre','c-rouge'];
   const D=[{type:'couv'}];
   D.push({type:'grille',n:'01',rub:'Le métier en une phrase',q:F.objets.q||'D’après vous, que fait '+F.un+' ?',aide:F.objets.aide,cls:'g-objets',ncol:F.objets.items.length,
-    items:F.objets.items.map((h,j)=>({c:COL[j%4],idx:'0'+(j+1),h:h,fil:String(j+1)})).concat([{cl:'large',lab:'La phrase à retenir',html:'<div class="phrase">'+F.phrase+'</div><div class="famille">'+F.famille+'</div>'}])});
+    items:F.objets.items.map((x,j)=>{const o=typeof x==='string'?{h:x}:x;return Object.assign({c:COL[j%4],idx:'0'+(j+1)},o.img?{cl:'avec-photo'}:{fil:String(j+1)},o)}).concat([{cl:'large',lab:'La phrase à retenir',html:'<div class="phrase">'+F.phrase+'</div><div class="famille">'+F.famille+'</div>'}])});
   D.push({type:'focus',n:'02',rub:'Ce qu’il fait, étape par étape',q:F.etapes.q||'D’après vous, par quoi commence '+F.le+' ? Et ensuite ?',aide:F.etapes.aide,suite:true,vide:'Quelle est la première étape ?',
     items:F.etapes.items.map(x=>Object.assign({etq:'Étape'},x))});
   if(F.mots.tenon)D.push({type:'mots',n:'02',rub:'Les mots du métier',q:F.mots.q,items:F.mots.items});

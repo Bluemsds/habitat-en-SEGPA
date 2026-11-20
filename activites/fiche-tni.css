@@ -245,3 +245,9 @@ mark{background:var(--jaune);color:var(--encre);padding:0 .14em;border-radius:.1
 .g-objets .ct .fil{font-size:200px;top:-10px;opacity:.22}
 .g-qual h3{font-size:44px}
 .g-qual p{font-size:26px}
+.g-objets .avec-photo .photo{flex:1.5}
+.g-objets .avec-photo .txt{flex:0 0 auto;padding:14px 22px 18px;gap:8px}
+.g-objets .avec-photo .ct h3{font-size:clamp(28px,calc(150px / var(--n,4)),44px)}
+.g-objets .avec-photo .ct h3 small{font-size:18px;margin-bottom:2px}
+.g-objets .avec-photo .ct .trait{height:6px}
+.vu.avec-photo .ct .trait{width:64px}
