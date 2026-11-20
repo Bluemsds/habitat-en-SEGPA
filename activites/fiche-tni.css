@@ -1,0 +1,247 @@
+/* Diapo TNI « ping-pong », style Atelier du site.
+   Chaque chapitre s'ouvre sur un écran-question plein cadre (encre + jaune). Au clic, la question se range en bandeau
+   et les cartes-réponses « ? » apparaissent ; chaque réponse dévoilée passe d'abord en grand au centre puis se range.
+   Étapes et EPI : grand panneau photo + frise de vignettes. Tenon et mortaise : dessin en perspective animé.
+   Scène fixe 1280x720 mise à l'échelle de l'écran. */
+:root{
+  --encre:#101828; --encre-2:#1D2638; --bleu:#1F4FD1; --bleu-f:#1A3FA8; --bleu-pale:#E8EEFF; --jaune:#FFC928; --rouge:#E0442F;
+  --blanc:#FFFFFF; --papier:#F7F8FB; --gris:#3E4A5C; --gris-2:#6B7587;
+  --f-titre:"Bricolage Grotesque","Arial Black",Arial,sans-serif;
+  --f-txt:"Atkinson Hyperlegible",Verdana,Arial,sans-serif;
+  --ease:cubic-bezier(.7,0,.2,1); --sortie:cubic-bezier(.2,.8,.2,1);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:#E9ECF2;color:var(--encre);font-family:var(--f-txt);display:flex;flex-direction:column;overflow:hidden;-webkit-font-smoothing:antialiased}
+button,a{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:4px solid var(--bleu);outline-offset:3px}
+h1,h2,h3{font-family:var(--f-titre);font-weight:800;letter-spacing:-.03em;line-height:.98;margin:0}
+mark{background:var(--jaune);color:var(--encre);padding:0 .14em;border-radius:.12em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+
+.vue{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:10px;position:relative}
+.scene{width:1280px;height:720px;flex:none;transform-origin:center center;position:relative;overflow:hidden;border-radius:16px;background:var(--blanc);box-shadow:0 0 0 3px var(--encre),12px 12px 0 3px var(--encre)}
+.diapo{position:absolute;inset:0;overflow:hidden;background:var(--blanc);
+  background-image:linear-gradient(rgba(16,24,40,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(16,24,40,.045) 1px,transparent 1px);background-size:32px 32px}
+.diapo[hidden]{display:none}
+
+/* Volet de changement de chapitre */
+.volet{position:absolute;inset:0;z-index:60;pointer-events:none;visibility:hidden}
+.volet i{position:absolute;inset:0;transform:translateX(-101%)}
+.volet .v1{background:var(--jaune)}
+.volet .v2{background:var(--encre);display:flex;align-items:center;justify-content:center}
+.volet .v2 b{font-family:var(--f-titre);font-weight:800;font-size:260px;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:3px var(--jaune);line-height:1}
+
+/* Mots qui montent */
+.mo{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.1em;margin-bottom:-.1em}
+.mo>span{display:inline-block}
+
+/* ---------- Couverture ---------- */
+.couv{background-color:var(--jaune)}
+.couv .tag{position:absolute;left:64px;top:56px;display:inline-flex;gap:12px;align-items:center;background:var(--encre);color:var(--blanc);border-radius:999px;padding:10px 22px;font-weight:700;font-size:20px;letter-spacing:.08em;text-transform:uppercase}
+.couv .tag::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--jaune)}
+.couv .le{position:absolute;left:64px;top:250px;font-family:var(--f-titre);font-weight:700;font-size:56px;letter-spacing:-.02em}
+.couv h1{position:absolute;left:58px;top:300px;font-size:164px;letter-spacing:-.055em;line-height:.9}
+.couv .accroche{position:absolute;left:66px;top:470px;font-size:32px;line-height:1.3;max-width:20ch}
+.couv .go{position:absolute;left:64px;bottom:52px;display:inline-flex;align-items:center;gap:14px;background:var(--blanc);border:3px solid var(--encre);border-radius:999px;padding:12px 26px 12px 14px;font-weight:700;font-size:22px;box-shadow:5px 5px 0 var(--encre)}
+.couv .go kbd{background:var(--encre);color:var(--jaune);border-radius:999px;padding:4px 14px;font-family:var(--f-txt);font-size:18px}
+.couv .heros{position:absolute;right:64px;top:48px;width:470px;height:588px;border:4px solid var(--encre);border-radius:22px;overflow:hidden;box-shadow:14px 14px 0 var(--encre);transform:rotate(2deg);background:#ddd}
+.couv .heros img{width:100%;height:100%;object-fit:cover;display:block}
+.couv .vignette{position:absolute;width:168px;height:168px;border:3px solid var(--encre);border-radius:16px;overflow:hidden;background:#fff;box-shadow:6px 6px 0 var(--encre)}
+.couv .vignette img{width:100%;height:100%;object-fit:cover;display:block}
+.couv .vg1{right:470px;top:430px;transform:rotate(-7deg)}
+.couv .vg2{right:40px;top:520px;transform:rotate(6deg)}
+
+/* ---------- Chapitres : écran-question puis bandeau ---------- */
+.qbar{position:absolute;left:0;right:0;top:0;height:100%;background:var(--encre);color:var(--blanc);z-index:20;display:flex;flex-direction:column;justify-content:center;padding:0 90px;transition:height .8s var(--ease),padding .8s var(--ease);cursor:pointer}
+.qbar .grand{position:absolute;right:56px;bottom:-40px;font-family:var(--f-titre);font-weight:800;font-size:420px;line-height:1;letter-spacing:-.06em;color:transparent;-webkit-text-stroke:3px rgba(255,201,40,.55);transition:opacity .5s,transform .8s var(--ease);pointer-events:none}
+.qbar .rub{display:flex;align-items:center;gap:14px;font-weight:700;font-size:24px;letter-spacing:.12em;text-transform:uppercase;color:var(--jaune);transition:font-size .8s var(--ease)}
+.qbar .rub b{display:grid;place-items:center;min-width:46px;height:46px;padding:0 8px;border-radius:12px;background:var(--jaune);color:var(--encre);font-family:var(--f-titre);font-size:26px;letter-spacing:0;transition:all .8s var(--ease)}
+.qbar h2{font-size:84px;line-height:1.02;margin-top:22px;max-width:15.5em;transition:font-size .8s var(--ease),margin .8s var(--ease);position:relative}
+.qbar .aide{font-size:32px;color:#C9D2E3;margin-top:22px;transition:font-size .8s var(--ease),margin .8s var(--ease),opacity .4s;position:relative}
+.qbar .touche{position:absolute;left:90px;bottom:44px;font-size:20px;color:#8C97AB;transition:opacity .3s}
+.qbar .touche kbd{border:2px solid #4A556B;border-radius:8px;padding:2px 10px;color:#fff;font-family:var(--f-txt);margin:0 4px}
+.dock .qbar{height:150px;padding:0 48px;cursor:default}
+.dock .qbar .grand{opacity:0;transform:translateX(120px)}
+.dock .qbar .rub{font-size:17px}
+.dock .qbar .rub b{min-width:34px;height:34px;font-size:20px;border-radius:9px}
+.dock .qbar h2{font-size:38px;margin-top:10px;max-width:none}
+.dock .qbar .aide{font-size:21px;margin-top:0;opacity:0;height:0}
+.dock .qbar .touche{opacity:0}
+.qbar.sans-aide .aide{display:none}
+
+.zone{position:absolute;left:48px;right:48px;top:178px;bottom:32px;opacity:0;transform:translateY(40px);transition:opacity .6s .25s,transform .8s .2s var(--sortie);pointer-events:none}
+.dock .zone{opacity:1;transform:none;pointer-events:auto}
+.ombre{position:absolute;inset:-200px -80px -60px;background:rgba(16,24,40,.72);opacity:0;pointer-events:none;z-index:30}
+
+/* ---------- Cartes-réponses ---------- */
+.carte{position:relative;border-radius:20px;background:var(--blanc);border:3px solid var(--encre);box-shadow:8px 8px 0 var(--encre);min-height:0}
+.carte .slot{position:absolute;inset:-3px;border-radius:20px;border:3px dashed rgba(16,24,40,.38);background:var(--papier);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;width:calc(100% + 6px);height:calc(100% + 6px);z-index:3;transition:opacity .25s,background .2s}
+.carte .slot:hover{background:var(--bleu-pale);border-color:var(--bleu)}
+.carte .slot .pi{font-family:var(--f-titre);font-weight:800;font-size:84px;line-height:.9;color:var(--bleu)}
+.carte .slot .lab{font-size:19px;font-weight:700;color:var(--gris-2);letter-spacing:.08em;text-transform:uppercase}
+.carte:not(.vu){box-shadow:none;border-color:transparent;background:transparent}
+.carte:not(.vu) .ct{visibility:hidden}
+.carte.vu .slot{opacity:0;pointer-events:none}
+.carte.vole{z-index:40}
+
+.ct{position:absolute;inset:0;border-radius:17px;overflow:hidden;display:flex;flex-direction:column}
+.ct .txt{padding:24px 28px;display:flex;flex-direction:column;gap:12px;flex:1;justify-content:flex-end}
+.ct .idx{font-family:var(--f-titre);font-weight:800;font-size:22px;color:var(--bleu);letter-spacing:.02em}
+.ct h3{font-size:50px}
+.ct p{margin:0;font-size:28px;line-height:1.25;color:var(--gris)}
+.ct .trait{height:8px;width:0;background:var(--jaune);border-radius:4px;transition:width .6s .3s var(--sortie)}
+.vu .ct .trait{width:96px}
+.ct .photo{position:relative;flex:1;min-height:0;border-bottom:3px solid var(--encre);background:#ddd}
+.ct .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* Variantes de couleur (cartes affiche) */
+.c-bleu .ct{background:var(--bleu);color:var(--blanc)} .c-bleu .ct p{color:#DCE5FF} .c-bleu .ct .idx{color:var(--jaune)}
+.c-encre .ct{background:var(--encre);color:var(--blanc)} .c-encre .ct p{color:#C9D2E3} .c-encre .ct .idx{color:var(--jaune)}
+.c-jaune .ct{background:var(--jaune)} .c-jaune .ct p{color:var(--encre)} .c-jaune .ct .trait{background:var(--encre)}
+.c-rouge .ct{background:var(--rouge);color:var(--blanc)} .c-rouge .ct p{color:#FFE3DD} .c-rouge .ct .idx{color:var(--encre)} .c-rouge .ct .trait{background:var(--encre)}
+.ct .fil{position:absolute;right:18px;top:-24px;font-family:var(--f-titre);font-weight:800;font-size:230px;line-height:1;letter-spacing:-.06em;-webkit-text-fill-color:transparent;-webkit-text-stroke:3px currentColor;opacity:.3;pointer-events:none}
+
+/* Grilles par chapitre */
+.g-objets{display:grid;grid-template-columns:repeat(var(--n,4),1fr);grid-template-rows:1.25fr 1fr;gap:22px;height:100%}
+.g-objets .large{grid-column:1/-1}
+.g-objets .large .txt{justify-content:center;padding:22px 34px}
+.phrase{font-family:var(--f-titre);font-weight:700;font-size:40px;line-height:1.15;letter-spacing:-.02em;color:var(--encre)}
+.famille{font-size:24px;color:var(--gris)}
+.g-objets .ct h3{font-size:56px}
+.g-objets .ct h3 small{display:block;font-family:var(--f-txt);font-weight:700;font-size:22px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;opacity:.75}
+
+.g-ou{display:grid;grid-template-columns:1fr 1fr .95fr;grid-template-rows:1fr 1fr;gap:22px;height:100%}
+.g-ou .haut{grid-row:1/3}
+.g-ou .haut .photo{flex:1.25}
+.g-ou .haut .txt{flex:0 0 auto;padding:18px 24px 22px;gap:8px}
+.g-ou .haut h3{font-size:42px}
+.g-ou .haut p{font-size:25px}
+.g-ou .petit h3{font-size:40px}
+.g-ou .petit p{font-size:25px}
+
+.g-comment{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:22px;height:100%}
+.g-comment .photo{flex:1.1}
+.g-comment .txt{flex:0 0 auto}
+.g-comment h3{font-size:42px}
+.g-comment p{font-size:26px}
+.g-comment .affiche .txt{flex:1}
+
+.g-qual{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:22px;height:100%}
+.g-qual h3{font-size:54px;text-transform:uppercase;letter-spacing:-.04em}
+.g-qual p{font-size:28px}
+
+.g-form{display:grid;grid-template-columns:1fr 90px 1fr;align-items:stretch;height:100%}
+.g-form .fleche{display:grid;place-items:center}
+.g-form .fleche svg{width:70px;height:70px}
+.g-form h3{font-size:46px}
+.g-form .ct .txt{justify-content:center;gap:16px}
+.g-form .badge{align-self:flex-start;background:var(--encre);color:var(--jaune);border-radius:999px;padding:6px 18px;font-weight:700;font-size:20px;letter-spacing:.08em;text-transform:uppercase}
+.c-bleu .badge{background:var(--jaune);color:var(--encre)}
+
+/* ---------- Panneau + frise (étapes, EPI) ---------- */
+.focus{display:grid;grid-template-rows:1fr 132px;gap:22px;height:100%}
+.panneau{position:relative;border:3px solid var(--encre);border-radius:22px;background:var(--blanc);box-shadow:8px 8px 0 var(--encre);overflow:hidden}
+.panneau .vide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--gris-2);font-size:28px;background:var(--papier)}
+.panneau .vide b{font-family:var(--f-titre);font-size:110px;line-height:.9;color:var(--bleu)}
+.panneau .plein{position:absolute;inset:0;display:grid;grid-template-columns:336px 1fr;gap:40px;align-items:center;padding:0 40px 0 0}
+.panneau .ph{height:100%;border-right:3px solid var(--encre);background:#E5E7EB;overflow:hidden;position:relative}
+.panneau .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.panneau .etq{display:inline-flex;align-items:center;gap:12px;font-weight:700;font-size:22px;letter-spacing:.1em;text-transform:uppercase;color:var(--bleu)}
+.panneau .etq b{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--bleu);color:#fff;font-family:var(--f-titre);font-size:26px;letter-spacing:0}
+.panneau h3{font-size:60px;margin-top:12px}
+.panneau p{font-size:31px;line-height:1.28;margin:16px 0 0;color:var(--gris);max-width:24em}
+.panneau .outil{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 14px;margin-top:22px;padding-top:18px;border-top:3px dashed #CBD2DE;font-size:28px}
+.panneau .outil b{background:var(--jaune);padding:2px 12px;border-radius:8px;font-size:30px}
+.panneau .alerte{display:inline-flex;align-items:center;gap:12px;margin-top:22px;background:var(--rouge);color:#fff;border-radius:12px;padding:10px 18px;font-weight:700;font-size:28px}
+.panneau.danger{border-color:var(--rouge);box-shadow:8px 8px 0 var(--rouge)}
+
+.frise{display:grid;grid-template-columns:repeat(6,1fr);gap:22px}
+.tuile{position:relative;border-radius:16px;border:3px solid var(--encre);background:var(--blanc);box-shadow:5px 5px 0 var(--encre);overflow:visible;padding:0;transition:transform .25s var(--sortie),box-shadow .25s}
+.tuile .im{position:absolute;inset:0;border-radius:13px;overflow:hidden;background:#E5E7EB}
+.tuile .im img{width:100%;height:100%;object-fit:cover;display:block}
+.tuile .nom{position:absolute;left:0;right:0;bottom:0;background:var(--encre);color:#fff;font-weight:700;font-size:19px;padding:6px 8px;text-align:center;border-radius:0 0 13px 13px}
+.tuile .n{position:absolute;left:-12px;top:-12px;width:38px;height:38px;border-radius:50%;background:var(--bleu);color:#fff;border:3px solid var(--encre);display:grid;place-items:center;font-family:var(--f-titre);font-weight:800;font-size:20px;z-index:2}
+.tuile .slot{position:absolute;inset:-3px;border-radius:16px;border:3px dashed rgba(16,24,40,.38);background:var(--papier);display:grid;place-items:center;font-family:var(--f-titre);font-weight:800;font-size:56px;color:var(--bleu);z-index:3}
+.tuile .slot:hover{background:var(--bleu-pale);border-color:var(--bleu)}
+.tuile:not(.vu){box-shadow:none;border-color:transparent}
+.tuile:not(.vu) .n{display:none}
+.tuile.vu .slot{display:none}
+.tuile.actif{transform:translateY(-8px);box-shadow:5px 13px 0 var(--jaune),0 0 0 5px var(--jaune)}
+.frise.suite .tuile:not(:last-child)::after{content:"";position:absolute;right:-19px;top:50%;width:12px;height:12px;border-top:4px solid var(--encre);border-right:4px solid var(--encre);transform:translateY(-50%) rotate(45deg)}
+
+/* ---------- Tenon / mortaise ---------- */
+.g-mots{display:grid;grid-template-columns:690px 1fr;gap:28px;height:100%}
+.dessin{position:relative;border:3px solid var(--encre);border-radius:22px;background:var(--papier);box-shadow:8px 8px 0 var(--encre);overflow:hidden;
+  background-image:linear-gradient(rgba(31,79,209,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(31,79,209,.08) 1px,transparent 1px);background-size:24px 24px}
+.dessin svg{position:absolute;inset:0;width:100%;height:100%}
+.dessin .attente{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-titre);font-weight:800;font-size:150px;color:rgba(31,79,209,.18);transition:opacity .4s}
+.dessin.d1 .attente,.dessin.d2 .attente,.dessin.d3 .attente{opacity:0}
+.defs{display:grid;grid-template-rows:repeat(3,1fr);gap:20px}
+.defs .ct .txt{justify-content:center;gap:6px;padding:16px 24px}
+.defs h3{font-size:40px;color:var(--bleu)}
+.defs .idx,.defs .trait{display:none}
+.defs p{font-size:25px;line-height:1.2;color:var(--encre)}
+.g-rail,.g-montant,.lab{transition:transform 1.2s var(--ease),opacity .6s}
+.g-rail{opacity:0;transform:translate(0,-50px)}
+.g-montant{opacity:0;transform:translate(0,40px)}
+.d-rail .g-rail{opacity:1;transform:none}
+.d-montant .g-montant{opacity:1;transform:none}
+.d-asm .g-rail{transform:translate(var(--asx),var(--asy))}
+.tenon polygon{transition:fill-opacity .6s .55s,stroke-dasharray .1s .55s}
+.d-asm .tenon polygon{fill-opacity:.28;stroke-dasharray:9 7}
+.lab{opacity:0}
+.d-rail .lab-tenon{opacity:1}
+.d-montant .lab-mort{opacity:1}
+.d-asm .lab-mort{opacity:0}
+.d-asm .lab-tenon{opacity:0}
+.d-asm .lab-asm{opacity:1}
+
+/* ---------- Fin ---------- */
+.fin{background-color:var(--bleu);color:#fff;background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px)}
+.fin h1{position:absolute;left:72px;top:120px;font-size:170px;letter-spacing:-.055em;color:#fff}
+.fin h1 span{color:var(--jaune)}
+.fin .consigne{position:absolute;left:78px;top:340px;font-size:36px;line-height:1.35;max-width:21ch}
+.fin .consigne b{color:var(--jaune)}
+.fin .indice{position:absolute;left:78px;bottom:64px;display:inline-flex;gap:14px;align-items:center;background:var(--jaune);color:var(--encre);border:3px solid var(--encre);border-radius:16px;padding:14px 22px;font-size:26px;font-weight:700;box-shadow:6px 6px 0 var(--encre)}
+.fin .heros{position:absolute;right:70px;top:70px;width:420px;height:525px;border:4px solid var(--encre);border-radius:22px;overflow:hidden;box-shadow:14px 14px 0 var(--encre);transform:rotate(-2deg)}
+.fin .heros img{width:100%;height:100%;object-fit:cover}
+
+/* ---------- Barre de commande ---------- */
+.barre{flex:none;display:flex;align-items:center;gap:10px;padding:8px 14px calc(8px + env(safe-area-inset-bottom,0px));background:var(--blanc);border-top:3px solid var(--encre)}
+.barre .b{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 18px;border:3px solid var(--encre);border-radius:12px;background:var(--blanc);font-weight:700;font-size:18px;text-decoration:none;box-shadow:3px 3px 0 var(--encre);transition:transform .1s}
+.barre .b:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--encre)}
+.barre .b.suiv{background:var(--bleu);color:#fff;font-size:21px;padding:0 26px;min-width:250px}
+.barre .b.prec{font-size:22px;width:58px;padding:0}
+.barre .vide{flex:1}
+.barre .chap{font-family:var(--f-titre);font-weight:700;font-size:19px;color:var(--gris);max-width:330px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.points{display:flex;gap:6px}
+.points i{width:13px;height:13px;border-radius:50%;border:2px solid var(--encre);background:var(--blanc);transition:all .3s}
+.points i.ok{background:var(--encre)}
+.points i.ici{background:var(--jaune);transform:scale(1.35)}
+@media (max-width:900px){.barre .opt,.points,.barre .chap{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01s!important;transition-delay:0s!important}}
+
+/* Où : une seule illustration */
+.g-ou1{display:grid;grid-template-columns:1.05fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:22px;height:100%}
+.g-ou1 .haut{grid-row:1/3}
+.g-ou1 .haut .photo{flex:1.25}
+.g-ou1 .haut .txt{flex:0 0 auto;padding:18px 24px 22px;gap:8px}
+.g-ou1 .haut h3{font-size:42px}
+.g-ou1 .haut p{font-size:25px}
+.g-ou1 .petit:last-child{grid-column:2/4}
+.g-ou1 .petit h3{font-size:40px}
+.g-ou1 .petit p{font-size:25px}
+/* Les mots du métier : 3 cartes (photo ou affiche) */
+.g-mots3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;height:100%}
+.g-mots3 .photo{flex:1.15}
+.g-mots3 .txt{flex:0 0 auto}
+.g-mots3 .c-bleu .txt,.g-mots3 .c-jaune .txt,.g-mots3 .c-encre .txt{flex:1}
+.g-mots3 h3{font-size:44px}
+.g-mots3 p{font-size:26px}
+
+/* Ajustements pour les textes longs */
+.g-objets .ct h3{font-size:clamp(32px,calc(176px / var(--n,4)),56px);hyphens:manual}
+.g-objets .ct .fil{font-size:200px;top:-10px;opacity:.22}
+.g-qual h3{font-size:44px}
+.g-qual p{font-size:26px}
