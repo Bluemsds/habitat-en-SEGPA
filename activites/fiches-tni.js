@@ -46,7 +46,7 @@ menuisier:{k:"menuisier",titre:"menuisier",Le:"Le menuisier",le:"le menuisier",u
 carreleur:{k:"carreleur",titre:"carreleur",Le:"Le carreleur",le:"le carreleur",un:"un carreleur",
   accroche:"Carreau après carreau, il habille les sols et les murs.",
   heros:"jeu-metiers/carreleur.jpg",vg:["outils/carreleur/peigne.jpg","outils/carreleur/croisillons.jpg"],
-  objets:{aide:"Où voit-on des carreaux dans une maison ?",items:["<small>le</small>Carrelage","<small>la</small>Faïence","<small>la</small>Mosaïque","<small>sur les</small>Sols et murs"]},
+  objets:{aide:"Où voit-on des carreaux dans une maison ?",items:[{h:"<small>le</small>Carrelage",img:"metiers/carreleur/carrelage.jpg"},{h:"<small>la</small>Faïence",img:"metiers/carreleur/faience.jpg"},{h:"<small>la</small>Mosaïque",img:"metiers/carreleur/mosaique.jpg"},{h:"<small>sur les</small>Sols et murs",img:"metiers/carreleur/sols-murs.jpg"}]},
   phrase:"Le carreleur <mark>pose</mark> du carrelage, de la faïence et de la mosaïque sur les sols et sur les murs.",
   famille:"Famille de métiers : le second œuvre, les finitions de la maison.",
   etapes:{items:[
@@ -83,7 +83,7 @@ carreleur:{k:"carreleur",titre:"carreleur",Le:"Le carreleur",le:"le carreleur",u
 macon:{k:"macon",titre:"maçon",Le:"Le maçon",le:"le maçon",un:"un maçon",
   accroche:"Des fondations jusqu’aux murs, il construit la maison.",
   heros:"jeu-metiers/macon.jpg",vg:["outils/macon/truelle.jpg","outils/macon/fil-a-plomb.jpg"],
-  objets:{aide:"Que construit-on en premier dans une maison ?",items:["<small>les</small>Fondations","<small>les</small>Murs","<small>les</small>Dalles"]},
+  objets:{aide:"Que construit-on en premier dans une maison ?",items:[{h:"<small>les</small>Fondations",img:"metiers/macon/fondations.jpg"},{h:"<small>les</small>Murs",img:"metiers/macon/murs.jpg"},{h:"<small>les</small>Dalles",img:"metiers/macon/dalles.jpg"}]},
   phrase:"Le maçon <mark>construit</mark> les fondations, les murs et les dalles de la maison.",
   famille:"Famille de métiers : le gros œuvre, la structure de la maison.",
   etapes:{items:[
@@ -120,7 +120,7 @@ macon:{k:"macon",titre:"maçon",Le:"Le maçon",le:"le maçon",un:"un maçon",
 plombier:{k:"plombier",titre:"plombier",Le:"Le plombier",le:"le plombier",un:"un plombier",
   accroche:"Il fait arriver l’eau partout dans la maison.",
   heros:"jeu-metiers/plombier.jpg",vg:["outils/plombier/chalumeau.jpg","outils/plombier/cle-a-molette.jpg"],
-  objets:{aide:"Où passe l’eau dans une maison ?",items:["<small>les</small>Tuyaux d’eau","<small>les</small>Sanitaires","<small>le</small>Chauffage"]},
+  objets:{aide:"Où passe l’eau dans une maison ?",items:[{h:"<small>les</small>Tuyaux d’eau",img:"metiers/plombier/tuyaux.jpg"},{h:"<small>les</small>Sanitaires",img:"metiers/plombier/sanitaires.jpg"},{h:"<small>le</small>Chauffage",img:"metiers/plombier/chauffage.jpg"}]},
   phrase:"Le plombier <mark>installe</mark> les tuyaux d’eau, les sanitaires et le chauffage.",
   famille:"Famille de métiers : le second œuvre, les équipements de la maison.",
   etapes:{items:[
@@ -157,7 +157,7 @@ plombier:{k:"plombier",titre:"plombier",Le:"Le plombier",le:"le plombier",un:"un
 charpentier:{k:"charpentier",titre:"charpentier",Le:"Le charpentier",le:"le charpentier",un:"un charpentier",
   accroche:"Il monte la grande structure en bois qui porte le toit.",
   heros:"jeu-metiers/charpentier.jpg",vg:["outils/couvreur-charpentier/tariere.jpg","outils/couvreur-charpentier/fausse-equerre.jpg"],
-  objets:{aide:"Qu’y a-t-il sous les tuiles d’un toit ?",items:["<small>la</small>Charpente","<small>une structure</small>En bois","<small>qui porte</small>Le toit"]},
+  objets:{aide:"Qu’y a-t-il sous les tuiles d’un toit ?",items:[{h:"<small>la</small>Charpente",img:"metiers/charpentier/charpente.jpg"},"<small>une structure</small>En bois","<small>qui porte</small>Le toit"]},
   phrase:"Le charpentier <mark>fabrique</mark> et <mark>monte</mark> la charpente, la structure en bois qui porte le toit.",
   famille:"Famille de métiers : le gros œuvre, le clos et le couvert.",
   etapes:{items:[
@@ -194,7 +194,7 @@ charpentier:{k:"charpentier",titre:"charpentier",Le:"Le charpentier",le:"le char
 plaquiste:{k:"plaquiste",titre:"plaquiste",Le:"Le plaquiste",le:"le plaquiste",un:"un plaquiste",
   accroche:"Avec des plaques, il crée les pièces de la maison.",
   heros:"jeu-metiers/plaquiste.jpg",vg:["outils/plaquiste/rail.jpg","outils/plaquiste/couteau-a-enduire.jpg"],
-  objets:{aide:"Qu’est-ce qui sépare deux chambres ?",items:["<small>les</small>Cloisons","<small>les</small>Plafonds","<small>en</small>Plaques de plâtre","<small>et</small>L’isolation"]},
+  objets:{aide:"Qu’est-ce qui sépare deux chambres ?",items:[{h:"<small>les</small>Cloisons",img:"metiers/plaquiste/cloisons.jpg"},{h:"<small>les</small>Plafonds",img:"metiers/plaquiste/plafonds.jpg"},"<small>en</small>Plaques de plâtre",{h:"<small>et</small>L’isolation",img:"metiers/plaquiste/isolation.jpg"}]},
   phrase:"Le plaquiste <mark>monte</mark> les cloisons et les plafonds en plaques de plâtre et <mark>pose</mark> l’isolation.",
   famille:"Famille de métiers : le second œuvre, l’aménagement intérieur.",
   etapes:{items:[
@@ -206,7 +206,7 @@ plaquiste:{k:"plaquiste",titre:"plaquiste",Le:"Le plaquiste",le:"le plaquiste",u
     {img:"outils/plaquiste/couteau-a-enduire.jpg",nom:"Finir",h:"Il finit et il contrôle",p:"Il lisse l’enduit et vérifie que tout est plat.",outil:"Le couteau à enduire",def:"lisse l’enduit."}]},
   mots:{q:"Rail, montant, bande : qui sait ce que c’est ?",items:[
     {img:"outils/plaquiste/rail.jpg",h:"Le rail",p:"Le profilé en métal fixé au sol et au plafond."},
-    {h:"Le montant",p:"Le profilé debout, glissé dans les rails : il tient la plaque."},
+    {img:"metiers/plaquiste/montant.jpg",h:"Le montant",p:"Le profilé debout, glissé dans les rails : il tient la plaque."},
     {img:"outils/plaquiste/bande-a-joint.jpg",h:"La bande",p:"Elle cache le joint entre deux plaques."}]},
   ou:{items:[
     {img:"jeu-metiers/plaquiste.jpg",pos:"50% 30%",h:"Dans les maisons",p:"Et dans les appartements."},
@@ -231,7 +231,7 @@ plaquiste:{k:"plaquiste",titre:"plaquiste",Le:"Le plaquiste",le:"le plaquiste",u
 electricien:{k:"electricien",titre:"électricien",Le:"L’électricien",le:"l’électricien",un:"un électricien",
   accroche:"Il amène le courant jusqu’à chaque lampe.",
   heros:"jeu-metiers/electricien.jpg",vg:["outils/electricien/multimetre.jpg","outils/electricien/tournevis.jpg"],
-  objets:{aide:"Qu’est-ce qui marche à l’électricité dans une maison ?",items:["<small>les</small>Câbles","<small>les</small>Prises","<small>les</small>Éclairages","<small>le</small>Tableau"]},
+  objets:{aide:"Qu’est-ce qui marche à l’électricité dans une maison ?",items:[{h:"<small>les</small>Câbles",img:"metiers/electricien/cables.jpg"},{h:"<small>les</small>Prises",img:"metiers/electricien/prises.jpg"},{h:"<small>les</small>Éclairages",img:"metiers/electricien/eclairages.jpg"},{h:"<small>le</small>Tableau",img:"metiers/electricien/tableau.jpg"}]},
   phrase:"L’électricien <mark>installe</mark> les câbles, les prises, les éclairages et le tableau électrique.",
   famille:"Famille de métiers : le second œuvre, les équipements de la maison.",
   etapes:{items:[
@@ -268,7 +268,7 @@ electricien:{k:"electricien",titre:"électricien",Le:"L’électricien",le:"l’
 metallier:{k:"metallier",titre:"métallier",Le:"Le métallier",le:"le métallier",un:"un métallier",
   accroche:"Il coupe, soude et façonne le métal pour la maison.",
   heros:"jeu-metiers/metallier.jpg",vg:["outils/metallier/poste-a-souder.jpg","outils/metallier/etau.jpg"],
-  objets:{aide:"Qu’est-ce qui est en métal autour d’une maison ?",items:["<small>les</small>Garde-corps","<small>les</small>Portails","<small>les</small>Escaliers","<small>les</small>Grilles"]},
+  objets:{aide:"Qu’est-ce qui est en métal autour d’une maison ?",items:["<small>les</small>Garde-corps",{h:"<small>les</small>Portails",img:"metiers/metallier/portails.jpg"},{h:"<small>les</small>Escaliers",img:"metiers/metallier/escaliers.jpg"},{h:"<small>les</small>Grilles",img:"metiers/metallier/grilles.jpg"}]},
   phrase:"Le métallier <mark>fabrique</mark> et <mark>pose</mark> les ouvrages en métal : garde-corps, portails, escaliers, grilles.",
   famille:"Famille de métiers : le second œuvre, les ouvrages en métal.",
   etapes:{items:[
@@ -305,7 +305,7 @@ metallier:{k:"metallier",titre:"métallier",Le:"Le métallier",le:"le métallier
 peintre:{k:"peintre",titre:"peintre",Le:"Le peintre",le:"le peintre",un:"un peintre",
   accroche:"Il donne aux murs leur dernière couche.",
   heros:"jeu-metiers/peintre.jpg",vg:["outils/peintre/rouleau.jpg","outils/peintre/ruban-de-masquage.jpg"],
-  objets:{aide:"Qu’y a-t-il à peindre dans une pièce ?",items:["<small>les</small>Murs","<small>les</small>Plafonds","<small>la</small>Peinture","<small>les</small>Revêtements"]},
+  objets:{aide:"Qu’y a-t-il à peindre dans une pièce ?",items:[{h:"<small>les</small>Murs",img:"metiers/peintre/murs.jpg"},{h:"<small>les</small>Plafonds",img:"metiers/peintre/plafonds.jpg"},"<small>la</small>Peinture",{h:"<small>les</small>Revêtements",img:"metiers/peintre/revetements.jpg"}]},
   phrase:"Le peintre <mark>prépare</mark> les murs et les plafonds, puis il <mark>pose</mark> la peinture et les revêtements.",
   famille:"Famille de métiers : le second œuvre, les finitions de la maison.",
   etapes:{items:[
@@ -342,7 +342,7 @@ peintre:{k:"peintre",titre:"peintre",Le:"Le peintre",le:"le peintre",un:"un pein
 couvreur:{k:"couvreur",titre:"couvreur",Le:"Le couvreur",le:"le couvreur",un:"un couvreur",
   accroche:"Tout en haut de la maison, il la garde au sec.",
   heros:"jeu-metiers/couvreur.jpg",vg:["outils/couvreur-charpentier/ardoise.jpg","outils/couvreur-charpentier/marteau-de-couvreur.jpg"],
-  objets:{aide:"Avec quoi couvre-t-on un toit ?",items:["<small>les</small>Tuiles","<small>les</small>Ardoises","<small>le</small>Zinc","<small>la maison</small>Au sec"]},
+  objets:{aide:"Avec quoi couvre-t-on un toit ?",items:[{h:"<small>les</small>Tuiles",img:"metiers/couvreur/tuiles.jpg"},{h:"<small>les</small>Ardoises",img:"metiers/couvreur/ardoises.jpg"},{h:"<small>le</small>Zinc",img:"metiers/couvreur/zinc.jpg",pos:"15% 50%"},"<small>la maison</small>Au sec"]},
   phrase:"Le couvreur <mark>pose</mark> la couverture du toit (tuiles, ardoises, zinc) pour que la maison reste au sec.",
   famille:"Famille de métiers : le gros œuvre, le clos et le couvert.",
   etapes:{items:[
@@ -353,9 +353,9 @@ couvreur:{k:"couvreur",titre:"couvreur",Le:"Le couvreur",le:"le couvreur",un:"un
     {img:"outils/couvreur-charpentier/marteau-de-couvreur.jpg",nom:"Étanchéité",h:"Il fait l’étanchéité",p:"Il pose le zinc autour de la cheminée et les gouttières.",outil:"Le marteau de couvreur",def:"taille et fixe les ardoises."},
     {img:"outils/macon/brosse.jpg",nom:"Contrôler",h:"Il contrôle et il range",p:"Il vérifie qu’aucune tuile ne bouge et il nettoie le toit.",outil:"La brosse",def:"nettoie le toit."}]},
   mots:{q:"Liteau, gouttière, étanchéité : qui sait ce que c’est ?",items:[
-    {h:"Le liteau",p:"La fine latte de bois qui porte les tuiles."},
-    {h:"La gouttière",p:"Elle récupère l’eau de pluie au bord du toit."},
-    {h:"L’étanchéité",p:"Tout ce qui empêche l’eau de rentrer."}]},
+    {img:"metiers/couvreur/liteau.jpg",h:"Le liteau",p:"La fine latte de bois qui porte les tuiles."},
+    {img:"metiers/couvreur/gouttiere.jpg",h:"La gouttière",p:"Elle récupère l’eau de pluie au bord du toit."},
+    {img:"metiers/couvreur/etancheite.jpg",h:"L’étanchéité",p:"Tout ce qui empêche l’eau de rentrer."}]},
   ou:{items:[
     {img:"jeu-metiers/couvreur.jpg",pos:"50% 30%",h:"Sur les toits",p:"Des maisons et des immeubles."},
     {h:"Monuments anciens",p:"Ardoises, zinc."},
